@@ -19,6 +19,10 @@ export const Sidebar = ({
 }) => {
   const [collapsed, setCollapsed] = useState(false);
 
+  const closeSidebar = () => {
+    setMobileOpen(false);
+  };
+
   const menuItems = [
     {
       icon: House,
@@ -47,7 +51,22 @@ export const Sidebar = ({
     },
   ];
 
-    return (
+  return (
+    <>
+      {/* Overlay móvil */}
+      {mobileOpen && (
+        <div
+          onClick={closeSidebar}
+          className="
+            fixed
+            inset-0
+            bg-black/50
+            z-40
+            lg:hidden
+          "
+        />
+      )}
+
       <aside
         className={`
           ${
@@ -78,80 +97,87 @@ export const Sidebar = ({
           p-6
         `}
       >
-      {/* Botón menú */}
-      <div className="flex justify-between items-center">
-        <button
-          onClick={() => setMobileOpen(false)}
-          className="lg:hidden"
-        >
-          <X size={24} />
-        </button>
+        {/* Botones */}
+        <div className="flex justify-between items-center">
+          <button
+            onClick={closeSidebar}
+            className="lg:hidden"
+          >
+            <X size={24} />
+          </button>
 
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="cursor-pointer ml-auto"
+          className="
+            cursor-pointer
+            ml-auto
+            hidden
+            lg:block
+          "
         >
           <Menu size={24} />
         </button>
-      </div>
+        </div>
 
-      {/* Logo */}
-      <div className="flex flex-col items-center mt-6">
-        <img
-          src={ipnLogo}
-          alt="IPN"
-          className="w-20 mb-4"
-        />
+        {/* Logo */}
+        <div className="flex flex-col items-center mt-6">
+          <img
+            src={ipnLogo}
+            alt="IPN"
+            className="w-20 mb-4"
+          />
 
-        {!collapsed && (
-          <>
-            <h1 className="text-3xl font-bold text-center">
-              Portal ESIME
-            </h1>
+          {!collapsed && (
+            <>
+              <h1 className="text-3xl font-bold text-center">
+                Portal ESIME
+              </h1>
 
-            <p className="text-sm text-center">
-              Unidad Zacatenco
-            </p>
-          </>
-        )}
-      </div>
+              <p className="text-sm text-center">
+                Unidad Zacatenco
+              </p>
+            </>
+          )}
+        </div>
 
-      {/* Menú */}
-      <nav className="mt-10">
-        {menuItems.map((item) => {
-          const Icon = item.icon;
+        {/* Menú */}
+        <nav className="mt-10">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
 
-          return (
-            <NavLink
-              key={item.label}
-              to={item.path}
-              end={item.path === "/"}
-              className={({ isActive }) =>
-                `
-                flex
-                items-center
-                gap-3
-                p-4
-                rounded-xl
-                mb-3
-                transition
-                ${
-                  isActive
-                    ? "bg-white text-[#6A0032] font-semibold"
-                    : "hover:bg-white/10"
+            return (
+              <NavLink
+                key={item.label}
+                to={item.path}
+                end={item.path === "/"}
+                onClick={closeSidebar}
+                className={({ isActive }) =>
+                  `
+                  flex
+                  items-center
+                  gap-3
+                  p-4
+                  rounded-xl
+                  mb-3
+                  transition
+                  ${
+                    isActive
+                      ? "bg-white text-[#6A0032] font-semibold"
+                      : "hover:bg-white/10"
+                  }
+                  `
                 }
-                `
-              }
-            >
-              <Icon size={20} />
+              >
+                <Icon size={20} />
 
-              {!collapsed && (
-                <span>{item.label}</span>
-              )}
-            </NavLink>
-          );
-        })}
-      </nav>
-    </aside>
+                {!collapsed && (
+                  <span>{item.label}</span>
+                )}
+              </NavLink>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
   );
 };

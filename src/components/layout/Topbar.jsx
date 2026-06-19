@@ -34,7 +34,8 @@ export const Topbar = ({
         {/* Buscador */}
         <div
           className="
-            flex
+            hidden
+            lg:flex
             items-center
             gap-2
             bg-slate-100
@@ -65,7 +66,7 @@ export const Topbar = ({
           className="cursor-pointer"
         />
 
-        <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2">
           <User size={20} />
 
           <span className="font-medium">
