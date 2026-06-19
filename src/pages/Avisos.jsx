@@ -1,4 +1,8 @@
+import { Link } from "react-router-dom";
+
 import { avisos } from "../data/avisos";
+
+import { InfoCard } from "../components/cards/InfoCard";
 
 export const Avisos = () => {
   return (
@@ -13,23 +17,16 @@ export const Avisos = () => {
 
       <div className="space-y-4">
         {avisos.map((aviso) => (
-          <article
+          <Link
             key={aviso.id}
-            className="
-              bg-white
-              p-6
-              rounded-xl
-              shadow-md
-            "
+            to={`/avisos/${aviso.id}`}
+            className="block"
           >
-            <h2 className="text-xl font-semibold">
-              {aviso.titulo}
-            </h2>
-
-            <p className="text-slate-500 mt-2">
-              {aviso.fecha}
-            </p>
-          </article>
+            <InfoCard
+              title={aviso.titulo}
+              subtitle={aviso.fecha}
+            />
+          </Link>
         ))}
       </div>
     </section>

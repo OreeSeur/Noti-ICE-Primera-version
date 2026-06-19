@@ -1,4 +1,8 @@
+import { Link } from "react-router-dom";
+
 import { eventos } from "../data/eventos";
+
+import { InfoCard } from "../components/cards/InfoCard";
 
 export const Eventos = () => {
   return (
@@ -13,27 +17,17 @@ export const Eventos = () => {
 
       <div className="grid gap-4 md:grid-cols-2">
         {eventos.map((evento) => (
-          <article
+          <Link
             key={evento.id}
-            className="
-              bg-white
-              p-6
-              rounded-xl
-              shadow-md
-            "
+            to={`/eventos/${evento.id}`}
+            className="block"
           >
-            <h2 className="text-xl font-semibold">
-              {evento.titulo}
-            </h2>
-
-            <p className="text-slate-500 mt-2">
-              📅 {evento.fecha}
-            </p>
-
-            <p className="text-slate-500">
-              📍 {evento.lugar}
-            </p>
-          </article>
+            <InfoCard
+              title={evento.titulo}
+              subtitle={`📅 ${evento.fecha}`}
+              description={`📍 ${evento.lugar}`}
+            />
+          </Link>
         ))}
       </div>
     </section>

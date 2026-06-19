@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import { documentos } from "../data/documentos";
 
 export const Documentos = () => {
@@ -13,41 +15,44 @@ export const Documentos = () => {
 
       <div className="grid gap-4">
         {documentos.map((documento) => (
-          <article
+          <Link
             key={documento.id}
-            className="
-              bg-white
-              p-6
-              rounded-xl
-              shadow-md
-              flex
-              justify-between
-              items-center
-            "
+            to={`/documentos/${documento.id}`}
           >
-            <div>
-              <h2 className="font-semibold text-lg">
-                {documento.nombre}
-              </h2>
-
-              <p className="text-slate-500 text-sm">
-                {documento.tipo} • {documento.fecha}
-              </p>
-            </div>
-
-            <button
+            <article
               className="
-                bg-[#6A0032]
-                text-white
-                px-4
-                py-2
-                rounded-lg
-                hover:opacity-90
+                bg-white
+                p-6
+                rounded-xl
+                shadow-md
+                flex
+                justify-between
+                items-center
+                transition
+                hover:shadow-lg
+                hover:-translate-y-1
               "
             >
-              Descargar
-            </button>
-          </article>
+              <div>
+                <h2 className="font-semibold text-lg">
+                  {documento.nombre}
+                </h2>
+
+                <p className="text-slate-500 text-sm">
+                  {documento.tipo} • {documento.fecha}
+                </p>
+              </div>
+
+              <span
+                className="
+                  text-[#6A0032]
+                  font-semibold
+                "
+              >
+                Ver
+              </span>
+            </article>
+          </Link>
         ))}
       </div>
     </section>
