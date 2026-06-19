@@ -195,18 +195,27 @@ export const Topbar = ({
                 Notificaciones
               </h3>
 
-              {avisos.map((aviso) => (
-                <div
-                  key={aviso.id}
-                  className="
-                    py-2
-                    border-b
-                    last:border-none
-                  "
-                >
-                  {aviso.titulo}
-                </div>
-              ))}
+          {avisos.map((aviso) => (
+            <Link
+              key={aviso.id}
+              to={`/avisos/${aviso.id}`}
+              onClick={() =>
+                setShowNotifications(false)
+              }
+              className="
+                block
+                py-2
+                px-2
+                border-b
+                last:border-none
+                hover:bg-slate-100
+                rounded
+                transition
+              "
+            >
+              {aviso.titulo}
+            </Link>
+          ))}
             </div>
           )}
         </div>
