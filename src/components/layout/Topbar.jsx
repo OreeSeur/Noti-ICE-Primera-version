@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import {
   Bell,
@@ -22,18 +23,21 @@ export const Topbar = ({
       id: item.id,
       titulo: item.titulo,
       tipo: "Aviso",
+      ruta: `/avisos/${item.id}`,
     })),
 
     ...eventos.map((item) => ({
       id: item.id,
       titulo: item.titulo,
       tipo: "Evento",
+      ruta: `/eventos/${item.id}`,
     })),
 
     ...documentos.map((item) => ({
       id: item.id,
       titulo: item.nombre,
       tipo: "Documento",
+      ruta: `/documentos/${item.id}`,
     })),
   ].filter((item) =>
     item.titulo
@@ -110,19 +114,27 @@ export const Topbar = ({
             >
               {resultados.length > 0 ? (
                 resultados.map((item) => (
-                  <div
+                  <Link
                     key={`${item.tipo}-${item.id}`}
+                    to={item.ruta}
+                    onClick={() =>
+                      setSearch("")
+                    }
                     className="
+                      block
                       py-2
                       border-b
                       last:border-none
+                      hover:bg-slate-100
+                      rounded
+                      px-2
                     "
                   >
                     <span className="font-semibold">
                       [{item.tipo}]
                     </span>{" "}
                     {item.titulo}
-                  </div>
+                  </Link>
                 ))
               ) : (
                 <p className="text-slate-500">
