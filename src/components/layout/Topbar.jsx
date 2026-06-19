@@ -15,6 +15,7 @@ export const Topbar = ({
   setMobileOpen,
 }) => {
   const [search, setSearch] = useState("");
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const resultados = [
     ...avisos.map((item) => ({
@@ -56,7 +57,6 @@ export const Topbar = ({
     >
       {/* Izquierda */}
       <div className="flex items-center gap-4 flex-1">
-        
         <button
           onClick={() => setMobileOpen(true)}
           className="lg:hidden"
@@ -136,10 +136,68 @@ export const Topbar = ({
 
       {/* Derecha */}
       <div className="flex items-center gap-6">
-        <Bell
-          size={22}
-          className="cursor-pointer"
-        />
+        <div className="relative">
+          <button
+            onClick={() =>
+              setShowNotifications(!showNotifications)
+            }
+            className="relative cursor-pointer"
+          >
+            <Bell size={22} />
+
+            <span
+              className="
+                absolute
+                -top-2
+                -right-2
+                bg-red-500
+                text-white
+                text-xs
+                rounded-full
+                w-5
+                h-5
+                flex
+                items-center
+                justify-center
+              "
+            >
+              {avisos.length}
+            </span>
+          </button>
+
+          {showNotifications && (
+            <div
+              className="
+                absolute
+                right-0
+                mt-3
+                w-72
+                bg-white
+                shadow-lg
+                rounded-lg
+                p-4
+                z-50
+              "
+            >
+              <h3 className="font-bold mb-3">
+                Notificaciones
+              </h3>
+
+              {avisos.map((aviso) => (
+                <div
+                  key={aviso.id}
+                  className="
+                    py-2
+                    border-b
+                    last:border-none
+                  "
+                >
+                  {aviso.titulo}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         <div className="hidden md:flex items-center gap-2">
           <User size={20} />
