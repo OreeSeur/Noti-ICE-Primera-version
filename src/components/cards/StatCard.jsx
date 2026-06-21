@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 export const StatCard = ({
   title,
@@ -22,38 +23,82 @@ export const StatCard = ({
           hover:-translate-y-1
           hover:shadow-lg
           cursor-pointer
-          flex
-          justify-between
-          items-center
         "
       >
-        <div>
-          <h3
+        <div
+          className="
+            flex
+            justify-between
+            items-start
+          "
+        >
+          <div>
+            <h3
+              className="
+                text-slate-500
+                dark:text-slate-400
+                text-sm
+              "
+            >
+              {title}
+            </h3>
+
+            <p
+              className="
+                text-4xl
+                font-bold
+                mt-2
+                text-slate-800
+                dark:text-white
+              "
+            >
+              {value}
+            </p>
+          </div>
+
+          <div
             className="
+              p-3
+              rounded-xl
+              bg-[#6A0032]/10
+            "
+          >
+            <Icon
+              size={28}
+              className="text-[#6A0032]"
+            />
+          </div>
+        </div>
+
+        <div
+          className="
+            mt-6
+            pt-4
+            border-t
+            border-slate-200
+            dark:border-slate-700
+            flex
+            items-center
+            justify-between
+          "
+        >
+          <span
+            className="
+              text-sm
               text-slate-500
               dark:text-slate-400
             "
           >
-            {title}
-          </h3>
+            Ver sección
+          </span>
 
-          <p
+          <ArrowRight
+            size={18}
             className="
-              text-3xl
-              font-bold
-              mt-2
-              text-slate-800
-              dark:text-white
+              text-[#6A0032]
             "
-          >
-            {value}
-          </p>
+          />
         </div>
-
-        <Icon
-          size={40}
-          className="text-[#6A0032]"
-        />
       </article>
     </Link>
   );
