@@ -14,6 +14,8 @@ import { DocumentoDetalle } from "../pages/DocumentoDetalle";
 
 import { Layout } from "../components/layout/Layout";
 
+import { NotFound } from "../pages/NotFound";
+
 export const AppRouter = () => {
   return (
     <Layout>
@@ -53,7 +55,12 @@ export const AppRouter = () => {
           path="/documentos/:id"
           element={<DocumentoDetalle />}
         />
-      </Routes>
+
+        <Route
+            path="*"
+            element={<NotFound />}
+          />
+        </Routes>
     </Layout>
   );
 };

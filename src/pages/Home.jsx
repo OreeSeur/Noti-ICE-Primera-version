@@ -9,6 +9,9 @@ import { documentos } from "../data/documentos";
 
 import { HeroBanner } from "../components/home/HeroBanner";
 
+import { RecentActivity } from "../components/home/RecentActivity";
+import { UpcomingEvents } from "../components/home/UpcomingEvents";
+
 import {
   Megaphone,
   Trophy,
@@ -51,7 +54,20 @@ export const Home = () => {
           path="/documentos"
         />
       </section>
+      <section
+        className="
+          grid
+          gap-6
+          mt-10
+          lg:grid-cols-3
+        "
+      >
+        <div className="lg:col-span-2">
+          <RecentActivity />
+        </div>
 
+        <UpcomingEvents />
+      </section>
       {/* Noticias */}
       <NewsSection />
 
