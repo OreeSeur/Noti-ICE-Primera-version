@@ -12,7 +12,14 @@ export const EventoDetalle = () => {
   if (!evento) {
     return (
       <section>
-        <h1 className="text-3xl font-bold">
+        <h1
+          className="
+            text-3xl
+            font-bold
+            text-slate-800
+            dark:text-white
+          "
+        >
           Evento no encontrado
         </h1>
 
@@ -48,24 +55,50 @@ export const EventoDetalle = () => {
       <article
         className="
           bg-white
+          dark:bg-slate-800
           p-8
           rounded-xl
           shadow-md
         "
       >
-        <h1 className="text-3xl font-bold">
+        <h1
+          className="
+            text-3xl
+            font-bold
+            text-slate-800
+            dark:text-white
+          "
+        >
           {evento.titulo}
         </h1>
 
-        <p className="text-slate-500 mt-3">
+        <p
+          className="
+            text-slate-500
+            dark:text-slate-400
+            mt-3
+          "
+        >
           📅 {evento.fecha}
         </p>
 
-        <p className="text-slate-500">
+        <p
+          className="
+            text-slate-500
+            dark:text-slate-400
+          "
+        >
           📍 {evento.lugar}
         </p>
 
-        <p className="mt-6 leading-relaxed">
+        <p
+          className="
+            mt-6
+            leading-relaxed
+            text-slate-700
+            dark:text-slate-300
+          "
+        >
           {evento.descripcion}
         </p>
       </article>

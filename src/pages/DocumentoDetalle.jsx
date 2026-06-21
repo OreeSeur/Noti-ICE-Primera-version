@@ -12,7 +12,14 @@ export const DocumentoDetalle = () => {
   if (!documento) {
     return (
       <section>
-        <h1 className="text-3xl font-bold">
+        <h1
+          className="
+            text-3xl
+            font-bold
+            text-slate-800
+            dark:text-white
+          "
+        >
           Documento no encontrado
         </h1>
 
@@ -48,24 +55,50 @@ export const DocumentoDetalle = () => {
       <article
         className="
           bg-white
+          dark:bg-slate-800
           p-8
           rounded-xl
           shadow-md
         "
       >
-        <h1 className="text-3xl font-bold">
+        <h1
+          className="
+            text-3xl
+            font-bold
+            text-slate-800
+            dark:text-white
+          "
+        >
           {documento.nombre}
         </h1>
 
-        <p className="text-slate-500 mt-3">
+        <p
+          className="
+            text-slate-500
+            dark:text-slate-400
+            mt-3
+          "
+        >
           📄 {documento.tipo}
         </p>
 
-        <p className="text-slate-500">
+        <p
+          className="
+            text-slate-500
+            dark:text-slate-400
+          "
+        >
           📅 {documento.fecha}
         </p>
 
-        <p className="mt-6 leading-relaxed">
+        <p
+          className="
+            mt-6
+            leading-relaxed
+            text-slate-700
+            dark:text-slate-300
+          "
+        >
           {documento.descripcion}
         </p>
 

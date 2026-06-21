@@ -76,16 +76,17 @@ export const Sidebar = ({
           }
 
           lg:translate-x-0
-
           fixed
           lg:relative
-
           top-0
           left-0
-
           z-50
 
-          ${collapsed ? "w-24" : "w-64"}
+          ${
+            collapsed
+              ? "w-24"
+              : "w-64"
+          }
 
           bg-[#6A0032]
           text-white
@@ -106,17 +107,19 @@ export const Sidebar = ({
             <X size={24} />
           </button>
 
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="
-            cursor-pointer
-            ml-auto
-            hidden
-            lg:block
-          "
-        >
-          <Menu size={24} />
-        </button>
+          <button
+            onClick={() =>
+              setCollapsed(!collapsed)
+            }
+            className="
+              hidden
+              lg:block
+              ml-auto
+              cursor-pointer
+            "
+          >
+            <Menu size={24} />
+          </button>
         </div>
 
         {/* Logo */}
@@ -129,11 +132,23 @@ export const Sidebar = ({
 
           {!collapsed && (
             <>
-              <h1 className="text-3xl font-bold text-center">
+              <h1
+                className="
+                  text-3xl
+                  font-bold
+                  text-center
+                "
+              >
                 Portal ESIME
               </h1>
 
-              <p className="text-sm text-center">
+              <p
+                className="
+                  text-sm
+                  text-center
+                  text-slate-200
+                "
+              >
                 Unidad Zacatenco
               </p>
             </>
@@ -159,7 +174,9 @@ export const Sidebar = ({
                   p-4
                   rounded-xl
                   mb-3
-                  transition
+                  transition-all
+                  duration-200
+
                   ${
                     isActive
                       ? "bg-white text-[#6A0032] font-semibold"
@@ -171,7 +188,9 @@ export const Sidebar = ({
                 <Icon size={20} />
 
                 {!collapsed && (
-                  <span>{item.label}</span>
+                  <span>
+                    {item.label}
+                  </span>
                 )}
               </NavLink>
             );

@@ -6,6 +6,8 @@ import {
   Search,
   User,
   Menu,
+  Moon,
+  Sun,
 } from "lucide-react";
 
 import { avisos } from "../../data/avisos";
@@ -14,9 +16,12 @@ import { documentos } from "../../data/documentos";
 
 export const Topbar = ({
   setMobileOpen,
+  darkMode,
+  setDarkMode,
 }) => {
   const [search, setSearch] = useState("");
-  const [showNotifications, setShowNotifications] = useState(false);
+  const [showNotifications, setShowNotifications] =
+    useState(false);
 
   const resultados = [
     ...avisos.map((item) => ({
@@ -49,6 +54,9 @@ export const Topbar = ({
     <header
       className="
         bg-white
+        dark:bg-slate-800
+        text-slate-800
+        dark:text-white
         rounded-xl
         shadow-md
         p-4
@@ -76,6 +84,7 @@ export const Topbar = ({
               items-center
               gap-2
               bg-slate-100
+              dark:bg-slate-700
               px-4
               py-2
               rounded-lg
@@ -94,6 +103,8 @@ export const Topbar = ({
                 bg-transparent
                 outline-none
                 w-full
+                text-slate-800
+                dark:text-white
               "
             />
           </div>
@@ -106,6 +117,7 @@ export const Topbar = ({
                 left-0
                 right-0
                 bg-white
+                dark:bg-slate-800
                 shadow-lg
                 rounded-lg
                 p-3
@@ -123,11 +135,14 @@ export const Topbar = ({
                     className="
                       block
                       py-2
+                      px-2
                       border-b
                       last:border-none
-                      hover:bg-slate-100
                       rounded
-                      px-2
+                      text-slate-800
+                      dark:text-slate-200
+                      hover:bg-slate-100
+                      dark:hover:bg-slate-700
                     "
                   >
                     <span className="font-semibold">
@@ -137,7 +152,12 @@ export const Topbar = ({
                   </Link>
                 ))
               ) : (
-                <p className="text-slate-500">
+                <p
+                  className="
+                    text-slate-500
+                    dark:text-slate-400
+                  "
+                >
                   Sin resultados
                 </p>
               )}
@@ -148,10 +168,32 @@ export const Topbar = ({
 
       {/* Derecha */}
       <div className="flex items-center gap-6">
+
+        {/* Dark Mode */}
+        <button
+          onClick={() =>
+            setDarkMode(!darkMode)
+          }
+          className="
+            cursor-pointer
+            transition
+            hover:scale-110
+          "
+        >
+          {darkMode ? (
+            <Sun size={22} />
+          ) : (
+            <Moon size={22} />
+          )}
+        </button>
+
+        {/* Notificaciones */}
         <div className="relative">
           <button
             onClick={() =>
-              setShowNotifications(!showNotifications)
+              setShowNotifications(
+                !showNotifications
+              )
             }
             className="relative cursor-pointer"
           >
@@ -185,41 +227,53 @@ export const Topbar = ({
                 mt-3
                 w-72
                 bg-white
+                dark:bg-slate-800
                 shadow-lg
                 rounded-lg
                 p-4
                 z-50
               "
             >
-              <h3 className="font-bold mb-3">
+              <h3
+                className="
+                  font-bold
+                  mb-3
+                  text-slate-800
+                  dark:text-white
+                "
+              >
                 Notificaciones
               </h3>
 
-          {avisos.map((aviso) => (
-            <Link
-              key={aviso.id}
-              to={`/avisos/${aviso.id}`}
-              onClick={() =>
-                setShowNotifications(false)
-              }
-              className="
-                block
-                py-2
-                px-2
-                border-b
-                last:border-none
-                hover:bg-slate-100
-                rounded
-                transition
-              "
-            >
-              {aviso.titulo}
-            </Link>
-          ))}
+              {avisos.map((aviso) => (
+                <Link
+                  key={aviso.id}
+                  to={`/avisos/${aviso.id}`}
+                  onClick={() =>
+                    setShowNotifications(false)
+                  }
+                  className="
+                    block
+                    py-2
+                    px-2
+                    border-b
+                    last:border-none
+                    rounded
+                    transition
+                    text-slate-800
+                    dark:text-slate-200
+                    hover:bg-slate-100
+                    dark:hover:bg-slate-700
+                  "
+                >
+                  {aviso.titulo}
+                </Link>
+              ))}
             </div>
           )}
         </div>
 
+        {/* Usuario */}
         <div className="hidden md:flex items-center gap-2">
           <User size={20} />
 

@@ -1,5 +1,3 @@
-import { avisos } from "../../data/avisos";
-
 const noticias = [
   {
     id: 1,
@@ -21,25 +19,55 @@ const noticias = [
 export const NewsSection = () => {
   return (
     <section className="mt-10">
-      <h2 className="text-2xl font-bold mb-4">
+      <h2
+        className="
+          text-2xl
+          font-bold
+          mb-4
+          text-slate-800
+          dark:text-white
+        "
+      >
         Noticias Destacadas
       </h2>
 
-      <div className="bg-white rounded-xl shadow-md p-6">
+      <div
+        className="
+          bg-white
+          dark:bg-slate-800
+          rounded-xl
+          shadow-md
+          p-6
+        "
+      >
         {noticias.map((noticia) => (
           <article
             key={noticia.id}
             className="
               py-4
               border-b
+              border-slate-200
+              dark:border-slate-700
               last:border-none
             "
           >
-            <h3 className="font-semibold">
+            <h3
+              className="
+                font-semibold
+                text-slate-800
+                dark:text-white
+              "
+            >
               {noticia.titulo}
             </h3>
 
-            <p className="text-sm text-slate-500">
+            <p
+              className="
+                text-sm
+                text-slate-500
+                dark:text-slate-400
+              "
+            >
               {noticia.fecha}
             </p>
           </article>

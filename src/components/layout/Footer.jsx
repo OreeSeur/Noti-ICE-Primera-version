@@ -1,15 +1,14 @@
 export const Footer = () => {
   return (
-    <footer
-      className="
-        mt-12
-        bg-white
-        rounded-xl
-        shadow-md
-        p-6
-        text-center
-      "
-    >
+      <footer
+        className="
+          mt-10
+          text-center
+          text-sm
+          text-slate-500
+          dark:text-slate-400
+        "
+      >
       <h3
         className="
           font-bold
@@ -31,7 +30,7 @@ export const Footer = () => {
           mt-2
         "
       >
-        Portal Académico 2026
+        © 2026 Portal ESIME Zacatenco
       </p>
 
       <p

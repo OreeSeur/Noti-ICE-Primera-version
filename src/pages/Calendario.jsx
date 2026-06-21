@@ -5,11 +5,25 @@ import { eventos } from "../data/eventos";
 export const Calendario = () => {
   return (
     <section>
-      <h1 className="text-4xl font-bold text-slate-800 mb-2">
+      <h1
+        className="
+          text-4xl
+          font-bold
+          text-slate-800
+          dark:text-white
+          mb-2
+        "
+      >
         Calendario Académico
       </h1>
 
-      <p className="text-slate-500 mb-8">
+      <p
+        className="
+          text-slate-500
+          dark:text-slate-400
+          mb-8
+        "
+      >
         Próximos eventos y actividades programadas.
       </p>
 
@@ -22,6 +36,7 @@ export const Calendario = () => {
             <article
               className="
                 bg-white
+                dark:bg-slate-800
                 p-6
                 rounded-xl
                 shadow-md
@@ -45,12 +60,19 @@ export const Calendario = () => {
                     className="
                       text-xl
                       font-semibold
+                      text-slate-800
+                      dark:text-white
                     "
                   >
                     {evento.titulo}
                   </h2>
 
-                  <p className="text-slate-500">
+                  <p
+                    className="
+                      text-slate-500
+                      dark:text-slate-400
+                    "
+                  >
                     📍 {evento.lugar}
                   </p>
                 </div>

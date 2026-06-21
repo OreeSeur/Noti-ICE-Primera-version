@@ -4,7 +4,15 @@ import { eventos } from "../../data/eventos";
 export const EventsSection = () => {
   return (
     <section className="mt-10">
-      <h2 className="text-2xl font-bold mb-4">
+      <h2
+        className="
+          text-2xl
+          font-bold
+          mb-4
+          text-slate-800
+          dark:text-white
+        "
+      >
         Próximos Eventos
       </h2>
 

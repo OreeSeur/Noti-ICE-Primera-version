@@ -4,9 +4,8 @@ export const StatCard = ({
   title,
   value,
   icon,
-  path
+  path,
 }) => {
-
   const Icon = icon;
 
   return (
@@ -14,6 +13,7 @@ export const StatCard = ({
       <article
         className="
           bg-white
+          dark:bg-slate-800
           rounded-xl
           shadow-md
           p-6
@@ -28,11 +28,24 @@ export const StatCard = ({
         "
       >
         <div>
-          <h3 className="text-slate-500">
+          <h3
+            className="
+              text-slate-500
+              dark:text-slate-400
+            "
+          >
             {title}
           </h3>
 
-          <p className="text-3xl font-bold mt-2">
+          <p
+            className="
+              text-3xl
+              font-bold
+              mt-2
+              text-slate-800
+              dark:text-white
+            "
+          >
             {value}
           </p>
         </div>

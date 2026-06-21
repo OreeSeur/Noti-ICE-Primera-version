@@ -16,9 +16,9 @@ export const HeroBanner = () => {
       </h2>
 
       <p className="text-lg opacity-90 max-w-2xl">
-        Consulta avisos, eventos, documentos
-        académicos y fechas importantes
-        desde un solo lugar.
+        Consulta avisos, eventos,
+        documentos académicos y fechas
+        importantes desde un solo lugar.
       </p>
 
       <Link

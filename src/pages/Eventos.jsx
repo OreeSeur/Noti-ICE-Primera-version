@@ -25,15 +25,28 @@ export const Eventos = () => {
 
   return (
     <section>
-      <h1 className="text-4xl font-bold text-slate-800 mb-2">
+      <h1
+        className="
+          text-4xl
+          font-bold
+          text-slate-800
+          dark:text-white
+          mb-2
+        "
+      >
         Eventos
       </h1>
 
-      <p className="text-slate-500 mb-8">
+      <p
+        className="
+          text-slate-500
+          dark:text-slate-400
+          mb-8
+        "
+      >
         Próximas actividades y eventos de ESIME.
       </p>
 
-      {/* Filtros */}
       <div className="flex flex-wrap gap-3 mb-8">
         {categorias.map((cat) => (
           <button
@@ -49,7 +62,7 @@ export const Eventos = () => {
               ${
                 categoria === cat
                   ? "bg-[#6A0032] text-white"
-                  : "bg-white shadow"
+                  : "bg-white dark:bg-slate-800 dark:text-white shadow"
               }
             `}
           >

@@ -7,6 +7,7 @@ export const InfoCard = ({
     <article
       className="
         bg-white
+        dark:bg-slate-800
         p-6
         rounded-xl
         shadow-md
@@ -19,6 +20,8 @@ export const InfoCard = ({
         className="
           text-xl
           font-semibold
+          text-slate-800
+          dark:text-white
         "
       >
         {title}
@@ -28,6 +31,7 @@ export const InfoCard = ({
         <p
           className="
             text-slate-500
+            dark:text-slate-400
             mt-2
           "
         >
@@ -40,6 +44,7 @@ export const InfoCard = ({
           className="
             mt-4
             text-slate-700
+            dark:text-slate-300
           "
         >
           {description}

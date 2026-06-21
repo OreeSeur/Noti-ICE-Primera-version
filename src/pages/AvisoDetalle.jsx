@@ -12,7 +12,14 @@ export const AvisoDetalle = () => {
   if (!aviso) {
     return (
       <section>
-        <h1 className="text-3xl font-bold">
+        <h1
+          className="
+            text-3xl
+            font-bold
+            text-slate-800
+            dark:text-white
+          "
+        >
           Aviso no encontrado
         </h1>
 
@@ -48,20 +55,41 @@ export const AvisoDetalle = () => {
       <article
         className="
           bg-white
+          dark:bg-slate-800
           p-8
           rounded-xl
           shadow-md
         "
       >
-        <h1 className="text-3xl font-bold">
+        <h1
+          className="
+            text-3xl
+            font-bold
+            text-slate-800
+            dark:text-white
+          "
+        >
           {aviso.titulo}
         </h1>
 
-        <p className="text-slate-500 mt-2">
+        <p
+          className="
+            text-slate-500
+            dark:text-slate-400
+            mt-2
+          "
+        >
           {aviso.fecha}
         </p>
 
-        <p className="mt-6 leading-relaxed">
+        <p
+          className="
+            mt-6
+            leading-relaxed
+            text-slate-700
+            dark:text-slate-300
+          "
+        >
           {aviso.descripcion}
         </p>
       </article>
