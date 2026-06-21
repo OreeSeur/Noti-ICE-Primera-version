@@ -14,6 +14,8 @@ import { RecentActivity } from "../components/home/RecentActivity";
 
 import { RecentDocuments } from "../components/home/RecentDocuments";
 
+import { WelcomeCard } from "../components/home/WelcomeCard";
+
 import {
   Megaphone,
   Trophy,
@@ -26,6 +28,7 @@ export const Home = () => {
       <Header />
 
       <HeroBanner />
+      <WelcomeCard />
       <QuickActions />
 
       {/* Tarjetas estadísticas */}
@@ -37,21 +40,21 @@ export const Home = () => {
         "
       >
         <StatCard
-          title="Avisos"
+          title="Avisos Activos"
           value={avisos.length}
           icon={Megaphone}
           path="/avisos"
         />
 
         <StatCard
-          title="Eventos"
+          title="Eventos Programados"
           value={eventos.length}
           icon={Trophy}
           path="/eventos"
         />
 
         <StatCard
-          title="Documentos"
+          title="Documentos Publicados"
           value={documentos.length}
           icon={FileText}
           path="/documentos"

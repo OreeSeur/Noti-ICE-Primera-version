@@ -61,6 +61,7 @@ export const QuickActions = () => {
               key={action.title}
               to={action.path}
               className="
+                group
                 bg-white
                 dark:bg-slate-800
                 rounded-xl
@@ -77,7 +78,13 @@ export const QuickActions = () => {
             >
               <Icon
                 size={32}
-                className="text-[#6A0032]"
+                className="
+                  text-[#6A0032]
+                  transition-transform
+                  duration-300
+                  group-hover:scale-110
+                  group-hover:rotate-6
+                "
               />
 
               <span
