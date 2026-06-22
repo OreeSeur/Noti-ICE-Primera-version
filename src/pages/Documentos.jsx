@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 
-import { documentos } from "../data/documentos";
+import { useDocumentos } from "../context/DocumentosContext";
 
 export const Documentos = () => {
+  const { documentos } =
+    useDocumentos();
+
   return (
     <section>
       <h1
@@ -28,60 +31,64 @@ export const Documentos = () => {
       </p>
 
       <div className="grid gap-4">
-        {documentos.map((documento) => (
-          <Link
-            key={documento.id}
-            to={`/documentos/${documento.id}`}
-          >
-            <article
-              className="
-                bg-white
-                dark:bg-slate-800
-                p-6
-                rounded-xl
-                shadow-md
-                flex
-                justify-between
-                items-center
-                transition
-                hover:shadow-lg
-                hover:-translate-y-1
-              "
+        {documentos.map(
+          (documento) => (
+            <Link
+              key={documento.id}
+              to={`/documentos/${documento.id}`}
             >
-              <div>
-                <h2
-                  className="
-                    font-semibold
-                    text-lg
-                    text-slate-800
-                    dark:text-white
-                  "
-                >
-                  {documento.nombre}
-                </h2>
-
-                <p
-                  className="
-                    text-slate-500
-                    dark:text-slate-400
-                    text-sm
-                  "
-                >
-                  {documento.tipo} • {documento.fecha}
-                </p>
-              </div>
-
-              <span
+              <article
                 className="
-                  text-[#6A0032]
-                  font-semibold
+                  bg-white
+                  dark:bg-slate-800
+                  p-6
+                  rounded-xl
+                  shadow-md
+                  flex
+                  justify-between
+                  items-center
+                  transition
+                  hover:shadow-lg
+                  hover:-translate-y-1
                 "
               >
-                Ver
-              </span>
-            </article>
-          </Link>
-        ))}
+                <div>
+                  <h2
+                    className="
+                      font-semibold
+                      text-lg
+                      text-slate-800
+                      dark:text-white
+                    "
+                  >
+                    {documento.nombre}
+                  </h2>
+
+                  <p
+                    className="
+                      text-slate-500
+                      dark:text-slate-400
+                      text-sm
+                    "
+                  >
+                    {documento.tipo}
+                    {" • "}
+                    {documento.fecha}
+                  </p>
+                </div>
+
+                <span
+                  className="
+                    text-[#6A0032]
+                    font-semibold
+                  "
+                >
+                  Ver
+                </span>
+              </article>
+            </Link>
+          )
+        )}
       </div>
     </section>
   );

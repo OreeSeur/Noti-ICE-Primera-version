@@ -4,10 +4,11 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 import "./index.css";
+
 import { AuthProvider } from "./context/AuthContext";
 import { AvisosProvider } from "./context/AvisosContext";
 import { EventosProvider } from "./context/EventosContext";
-
+import { DocumentosProvider } from "./context/DocumentosContext";
 
 ReactDOM.createRoot(
   document.getElementById("root")
@@ -16,9 +17,11 @@ ReactDOM.createRoot(
     <AuthProvider>
       <AvisosProvider>
         <EventosProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <DocumentosProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </DocumentosProvider>
         </EventosProvider>
       </AvisosProvider>
     </AuthProvider>

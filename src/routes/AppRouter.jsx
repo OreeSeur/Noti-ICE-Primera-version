@@ -32,6 +32,10 @@ import { AdminEventos } from "../pages/AdminEventos";
 import { AdminNuevoEvento } from "../pages/AdminNuevoEvento";
 import { AdminEditarEvento } from "../pages/AdminEditarEvento";
 
+import { AdminDocumentos } from "../pages/AdminDocumentos";
+import { AdminNuevoDocumento } from "../pages/AdminNuevoDocumento";
+import { AdminEditarDocumento } from "../pages/AdminEditarDocumento";
+
 /* Error 404 */
 import { NotFound } from "../pages/NotFound";
 
@@ -196,6 +200,32 @@ return ( <Routes>
   }
 />
 
+<Route
+  path="/admin/documentos"
+  element={
+    <Layout>
+      <AdminDocumentos />
+    </Layout>
+  }
+/>
+
+<Route
+  path="/admin/documentos/nuevo"
+  element={
+    <Layout>
+      <AdminNuevoDocumento />
+    </Layout>
+  }
+/>
+
+<Route
+  path="/admin/documentos/editar/:id"
+  element={
+    <Layout>
+      <AdminEditarDocumento />
+    </Layout>
+  }
+/>
 </Routes>
 
 

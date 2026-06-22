@@ -1,13 +1,21 @@
-import { Link, useParams } from "react-router-dom";
+import {
+  Link,
+  useParams,
+} from "react-router-dom";
 
-import { documentos } from "../data/documentos";
+import { useDocumentos } from "../context/DocumentosContext";
 
 export const DocumentoDetalle = () => {
   const { id } = useParams();
 
-  const documento = documentos.find(
-    (item) => item.id === Number(id)
-  );
+  const { documentos } =
+    useDocumentos();
+
+  const documento =
+    documentos.find(
+      (item) =>
+        item.id === Number(id)
+    );
 
   if (!documento) {
     return (
