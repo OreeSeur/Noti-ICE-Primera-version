@@ -5,15 +5,22 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 import { AuthProvider } from "./context/AuthContext";
+import { AvisosProvider } from "./context/AvisosContext";
+import { EventosProvider } from "./context/EventosContext";
+
 
 ReactDOM.createRoot(
   document.getElementById("root")
 ).render(
   <React.StrictMode>
     <AuthProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <AvisosProvider>
+        <EventosProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </EventosProvider>
+      </AvisosProvider>
     </AuthProvider>
   </React.StrictMode>
 );

@@ -5,18 +5,13 @@ import {
   Plus,
 } from "lucide-react";
 
-import { useAvisos } from "../context/AvisosContext";
+import { useEventos } from "../context/EventosContext";
 
-export const AdminAvisos = () => {
+export const AdminEventos = () => {
   const {
-    avisos,
-    eliminarAviso,
-  } = useAvisos();
-
-  console.log(
-    "AVISOS CONTEXT:",
-    avisos
-  );
+    eventos,
+    eliminarEvento,
+  } = useEventos();
 
   return (
     <section>
@@ -40,7 +35,7 @@ export const AdminAvisos = () => {
               dark:text-white
             "
           >
-            Administración de Avisos
+            Administración de Eventos
           </h1>
 
           <p
@@ -50,12 +45,12 @@ export const AdminAvisos = () => {
               mt-2
             "
           >
-            Gestiona los avisos publicados
+            Gestiona los eventos publicados
           </p>
         </div>
 
         <Link
-          to="/admin/avisos/nuevo"
+          to="/admin/eventos/nuevo"
           className="
             flex
             items-center
@@ -71,7 +66,7 @@ export const AdminAvisos = () => {
           "
         >
           <Plus size={18} />
-          Nuevo Aviso
+          Nuevo Evento
         </Link>
       </div>
 
@@ -92,24 +87,32 @@ export const AdminAvisos = () => {
                 dark:bg-slate-700
               "
             >
-              <th className="text-left p-4">
+              <th className="p-4 text-left">
                 Título
               </th>
 
-              <th className="text-left p-4">
+              <th className="p-4 text-left">
                 Fecha
               </th>
 
-              <th className="text-center p-4">
+              <th className="p-4 text-left">
+                Lugar
+              </th>
+
+              <th className="p-4 text-left">
+                Categoría
+              </th>
+
+              <th className="p-4 text-center">
                 Acciones
               </th>
             </tr>
           </thead>
 
           <tbody>
-            {avisos.map((aviso) => (
+            {eventos.map((evento) => (
               <tr
-                key={aviso.id}
+                key={evento.id}
                 className="
                   border-b
                   border-slate-200
@@ -117,11 +120,19 @@ export const AdminAvisos = () => {
                 "
               >
                 <td className="p-4">
-                  {aviso.titulo}
+                  {evento.titulo}
                 </td>
 
                 <td className="p-4">
-                  {aviso.fecha}
+                  {evento.fecha}
+                </td>
+
+                <td className="p-4">
+                  {evento.lugar}
+                </td>
+
+                <td className="p-4">
+                  {evento.categoria}
                 </td>
 
                 <td className="p-4">
@@ -133,7 +144,7 @@ export const AdminAvisos = () => {
                     "
                   >
                     <Link
-                      to={`/admin/avisos/editar/${aviso.id}`}
+                      to={`/admin/eventos/editar/${evento.id}`}
                       className="
                         p-2
                         rounded-lg
@@ -148,8 +159,8 @@ export const AdminAvisos = () => {
 
                     <button
                       onClick={() =>
-                        eliminarAviso(
-                          aviso.id
+                        eliminarEvento(
+                          evento.id
                         )
                       }
                       className="

@@ -1,6 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export const NuevoAviso = () => {
+import { useAvisos } from "../context/AvisosContext";
+
+export const AdminNuevoAviso = () => {
+  const navigate = useNavigate();
+
+  const { agregarAviso } =
+    useAvisos();
+
   const [formData, setFormData] =
     useState({
       titulo: "",
@@ -19,20 +27,9 @@ export const NuevoAviso = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(
-      "NUEVO AVISO:",
-      formData
-    );
+    agregarAviso(formData);
 
-    alert(
-      "Aviso registrado correctamente"
-    );
-
-    setFormData({
-      titulo: "",
-      fecha: "",
-      descripcion: "",
-    });
+    navigate("/admin/avisos");
   };
 
   return (
@@ -46,7 +43,7 @@ export const NuevoAviso = () => {
           dark:text-white
         "
       >
-        Crear Aviso
+        Nuevo Aviso
       </h1>
 
       <form
@@ -54,14 +51,12 @@ export const NuevoAviso = () => {
         className="
           bg-white
           dark:bg-slate-800
-          p-6
           rounded-xl
           shadow-md
+          p-6
           max-w-3xl
         "
       >
-        {/* Título */}
-
         <div className="mb-5">
           <label
             className="
@@ -76,12 +71,8 @@ export const NuevoAviso = () => {
           <input
             type="text"
             name="titulo"
-            value={
-              formData.titulo
-            }
-            onChange={
-              handleChange
-            }
+            value={formData.titulo}
+            onChange={handleChange}
             className="
               w-full
               border
@@ -95,8 +86,6 @@ export const NuevoAviso = () => {
             required
           />
         </div>
-
-        {/* Fecha */}
 
         <div className="mb-5">
           <label
@@ -112,12 +101,8 @@ export const NuevoAviso = () => {
           <input
             type="date"
             name="fecha"
-            value={
-              formData.fecha
-            }
-            onChange={
-              handleChange
-            }
+            value={formData.fecha}
+            onChange={handleChange}
             className="
               w-full
               border
@@ -132,8 +117,6 @@ export const NuevoAviso = () => {
           />
         </div>
 
-        {/* Descripción */}
-
         <div className="mb-6">
           <label
             className="
@@ -146,14 +129,12 @@ export const NuevoAviso = () => {
           </label>
 
           <textarea
-            rows="5"
+            rows="6"
             name="descripcion"
             value={
               formData.descripcion
             }
-            onChange={
-              handleChange
-            }
+            onChange={handleChange}
             className="
               w-full
               border
@@ -177,6 +158,7 @@ export const NuevoAviso = () => {
             py-3
             rounded-lg
             hover:opacity-90
+            transition
           "
         >
           Guardar Aviso

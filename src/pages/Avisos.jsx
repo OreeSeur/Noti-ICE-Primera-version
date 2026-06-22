@@ -1,9 +1,18 @@
 import { Link } from "react-router-dom";
 
-import { avisos } from "../data/avisos";
 import { InfoCard } from "../components/cards/InfoCard";
 
+import { useAvisos } from "../context/AvisosContext";
+
 export const Avisos = () => {
+  const { avisos } =
+    useAvisos();
+
+  console.log(
+    "AVISOS PUBLICOS:",
+    avisos
+  );
+
   return (
     <section>
       <h1
@@ -25,7 +34,7 @@ export const Avisos = () => {
           mb-8
         "
       >
-        Avisos y comunicados recientes de ESIME Zacatenco.
+        Avisos y comunicados recientes
       </p>
 
       <div className="space-y-4">

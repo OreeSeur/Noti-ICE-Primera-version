@@ -8,11 +8,16 @@ import {
   Plus,
 } from "lucide-react";
 
-import { avisos } from "../data/avisos";
-import { eventos } from "../data/eventos";
+import { useAvisos } from "../context/AvisosContext";
+import { useEventos } from "../context/EventosContext";
+
 import { documentos } from "../data/documentos";
 
 export const PanelAdmin = () => {
+  const { avisos } = useAvisos();
+
+  const { eventos } = useEventos();
+
   return (
     <section>
       {/* Encabezado */}
@@ -199,7 +204,8 @@ export const PanelAdmin = () => {
             gap-4
           "
         >
-          <button
+          <Link
+            to="/admin/avisos"
             className="
               flex
               items-center
@@ -214,27 +220,30 @@ export const PanelAdmin = () => {
             "
           >
             <Plus size={18} />
-                        <Link
-              to="/admin/avisos"
-              className="
-                flex
-                items-center
-                gap-2
-                bg-[#6A0032]
-                text-white
-                px-5
-                py-3
-                rounded-lg
-                hover:opacity-90
-                transition
-              "
-            >
-              <Plus size={18} />
-              Gestionar Avisos
-            </Link>
-          </button>
+            Gestionar Avisos
+          </Link>
 
-          <button
+          <Link
+            to="/admin/eventos"
+            className="
+              flex
+              items-center
+              gap-2
+              bg-[#6A0032]
+              text-white
+              px-5
+              py-3
+              rounded-lg
+              hover:opacity-90
+              transition
+            "
+          >
+            <Plus size={18} />
+            Gestionar Eventos
+          </Link>
+
+          <Link
+            to="/admin/eventos/nuevo"
             className="
               flex
               items-center
@@ -250,25 +259,7 @@ export const PanelAdmin = () => {
           >
             <Plus size={18} />
             Nuevo Evento
-          </button>
-
-          <button
-            className="
-              flex
-              items-center
-              gap-2
-              bg-[#6A0032]
-              text-white
-              px-5
-              py-3
-              rounded-lg
-              hover:opacity-90
-              transition
-            "
-          >
-            <Plus size={18} />
-            Nuevo Documento
-          </button>
+          </Link>
         </div>
       </div>
 

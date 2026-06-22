@@ -17,153 +17,188 @@ import { Calendario } from "../pages/Calendario";
 import { Documentos } from "../pages/Documentos";
 import { DocumentoDetalle } from "../pages/DocumentoDetalle";
 
-import { NuevoAviso } from "../pages/NuevoAviso";
-import { AdminAvisos } from "../pages/AdminAvisos";
-
 /* Autenticación */
 import { Login } from "../pages/Login";
 import { Perfil } from "../pages/Perfil";
+
+/* Administración */
 import { PanelAdmin } from "../pages/PanelAdmin";
+
+import { AdminAvisos } from "../pages/AdminAvisos";
+import { AdminNuevoAviso } from "../pages/AdminNuevoAviso";
+import { AdminEditarAviso } from "../pages/AdminEditarAviso";
+
+import { AdminEventos } from "../pages/AdminEventos";
+import { AdminNuevoEvento } from "../pages/AdminNuevoEvento";
+import { AdminEditarEvento } from "../pages/AdminEditarEvento";
 
 /* Error 404 */
 import { NotFound } from "../pages/NotFound";
 
 export const AppRouter = () => {
-  return (
-    <Routes>
+return ( <Routes>
 
-      {/* ==========================
-          RUTAS SIN LAYOUT
-      ========================== */}
+```
+  {/* Login */}
+  <Route
+    path="/login"
+    element={<Login />}
+  />
 
-      <Route
-        path="/login"
-        element={<Login />}
-      />
+  {/* Home */}
+  <Route
+    path="/"
+    element={
+      <Layout>
+        <Home />
+      </Layout>
+    }
+  />
 
-      {/* ==========================
-          RUTAS CON LAYOUT
-      ========================== */}
+  {/* Avisos */}
+  <Route
+    path="/avisos"
+    element={
+      <Layout>
+        <Avisos />
+      </Layout>
+    }
+  />
 
-      <Route
-        path="/"
-        element={
-          <Layout>
-            <Home />
-          </Layout>
-        }
-      />
+  <Route
+    path="/avisos/:id"
+    element={
+      <Layout>
+        <AvisoDetalle />
+      </Layout>
+    }
+  />
 
-      <Route
-        path="/avisos"
-        element={
-          <Layout>
-            <Avisos />
-          </Layout>
-        }
-      />
+  {/* Eventos */}
+  <Route
+    path="/eventos"
+    element={
+      <Layout>
+        <Eventos />
+      </Layout>
+    }
+  />
 
-      <Route
-        path="/avisos/:id"
-        element={
-          <Layout>
-            <AvisoDetalle />
-          </Layout>
-        }
-      />
+  <Route
+    path="/eventos/:id"
+    element={
+      <Layout>
+        <EventoDetalle />
+      </Layout>
+    }
+  />
 
-      <Route
-        path="/eventos"
-        element={
-          <Layout>
-            <Eventos />
-          </Layout>
-        }
-      />
+  {/* Calendario */}
+  <Route
+    path="/calendario"
+    element={
+      <Layout>
+        <Calendario />
+      </Layout>
+    }
+  />
 
-      <Route
-        path="/eventos/:id"
-        element={
-          <Layout>
-            <EventoDetalle />
-          </Layout>
-        }
-      />
+  {/* Documentos */}
+  <Route
+    path="/documentos"
+    element={
+      <Layout>
+        <Documentos />
+      </Layout>
+    }
+  />
 
-      <Route
-        path="/calendario"
-        element={
-          <Layout>
-            <Calendario />
-          </Layout>
-        }
-      />
+  <Route
+    path="/documentos/:id"
+    element={
+      <Layout>
+        <DocumentoDetalle />
+      </Layout>
+    }
+  />
 
-      <Route
-        path="/documentos"
-        element={
-          <Layout>
-            <Documentos />
-          </Layout>
-        }
-      />
+  {/* Perfil */}
+  <Route
+    path="/perfil"
+    element={
+      <Layout>
+        <Perfil />
+      </Layout>
+    }
+  />
 
-      <Route
-        path="/documentos/:id"
-        element={
-          <Layout>
-            <DocumentoDetalle />
-          </Layout>
-        }
-      />
+{/* Administración */}
+<Route
+  path="/admin"
+  element={
+    <Layout>
+      <PanelAdmin />
+    </Layout>
+  }
+/>
 
-      <Route
-        path="/perfil"
-        element={
-          <Layout>
-            <Perfil />
-          </Layout>
-        }
-      />
-      
-      <Route
-        path="/admin"
-        element={
-          <Layout>
-            <PanelAdmin />
-          </Layout>
-        }
-      />
-      
-      <Route
-        path="/admin/avisos"
-        element={
-          <Layout>
-            <AdminAvisos />
-          </Layout>
-        }
-      />
+<Route
+  path="/admin/avisos"
+  element={
+    <Layout>
+      <AdminAvisos />
+    </Layout>
+  }
+/>
 
-      <Route
-        path="/admin/avisos/nuevo"
-        element={
-          <Layout>
-            <NuevoAviso />
-          </Layout>
-        }
-      />
+<Route
+  path="/admin/avisos/nuevo"
+  element={
+    <Layout>
+      <AdminNuevoAviso />
+    </Layout>
+  }
+/>
 
-      {/* ==========================
-          PÁGINA NO ENCONTRADA
-      ========================== */}
+<Route
+  path="/admin/avisos/editar/:id"
+  element={
+    <Layout>
+      <AdminEditarAviso />
+    </Layout>
+  }
+/>
 
-      <Route
-        path="*"
-        element={<NotFound />}
-      />
+<Route
+  path="/admin/eventos"
+  element={
+    <Layout>
+      <AdminEventos />
+    </Layout>
+  }
+/>
+
+<Route
+  path="/admin/eventos/nuevo"
+  element={
+    <Layout>
+      <AdminNuevoEvento />
+    </Layout>
+  }
+/>
+
+<Route
+  path="/admin/eventos/editar/:id"
+  element={
+    <Layout>
+      <AdminEditarEvento />
+    </Layout>
+  }
+/>
+
+</Routes>
 
 
 
-    </Routes>
-  );
+);
 };
