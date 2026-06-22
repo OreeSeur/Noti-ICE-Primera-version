@@ -1,5 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 
+/* Layout principal */
+import { Layout } from "../components/layout/Layout";
+
+/* Páginas públicas */
 import { Home } from "../pages/Home";
 
 import { Avisos } from "../pages/Avisos";
@@ -9,58 +13,126 @@ import { Eventos } from "../pages/Eventos";
 import { EventoDetalle } from "../pages/EventoDetalle";
 
 import { Calendario } from "../pages/Calendario";
+
 import { Documentos } from "../pages/Documentos";
 import { DocumentoDetalle } from "../pages/DocumentoDetalle";
 
-import { Layout } from "../components/layout/Layout";
+/* Autenticación */
+import { Login } from "../pages/Login";
+import { Perfil } from "../pages/Perfil";
 
+/* Error 404 */
 import { NotFound } from "../pages/NotFound";
 
 export const AppRouter = () => {
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<Home />} />
+    <Routes>
 
-        <Route
-          path="/avisos"
-          element={<Avisos />}
-        />
+      {/* ==========================
+          RUTAS SIN LAYOUT
+      ========================== */}
 
-        <Route
-          path="/avisos/:id"
-          element={<AvisoDetalle />}
-        />
+      <Route
+        path="/login"
+        element={<Login />}
+      />
 
-        <Route
-          path="/eventos"
-          element={<Eventos />}
-        />
+      {/* ==========================
+          RUTAS CON LAYOUT
+      ========================== */}
 
-        <Route
-          path="/eventos/:id"
-          element={<EventoDetalle />}
-        />
+      <Route
+        path="/"
+        element={
+          <Layout>
+            <Home />
+          </Layout>
+        }
+      />
 
-        <Route
-          path="/calendario"
-          element={<Calendario />}
-        />
+      <Route
+        path="/avisos"
+        element={
+          <Layout>
+            <Avisos />
+          </Layout>
+        }
+      />
 
-        <Route
-          path="/documentos"
-          element={<Documentos />}
-        />
-        <Route
-          path="/documentos/:id"
-          element={<DocumentoDetalle />}
-        />
+      <Route
+        path="/avisos/:id"
+        element={
+          <Layout>
+            <AvisoDetalle />
+          </Layout>
+        }
+      />
 
-        <Route
-            path="*"
-            element={<NotFound />}
-          />
-        </Routes>
-    </Layout>
+      <Route
+        path="/eventos"
+        element={
+          <Layout>
+            <Eventos />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/eventos/:id"
+        element={
+          <Layout>
+            <EventoDetalle />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/calendario"
+        element={
+          <Layout>
+            <Calendario />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/documentos"
+        element={
+          <Layout>
+            <Documentos />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/documentos/:id"
+        element={
+          <Layout>
+            <DocumentoDetalle />
+          </Layout>
+        }
+      />
+      
+      <Route
+        path="/perfil"
+        element={
+          <Layout>
+            <Perfil />
+          </Layout>
+        }
+      />
+
+      {/* ==========================
+          PÁGINA NO ENCONTRADA
+      ========================== */}
+
+      <Route
+        path="*"
+        element={<NotFound />}
+      />
+
+
+
+    </Routes>
   );
 };

@@ -8,19 +8,29 @@ import {
   Menu,
   Moon,
   Sun,
+  LogOut,
 } from "lucide-react";
 
 import { avisos } from "../../data/avisos";
 import { eventos } from "../../data/eventos";
 import { documentos } from "../../data/documentos";
 
+import { useAuth } from "../../context/AuthContext";
+
 export const Topbar = ({
   setMobileOpen,
   darkMode,
   setDarkMode,
 }) => {
+  const { user, logout } = useAuth();
+console.log("USER TOPBAR:", user);
+
   const [search, setSearch] = useState("");
+
   const [showNotifications, setShowNotifications] =
+    useState(false);
+
+  const [showUserMenu, setShowUserMenu] =
     useState(false);
 
   const resultados = [
@@ -67,7 +77,10 @@ export const Topbar = ({
         mb-8
       "
     >
-      {/* Izquierda */}
+      {/* ========================= */}
+      {/* IZQUIERDA */}
+      {/* ========================= */}
+
       <div className="flex items-center gap-4 flex-1">
         <button
           onClick={() => setMobileOpen(true)}
@@ -166,7 +179,10 @@ export const Topbar = ({
         </div>
       </div>
 
-      {/* Derecha */}
+      {/* ========================= */}
+      {/* DERECHA */}
+      {/* ========================= */}
+
       <div className="flex items-center gap-6">
 
         {/* Dark Mode */}
@@ -273,14 +289,123 @@ export const Topbar = ({
           )}
         </div>
 
-        {/* Usuario */}
-        <div className="hidden md:flex items-center gap-2">
-          <User size={20} />
+        {/* Usuario NO autenticado */}
+        {!user && (
+          <Link
+            to="/login"
+            className="
+              hidden
+              md:flex
+              items-center
+              gap-2
+              bg-[#6A0032]
+              text-white
+              px-4
+              py-2
+              rounded-lg
+              hover:opacity-90
+              transition
+            "
+          >
+            <User size={18} />
 
-          <span className="font-medium">
-            Leonardo
-          </span>
-        </div>
+            <span>
+              Acceder
+            </span>
+          </Link>
+        )}
+
+        {/* Usuario autenticado */}
+        {user && (
+          <div className="relative">
+            <button
+              onClick={() =>
+                setShowUserMenu(
+                  !showUserMenu
+                )
+              }
+              className="
+                flex
+                items-center
+                gap-2
+                cursor-pointer
+              "
+            >
+              <User size={20} />
+
+              <div className="text-left">
+                <p className="font-semibold">
+                  {user.nombre}
+                </p>
+
+                <p
+                  className="
+                    text-xs
+                    text-slate-500
+                    dark:text-slate-400
+                  "
+                >
+                  {user.rol === "admin"
+                    ? "Administrador"
+                    : "Alumno"}
+                </p>
+              </div>
+            </button>
+
+            {showUserMenu && (
+              <div
+                className="
+                  absolute
+                  right-0
+                  mt-3
+                  w-56
+                  bg-white
+                  dark:bg-slate-800
+                  rounded-lg
+                  shadow-lg
+                  p-2
+                  z-50
+                "
+              >
+                <Link
+                  to="/perfil"
+                  onClick={() =>
+                    setShowUserMenu(false)
+                  }
+                  className="
+                    block
+                    px-3
+                    py-2
+                    rounded
+                    hover:bg-slate-100
+                    dark:hover:bg-slate-700
+                  "
+                >
+                  Mi Perfil
+                </Link>
+
+                <button
+                  onClick={logout}
+                  className="
+                    w-full
+                    flex
+                    items-center
+                    gap-2
+                    px-3
+                    py-2
+                    rounded
+                    hover:bg-red-100
+                    text-red-600
+                  "
+                >
+                  <LogOut size={16} />
+
+                  Cerrar Sesión
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </header>
   );
