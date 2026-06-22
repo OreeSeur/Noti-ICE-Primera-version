@@ -17,6 +17,9 @@ import { Calendario } from "../pages/Calendario";
 import { Documentos } from "../pages/Documentos";
 import { DocumentoDetalle } from "../pages/DocumentoDetalle";
 
+import { NuevoAviso } from "../pages/NuevoAviso";
+import { AdminAvisos } from "../pages/AdminAvisos";
+
 /* Autenticación */
 import { Login } from "../pages/Login";
 import { Perfil } from "../pages/Perfil";
@@ -122,11 +125,30 @@ export const AppRouter = () => {
           </Layout>
         }
       />
+      
       <Route
         path="/admin"
         element={
           <Layout>
             <PanelAdmin />
+          </Layout>
+        }
+      />
+      
+      <Route
+        path="/admin/avisos"
+        element={
+          <Layout>
+            <AdminAvisos />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/admin/avisos/nuevo"
+        element={
+          <Layout>
+            <NuevoAviso />
           </Layout>
         }
       />

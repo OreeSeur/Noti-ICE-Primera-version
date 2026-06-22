@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import {
   Bell,
   CalendarDays,
@@ -212,7 +214,24 @@ export const PanelAdmin = () => {
             "
           >
             <Plus size={18} />
-            Nuevo Aviso
+                        <Link
+              to="/admin/avisos"
+              className="
+                flex
+                items-center
+                gap-2
+                bg-[#6A0032]
+                text-white
+                px-5
+                py-3
+                rounded-lg
+                hover:opacity-90
+                transition
+              "
+            >
+              <Plus size={18} />
+              Gestionar Avisos
+            </Link>
           </button>
 
           <button
