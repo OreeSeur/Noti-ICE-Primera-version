@@ -20,6 +20,7 @@ import { DocumentoDetalle } from "../pages/DocumentoDetalle";
 /* Autenticación */
 import { Login } from "../pages/Login";
 import { Perfil } from "../pages/Perfil";
+import { PanelAdmin } from "../pages/PanelAdmin";
 
 /* Error 404 */
 import { NotFound } from "../pages/NotFound";
@@ -112,12 +113,20 @@ export const AppRouter = () => {
           </Layout>
         }
       />
-      
+
       <Route
         path="/perfil"
         element={
           <Layout>
             <Perfil />
+          </Layout>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <Layout>
+            <PanelAdmin />
           </Layout>
         }
       />
