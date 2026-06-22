@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+
 import {
   Pencil,
   Trash2,
@@ -6,12 +8,39 @@ import {
 } from "lucide-react";
 
 import { useEventos } from "../context/EventosContext";
+import { ConfirmModal } from "../components/ui/ConfirmModal";
 
 export const AdminEventos = () => {
   const {
     eventos,
     eliminarEvento,
   } = useEventos();
+
+  const [modalOpen, setModalOpen] =
+    useState(false);
+
+  const [eventoSeleccionado,
+    setEventoSeleccionado] =
+    useState(null);
+
+  const abrirModal = (id) => {
+    setEventoSeleccionado(id);
+    setModalOpen(true);
+  };
+
+  const cerrarModal = () => {
+    setModalOpen(false);
+    setEventoSeleccionado(null);
+  };
+
+  const confirmarEliminacion =
+    () => {
+      eliminarEvento(
+        eventoSeleccionado
+      );
+
+      cerrarModal();
+    };
 
   return (
     <section>
@@ -159,7 +188,7 @@ export const AdminEventos = () => {
 
                     <button
                       onClick={() =>
-                        eliminarEvento(
+                        abrirModal(
                           evento.id
                         )
                       }
@@ -182,6 +211,16 @@ export const AdminEventos = () => {
           </tbody>
         </table>
       </div>
+
+      <ConfirmModal
+        isOpen={modalOpen}
+        title="Eliminar Evento"
+        message="¿Deseas eliminar este evento? Esta acción no se puede deshacer."
+        onConfirm={
+          confirmarEliminacion
+        }
+        onCancel={cerrarModal}
+      />
     </section>
   );
 };

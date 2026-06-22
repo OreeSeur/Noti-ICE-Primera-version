@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+
 import {
   Pencil,
   Trash2,
@@ -6,6 +8,7 @@ import {
 } from "lucide-react";
 
 import { useAvisos } from "../context/AvisosContext";
+import { ConfirmModal } from "../components/ui/ConfirmModal";
 
 export const AdminAvisos = () => {
   const {
@@ -13,10 +16,31 @@ export const AdminAvisos = () => {
     eliminarAviso,
   } = useAvisos();
 
-  console.log(
-    "AVISOS CONTEXT:",
-    avisos
-  );
+  const [modalOpen, setModalOpen] =
+    useState(false);
+
+  const [avisoSeleccionado,
+    setAvisoSeleccionado] =
+    useState(null);
+
+  const abrirModal = (id) => {
+    setAvisoSeleccionado(id);
+    setModalOpen(true);
+  };
+
+  const cerrarModal = () => {
+    setModalOpen(false);
+    setAvisoSeleccionado(null);
+  };
+
+  const confirmarEliminacion =
+    () => {
+      eliminarAviso(
+        avisoSeleccionado
+      );
+
+      cerrarModal();
+    };
 
   return (
     <section>
@@ -148,7 +172,7 @@ export const AdminAvisos = () => {
 
                     <button
                       onClick={() =>
-                        eliminarAviso(
+                        abrirModal(
                           aviso.id
                         )
                       }
@@ -171,6 +195,16 @@ export const AdminAvisos = () => {
           </tbody>
         </table>
       </div>
+
+      <ConfirmModal
+        isOpen={modalOpen}
+        title="Eliminar Aviso"
+        message="¿Deseas eliminar este aviso? Esta acción no se puede deshacer."
+        onConfirm={
+          confirmarEliminacion
+        }
+        onCancel={cerrarModal}
+      />
     </section>
   );
 };

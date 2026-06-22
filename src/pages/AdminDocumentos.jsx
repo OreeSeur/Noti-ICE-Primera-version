@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -7,12 +8,40 @@ import {
 } from "lucide-react";
 
 import { useDocumentos } from "../context/DocumentosContext";
+import { ConfirmModal } from "../components/ui/ConfirmModal";
 
 export const AdminDocumentos = () => {
   const {
     documentos,
     eliminarDocumento,
   } = useDocumentos();
+
+  const [modalOpen, setModalOpen] =
+    useState(false);
+
+  const [
+    documentoSeleccionado,
+    setDocumentoSeleccionado,
+  ] = useState(null);
+
+  const abrirModal = (id) => {
+    setDocumentoSeleccionado(id);
+    setModalOpen(true);
+  };
+
+  const cerrarModal = () => {
+    setModalOpen(false);
+    setDocumentoSeleccionado(null);
+  };
+
+  const confirmarEliminacion =
+    () => {
+      eliminarDocumento(
+        documentoSeleccionado
+      );
+
+      cerrarModal();
+    };
 
   return (
     <section>
@@ -153,7 +182,7 @@ export const AdminDocumentos = () => {
 
                       <button
                         onClick={() =>
-                          eliminarDocumento(
+                          abrirModal(
                             documento.id
                           )
                         }
@@ -177,6 +206,16 @@ export const AdminDocumentos = () => {
           </tbody>
         </table>
       </div>
+
+      <ConfirmModal
+        isOpen={modalOpen}
+        title="Eliminar Documento"
+        message="¿Deseas eliminar este documento? Esta acción no se puede deshacer."
+        onConfirm={
+          confirmarEliminacion
+        }
+        onCancel={cerrarModal}
+      />
     </section>
   );
 };

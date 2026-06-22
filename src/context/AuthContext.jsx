@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useState,
+  useEffect,
 } from "react";
 
 const AuthContext = createContext();
@@ -10,19 +11,26 @@ export const AuthProvider = ({
   children,
 }) => {
   const [user, setUser] =
-    useState(null);
-    console.log(
-      "AUTH PROVIDER USER:",
-      user);
+    useState(() => {
+      const guardado =
+        localStorage.getItem("user");
+
+      return guardado
+        ? JSON.parse(guardado)
+        : null;
+    });
+
+  useEffect(() => {
+    localStorage.setItem(
+      "user",
+      JSON.stringify(user)
+    );
+  }, [user]);
+
   const login = (
     correo,
     password
   ) => {
-    console.log(
-      "INTENTANDO LOGIN:",
-      correo
-    );
-
     if (
       correo === "admin@esime.mx" &&
       password === "123456"
@@ -32,11 +40,6 @@ export const AuthProvider = ({
         correo,
         rol: "admin",
       };
-
-      console.log(
-        "LOGIN ADMIN:",
-        admin
-      );
 
       setUser(admin);
 
@@ -53,25 +56,20 @@ export const AuthProvider = ({
         rol: "usuario",
       };
 
-      console.log(
-        "LOGIN USUARIO:",
-        alumno
-      );
-
       setUser(alumno);
 
       return true;
     }
-
-    console.log(
-      "LOGIN FALLIDO"
-    );
 
     return false;
   };
 
   const logout = () => {
     setUser(null);
+
+    localStorage.removeItem(
+      "user"
+    );
   };
 
   return (

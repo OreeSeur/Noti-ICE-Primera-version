@@ -20,6 +20,8 @@ import { DocumentoDetalle } from "../pages/DocumentoDetalle";
 /* Autenticación */
 import { Login } from "../pages/Login";
 import { Perfil } from "../pages/Perfil";
+import { PrivateRoute } from "./PrivateRoute";
+import { AdminRoute } from "./AdminRoute";
 
 /* Administración */
 import { PanelAdmin } from "../pages/PanelAdmin";
@@ -140,90 +142,110 @@ return ( <Routes>
 <Route
   path="/admin"
   element={
-    <Layout>
-      <PanelAdmin />
-    </Layout>
+    <AdminRoute>
+      <Layout>
+        <PanelAdmin />
+      </Layout>
+    </AdminRoute>
   }
 />
 
 <Route
   path="/admin/avisos"
   element={
-    <Layout>
-      <AdminAvisos />
-    </Layout>
+    <AdminRoute>
+      <Layout>
+        <AdminAvisos />
+      </Layout>
+    </AdminRoute>
   }
 />
 
 <Route
   path="/admin/avisos/nuevo"
   element={
-    <Layout>
-      <AdminNuevoAviso />
-    </Layout>
+    <AdminRoute>
+      <Layout>
+        <AdminNuevoAviso />
+      </Layout>
+    </AdminRoute>
   }
 />
 
 <Route
   path="/admin/avisos/editar/:id"
   element={
-    <Layout>
-      <AdminEditarAviso />
-    </Layout>
+    <AdminRoute>
+      <Layout>
+        <AdminEditarAviso />
+      </Layout>
+    </AdminRoute>
   }
 />
 
 <Route
   path="/admin/eventos"
   element={
-    <Layout>
-      <AdminEventos />
-    </Layout>
+    <AdminRoute>
+      <Layout>
+        <AdminEventos />
+      </Layout>
+    </AdminRoute>
   }
 />
 
 <Route
   path="/admin/eventos/nuevo"
   element={
-    <Layout>
-      <AdminNuevoEvento />
-    </Layout>
+    <AdminRoute>
+      <Layout>
+        <AdminNuevoEvento />
+      </Layout>
+    </AdminRoute>
   }
 />
 
 <Route
   path="/admin/eventos/editar/:id"
   element={
-    <Layout>
-      <AdminEditarEvento />
-    </Layout>
+    <AdminRoute>
+      <Layout>
+        <AdminEditarEvento />
+      </Layout>
+    </AdminRoute>
   }
 />
 
 <Route
   path="/admin/documentos"
   element={
-    <Layout>
-      <AdminDocumentos />
-    </Layout>
+    <AdminRoute>
+      <Layout>
+        <AdminDocumentos />
+      </Layout>
+    </AdminRoute>
   }
 />
 
 <Route
   path="/admin/documentos/nuevo"
   element={
-    <Layout>
-      <AdminNuevoDocumento />
-    </Layout>
+    <AdminRoute>
+      <Layout>
+        <AdminNuevoDocumento />
+      </Layout>
+    </AdminRoute>
   }
 />
 
 <Route
   path="/admin/documentos/editar/:id"
   element={
-    <Layout>
-      <AdminEditarDocumento />
-    </Layout>
+    <AdminRoute>
+      <Layout>
+        <AdminEditarDocumento />
+      </Layout>
+    </AdminRoute>
   }
 />
 </Routes>
