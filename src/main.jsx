@@ -6,6 +6,7 @@ import App from "./App";
 import "./index.css";
 
 import { AuthProvider } from "./context/AuthContext";
+import { UsuariosProvider } from "./context/UsuariosContext";
 import { AvisosProvider } from "./context/AvisosContext";
 import { EventosProvider } from "./context/EventosContext";
 import { DocumentosProvider } from "./context/DocumentosContext";
@@ -18,9 +19,11 @@ ReactDOM.createRoot(
       <AvisosProvider>
         <EventosProvider>
           <DocumentosProvider>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
+            <UsuariosProvider>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </UsuariosProvider>
           </DocumentosProvider>
         </EventosProvider>
       </AvisosProvider>

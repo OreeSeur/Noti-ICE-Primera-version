@@ -1,4 +1,4 @@
-import ipnLogo from "../assets/images/ipn-logo.webp";
+import ipnLogo from "../assets/images/ipn-seeklogo.png";
 
 import { LoginForm } from "../components/auth/LoginForm";
 
@@ -44,7 +44,7 @@ export const Login = () => {
               dark:text-white
             "
           >
-            Portal ESIME
+            Portal NOTI ICE
           </h1>
 
           <p

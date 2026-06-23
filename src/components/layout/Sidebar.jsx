@@ -88,7 +88,7 @@ export const Sidebar = ({
               : "w-64"
           }
 
-          bg-[#6A0032]
+          bg-[#6f1d46]
           text-white
           min-h-screen
 
@@ -139,7 +139,7 @@ export const Sidebar = ({
                   text-center
                 "
               >
-                Portal ESIME
+                Portal NOTI ICE
               </h1>
 
               <p

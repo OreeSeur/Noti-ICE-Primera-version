@@ -38,6 +38,10 @@ import { AdminDocumentos } from "../pages/AdminDocumentos";
 import { AdminNuevoDocumento } from "../pages/AdminNuevoDocumento";
 import { AdminEditarDocumento } from "../pages/AdminEditarDocumento";
 
+import { AdminUsuarios } from "../pages/AdminUsuarios";
+import { AdminNuevoUsuario } from "../pages/AdminNuevoUsuario";
+import { AdminEditarUsuario } from "../pages/AdminEditarUsuario";
+
 /* Error 404 */
 import { NotFound } from "../pages/NotFound";
 
@@ -244,6 +248,38 @@ return ( <Routes>
     <AdminRoute>
       <Layout>
         <AdminEditarDocumento />
+      </Layout>
+    </AdminRoute>
+  }
+/>
+<Route
+  path="/admin/usuarios"
+  element={
+    <AdminRoute>
+      <Layout>
+        <AdminUsuarios />
+      </Layout>
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/usuarios/nuevo"
+  element={
+    <AdminRoute>
+      <Layout>
+        <AdminNuevoUsuario />
+      </Layout>
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/usuarios/editar/:id"
+  element={
+    <AdminRoute>
+      <Layout>
+        <AdminEditarUsuario />
       </Layout>
     </AdminRoute>
   }

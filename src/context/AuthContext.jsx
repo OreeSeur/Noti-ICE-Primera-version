@@ -31,37 +31,28 @@ export const AuthProvider = ({
     correo,
     password
   ) => {
-    if (
-      correo === "admin@esime.mx" &&
-      password === "123456"
-    ) {
-      const admin = {
-        nombre: "Administrador",
-        correo,
-        rol: "admin",
-      };
+    const usuarios =
+      JSON.parse(
+        localStorage.getItem(
+          "usuarios"
+        )
+      ) || [];
 
-      setUser(admin);
+    const usuario =
+      usuarios.find(
+        (item) =>
+          item.correo === correo &&
+          item.password ===
+            password
+      );
 
-      return true;
+    if (!usuario) {
+      return false;
     }
 
-    if (
-      correo === "usuario@esime.mx" &&
-      password === "123456"
-    ) {
-      const alumno = {
-        nombre: "Alumno",
-        correo,
-        rol: "usuario",
-      };
+    setUser(usuario);
 
-      setUser(alumno);
-
-      return true;
-    }
-
-    return false;
+    return true;
   };
 
   const logout = () => {

@@ -4,7 +4,7 @@ export const HeroBanner = () => {
   return (
     <section
       className="
-        bg-[#6A0032]
+        bg-[#6f1d46]
         text-white
         rounded-2xl
         p-10

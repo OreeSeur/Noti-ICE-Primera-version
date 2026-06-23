@@ -10,13 +10,19 @@ import {
 
 import { useAvisos } from "../context/AvisosContext";
 import { useEventos } from "../context/EventosContext";
-
-import { documentos } from "../data/documentos";
+import { useDocumentos } from "../context/DocumentosContext";
+import { useUsuarios } from "../context/UsuariosContext";
 
 export const PanelAdmin = () => {
   const { avisos } = useAvisos();
 
   const { eventos } = useEventos();
+
+  const { documentos } =
+    useDocumentos();
+
+  const { usuarios } =
+    useUsuarios();
 
   return (
     <section>
@@ -167,7 +173,7 @@ export const PanelAdmin = () => {
                   mt-2
                 "
               >
-                245
+                {usuarios.length}
               </p>
             </div>
 
@@ -243,7 +249,7 @@ export const PanelAdmin = () => {
           </Link>
 
           <Link
-            to="/admin/eventos/nuevo"
+            to="/admin/documentos"
             className="
               flex
               items-center
@@ -258,30 +264,29 @@ export const PanelAdmin = () => {
             "
           >
             <Plus size={18} />
-            Nuevo Evento
+            Gestionar Documentos
           </Link>
-          
-            <Link
-              to="/admin/documentos"
-              className="
-                flex
-                items-center
-                gap-2
-                bg-[#6A0032]
-                text-white
-                px-5
-                py-3
-                rounded-lg
-                hover:opacity-90
-                transition
-              "
-            >
-              <Plus size={18} />
-              Gestionar Documentos
-            </Link>
+
+          <Link
+            to="/admin/usuarios"
+            className="
+              flex
+              items-center
+              gap-2
+              bg-[#6A0032]
+              text-white
+              px-5
+              py-3
+              rounded-lg
+              hover:opacity-90
+              transition
+            "
+          >
+            <Plus size={18} />
+            Gestionar Usuarios
+          </Link>
         </div>
       </div>
-
 
       {/* Actividad reciente */}
       <div
@@ -304,31 +309,33 @@ export const PanelAdmin = () => {
         </h2>
 
         <div className="space-y-4">
-          {avisos.slice(0, 5).map((aviso) => (
-            <div
-              key={aviso.id}
-              className="
-                border-b
-                border-slate-200
-                dark:border-slate-700
-                pb-4
-              "
-            >
-              <h3 className="font-semibold">
-                {aviso.titulo}
-              </h3>
-
-              <p
+          {avisos
+            .slice(0, 5)
+            .map((aviso) => (
+              <div
+                key={aviso.id}
                 className="
-                  text-sm
-                  text-slate-500
-                  dark:text-slate-400
+                  border-b
+                  border-slate-200
+                  dark:border-slate-700
+                  pb-4
                 "
               >
-                Aviso publicado recientemente
-              </p>
-            </div>
-          ))}
+                <h3 className="font-semibold">
+                  {aviso.titulo}
+                </h3>
+
+                <p
+                  className="
+                    text-sm
+                    text-slate-500
+                    dark:text-slate-400
+                  "
+                >
+                  Aviso publicado recientemente
+                </p>
+              </div>
+            ))}
         </div>
       </div>
     </section>

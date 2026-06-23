@@ -382,7 +382,25 @@ console.log("USER TOPBAR:", user);
                   "
                 >
                   Mi Perfil
-                </Link>
+                                </Link>
+                {user.rol === "admin" && (
+                  <Link
+                    to="/admin"
+                    onClick={() =>
+                      setShowUserMenu(false)
+                    }
+                    className="
+                      block
+                      px-3
+                      py-2
+                      rounded
+                      hover:bg-slate-100
+                      dark:hover:bg-slate-700
+                    "
+                  >
+                    Panel Admin
+                  </Link>
+                )}
 
                 <button
                   onClick={logout}
