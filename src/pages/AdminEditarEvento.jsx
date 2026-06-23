@@ -1,42 +1,33 @@
 import { useState } from "react";
-import {
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useEventos } from "../context/EventosContext";
+import { EventoForm } from "../components/forms/EventoForm";
 
 export const AdminEditarEvento = () => {
   const { id } = useParams();
-
   const navigate = useNavigate();
 
-  const {
-    eventos,
-    editarEvento,
-  } = useEventos();
+  const { eventos, editarEvento } = useEventos();
 
   const evento = eventos.find(
-    (evento) =>
-      evento.id === Number(id)
+    (evento) => evento.id === Number(id)
   );
 
-  const [formulario, setFormulario] =
-    useState(
-      evento || {
-        titulo: "",
-        fecha: "",
-        lugar: "",
-        categoria: "",
-        descripcion: "",
-      }
-    );
+  const [formulario, setFormulario] = useState(
+    evento || {
+      titulo: "",
+      fecha: "",
+      lugar: "",
+      categoria: "",
+      descripcion: "",
+    }
+  );
 
   const handleChange = (e) => {
     setFormulario({
       ...formulario,
-      [e.target.name]:
-        e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -51,7 +42,7 @@ export const AdminEditarEvento = () => {
   if (!evento) {
     return (
       <section>
-        <h2 className="text-2xl font-bold text-red-600">
+        <h2 className="text-red-600 font-bold text-xl">
           Evento no encontrado
         </h2>
       </section>
@@ -64,153 +55,14 @@ export const AdminEditarEvento = () => {
         <h1 className="text-3xl font-bold text-slate-800">
           Editar Evento
         </h1>
-
-        <p className="text-slate-500">
-          Modifica la información del evento.
-        </p>
       </header>
 
-      <form
-        onSubmit={handleSubmit}
-        className="
-          bg-white
-          rounded-xl
-          shadow-md
-          p-6
-          space-y-4
-        "
-      >
-        <div>
-          <label className="block mb-2 font-medium">
-            Título
-          </label>
-
-          <input
-            type="text"
-            name="titulo"
-            value={formulario.titulo}
-            onChange={handleChange}
-            className="
-              w-full
-              border
-              rounded-lg
-              px-4
-              py-2
-            "
-          />
-        </div>
-
-        <div>
-          <label className="block mb-2 font-medium">
-            Fecha
-          </label>
-
-          <input
-            type="date"
-            name="fecha"
-            value={formulario.fecha}
-            onChange={handleChange}
-            className="
-              w-full
-              border
-              rounded-lg
-              px-4
-              py-2
-            "
-          />
-        </div>
-
-        <div>
-          <label className="block mb-2 font-medium">
-            Lugar
-          </label>
-
-          <input
-            type="text"
-            name="lugar"
-            value={formulario.lugar}
-            onChange={handleChange}
-            className="
-              w-full
-              border
-              rounded-lg
-              px-4
-              py-2
-            "
-          />
-        </div>
-
-        <div>
-          <label className="block mb-2 font-medium">
-            Categoría
-          </label>
-
-          <input
-            type="text"
-            name="categoria"
-            value={formulario.categoria}
-            onChange={handleChange}
-            className="
-              w-full
-              border
-              rounded-lg
-              px-4
-              py-2
-            "
-          />
-        </div>
-
-        <div>
-          <label className="block mb-2 font-medium">
-            Descripción
-          </label>
-
-          <textarea
-            rows="5"
-            name="descripcion"
-            value={formulario.descripcion}
-            onChange={handleChange}
-            className="
-              w-full
-              border
-              rounded-lg
-              px-4
-              py-2
-            "
-          />
-        </div>
-
-        <div className="flex gap-4">
-          <button
-            type="submit"
-            className="
-              bg-blue-600
-              text-white
-              px-6
-              py-2
-              rounded-lg
-              hover:bg-blue-700
-            "
-          >
-            Actualizar
-          </button>
-
-          <button
-            type="button"
-            onClick={() =>
-              navigate("/admin/eventos")
-            }
-            className="
-              bg-slate-200
-              px-6
-              py-2
-              rounded-lg
-            "
-          >
-            Cancelar
-          </button>
-        </div>
-      </form>
+      <EventoForm
+        formulario={formulario}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        buttonText="Actualizar Evento"
+      />
     </section>
   );
 };

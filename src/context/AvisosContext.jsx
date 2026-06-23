@@ -12,10 +12,8 @@ const AvisosContext = createContext();
 export const AvisosProvider = ({
   children,
 }) => {
-
   const [avisos, setAvisos] =
     useState(() => {
-
       const guardados =
         localStorage.getItem("avisos");
 
@@ -34,7 +32,6 @@ export const AvisosProvider = ({
   const agregarAviso = (
     nuevoAviso
   ) => {
-
     const aviso = {
       id: Date.now(),
       ...nuevoAviso,
@@ -47,7 +44,6 @@ export const AvisosProvider = ({
   };
 
   const eliminarAviso = (id) => {
-
     setAvisos((prev) =>
       prev.filter(
         (aviso) =>
@@ -60,7 +56,6 @@ export const AvisosProvider = ({
     id,
     datosActualizados
   ) => {
-
     setAvisos((prev) =>
       prev.map((aviso) =>
         aviso.id === Number(id)

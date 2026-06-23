@@ -12,17 +12,14 @@ const EventosContext = createContext();
 export const EventosProvider = ({
   children,
 }) => {
+  const [eventos, setEventos] = useState(() => {
+    const guardados =
+      localStorage.getItem("eventos");
 
-  const [eventos, setEventos] =
-    useState(() => {
-
-      const guardados =
-        localStorage.getItem("eventos");
-
-      return guardados
-        ? JSON.parse(guardados)
-        : eventosIniciales;
-    });
+    return guardados
+      ? JSON.parse(guardados)
+      : eventosIniciales;
+  });
 
   useEffect(() => {
     localStorage.setItem(
@@ -31,10 +28,7 @@ export const EventosProvider = ({
     );
   }, [eventos]);
 
-  const agregarEvento = (
-    nuevoEvento
-  ) => {
-
+  const agregarEvento = (nuevoEvento) => {
     const evento = {
       id: Date.now(),
       ...nuevoEvento,
@@ -47,11 +41,9 @@ export const EventosProvider = ({
   };
 
   const eliminarEvento = (id) => {
-
     setEventos((prev) =>
       prev.filter(
-        (evento) =>
-          evento.id !== id
+        (evento) => evento.id !== id
       )
     );
   };
@@ -60,7 +52,6 @@ export const EventosProvider = ({
     id,
     datosActualizados
   ) => {
-
     setEventos((prev) =>
       prev.map((evento) =>
         evento.id === Number(id)

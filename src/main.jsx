@@ -11,6 +11,8 @@ import { AvisosProvider } from "./context/AvisosContext";
 import { EventosProvider } from "./context/EventosContext";
 import { DocumentosProvider } from "./context/DocumentosContext";
 
+import { ToastProvider } from "./context/ToastContext";
+
 ReactDOM.createRoot(
   document.getElementById("root")
 ).render(
@@ -21,7 +23,9 @@ ReactDOM.createRoot(
           <DocumentosProvider>
             <UsuariosProvider>
               <BrowserRouter>
-                <App />
+                <ToastProvider>
+                  <App />
+                </ToastProvider>
               </BrowserRouter>
             </UsuariosProvider>
           </DocumentosProvider>
