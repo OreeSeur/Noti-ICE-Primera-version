@@ -24,6 +24,34 @@ export const PanelAdmin = () => {
   const { usuarios } =
     useUsuarios();
 
+const actividadReciente = [
+  ...avisos.slice(0, 2).map((aviso) => ({
+    id: `aviso-${aviso.id}`,
+    titulo: aviso.titulo,
+    tipo: "Aviso publicado",
+  })),
+
+  ...eventos.slice(0, 2).map((evento) => ({
+    id: `evento-${evento.id}`,
+    titulo: evento.titulo,
+    tipo: "Evento creado",
+  })),
+
+  ...documentos
+    .slice(0, 2)
+    .map((documento) => ({
+      id: `documento-${documento.id}`,
+      titulo: documento.nombre,
+      tipo: "Documento agregado",
+    })),
+
+  ...usuarios.slice(0, 2).map((usuario) => ({
+    id: `usuario-${usuario.id}`,
+    titulo: usuario.nombre,
+    tipo: "Usuario registrado",
+  })),
+].slice(0, 8);
+
   return (
     <section>
       {/* Encabezado */}
@@ -309,11 +337,10 @@ export const PanelAdmin = () => {
         </h2>
 
         <div className="space-y-4">
-          {avisos
-            .slice(0, 5)
-            .map((aviso) => (
+          {actividadReciente.map(
+            (actividad) => (
               <div
-                key={aviso.id}
+                key={actividad.id}
                 className="
                   border-b
                   border-slate-200
@@ -322,7 +349,7 @@ export const PanelAdmin = () => {
                 "
               >
                 <h3 className="font-semibold">
-                  {aviso.titulo}
+                  {actividad.titulo}
                 </h3>
 
                 <p
@@ -332,10 +359,11 @@ export const PanelAdmin = () => {
                     dark:text-slate-400
                   "
                 >
-                  Aviso publicado recientemente
+                  {actividad.tipo}
                 </p>
               </div>
-            ))}
+            )
+          )}
         </div>
       </div>
     </section>

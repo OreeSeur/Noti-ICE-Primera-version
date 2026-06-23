@@ -16,12 +16,24 @@ export const AdminEventos = () => {
     eliminarEvento,
   } = useEventos();
 
+  const [search, setSearch] =
+    useState("");
+
   const [modalOpen, setModalOpen] =
     useState(false);
 
   const [eventoSeleccionado,
     setEventoSeleccionado] =
     useState(null);
+
+  const eventosFiltrados =
+    eventos.filter((evento) =>
+      evento.titulo
+        .toLowerCase()
+        .includes(
+          search.toLowerCase()
+        )
+    );
 
   const abrirModal = (id) => {
     setEventoSeleccionado(id);
@@ -99,6 +111,35 @@ export const AdminEventos = () => {
         </Link>
       </div>
 
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Buscar evento..."
+          value={search}
+          onChange={(e) =>
+            setSearch(
+              e.target.value
+            )
+          }
+          className="
+            bg-white
+            w-full
+            md:w-80
+            px-4
+            py-3
+            border
+            border-slate-300
+            rounded-lg
+            focus:outline-none
+            focus:ring-2
+            focus:ring-[#6A0032]
+            dark:bg-slate-700
+            dark:border-slate-600
+            dark:text-white
+          "
+        />
+      </div>
+
       <div
         className="
           bg-white
@@ -139,75 +180,77 @@ export const AdminEventos = () => {
           </thead>
 
           <tbody>
-            {eventos.map((evento) => (
-              <tr
-                key={evento.id}
-                className="
-                  border-b
-                  border-slate-200
-                  dark:border-slate-700
-                "
-              >
-                <td className="p-4">
-                  {evento.titulo}
-                </td>
+            {eventosFiltrados.map(
+              (evento) => (
+                <tr
+                  key={evento.id}
+                  className="
+                    border-b
+                    border-slate-200
+                    dark:border-slate-700
+                  "
+                >
+                  <td className="p-4">
+                    {evento.titulo}
+                  </td>
 
-                <td className="p-4">
-                  {evento.fecha}
-                </td>
+                  <td className="p-4">
+                    {evento.fecha}
+                  </td>
 
-                <td className="p-4">
-                  {evento.lugar}
-                </td>
+                  <td className="p-4">
+                    {evento.lugar}
+                  </td>
 
-                <td className="p-4">
-                  {evento.categoria}
-                </td>
+                  <td className="p-4">
+                    {evento.categoria}
+                  </td>
 
-                <td className="p-4">
-                  <div
-                    className="
-                      flex
-                      justify-center
-                      gap-3
-                    "
-                  >
-                    <Link
-                      to={`/admin/eventos/editar/${evento.id}`}
+                  <td className="p-4">
+                    <div
                       className="
-                        p-2
-                        rounded-lg
-                        bg-blue-100
-                        text-blue-700
-                        hover:bg-blue-200
-                        transition
+                        flex
+                        justify-center
+                        gap-3
                       "
                     >
-                      <Pencil size={18} />
-                    </Link>
+                      <Link
+                        to={`/admin/eventos/editar/${evento.id}`}
+                        className="
+                          p-2
+                          rounded-lg
+                          bg-blue-100
+                          text-blue-700
+                          hover:bg-blue-200
+                          transition
+                        "
+                      >
+                        <Pencil size={18} />
+                      </Link>
 
-                    <button
-                      onClick={() =>
-                        abrirModal(
-                          evento.id
-                        )
-                      }
-                      className="
-                        p-2
-                        rounded-lg
-                        bg-red-100
-                        text-red-700
-                        hover:bg-red-200
-                        transition
-                        cursor-pointer
-                      "
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      <button
+                        onClick={() =>
+                          abrirModal(
+                            evento.id
+                          )
+                        }
+                        className="
+                          p-2
+                          rounded-lg
+                          bg-red-100
+                          text-red-700
+                          hover:bg-red-200
+                          transition
+                          cursor-pointer
+                        "
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       </div>

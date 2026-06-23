@@ -16,6 +16,9 @@ export const AdminDocumentos = () => {
     eliminarDocumento,
   } = useDocumentos();
 
+  const [search, setSearch] =
+    useState("");
+
   const [modalOpen, setModalOpen] =
     useState(false);
 
@@ -23,6 +26,15 @@ export const AdminDocumentos = () => {
     documentoSeleccionado,
     setDocumentoSeleccionado,
   ] = useState(null);
+
+  const documentosFiltrados =
+    documentos.filter((documento) =>
+      documento.nombre
+        .toLowerCase()
+        .includes(
+          search.toLowerCase()
+        )
+    );
 
   const abrirModal = (id) => {
     setDocumentoSeleccionado(id);
@@ -100,6 +112,35 @@ export const AdminDocumentos = () => {
         </Link>
       </div>
 
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Buscar documento..."
+          value={search}
+          onChange={(e) =>
+            setSearch(
+              e.target.value
+            )
+          }
+          className="
+            bg-white
+            w-full
+            md:w-80
+            px-4
+            py-3
+            border
+            border-slate-300
+            rounded-lg
+            focus:outline-none
+            focus:ring-2
+            focus:ring-[#6A0032]
+            dark:bg-slate-700
+            dark:border-slate-600
+            dark:text-white
+          "
+        />
+      </div>
+
       <div
         className="
           bg-white
@@ -136,7 +177,7 @@ export const AdminDocumentos = () => {
           </thead>
 
           <tbody>
-            {documentos.map(
+            {documentosFiltrados.map(
               (documento) => (
                 <tr
                   key={documento.id}

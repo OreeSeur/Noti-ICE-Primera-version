@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -7,6 +8,7 @@ import {
 } from "lucide-react";
 
 import { useUsuarios } from "../context/UsuariosContext";
+import { ConfirmModal } from "../components/ui/ConfirmModal";
 
 export const AdminUsuarios = () => {
   const {
@@ -14,8 +16,68 @@ export const AdminUsuarios = () => {
     eliminarUsuario,
   } = useUsuarios();
 
+  const [busqueda, setBusqueda] =
+    useState("");
+
+  const [filtroRol, setFiltroRol] =
+    useState("todos");
+
+  const [modalOpen, setModalOpen] =
+    useState(false);
+
+  const [
+    usuarioSeleccionado,
+    setUsuarioSeleccionado,
+  ] = useState(null);
+
+  const usuariosFiltrados =
+    usuarios.filter((usuario) => {
+      const coincideBusqueda =
+        usuario.nombre
+          .toLowerCase()
+          .includes(
+            busqueda.toLowerCase()
+          ) ||
+        usuario.correo
+          .toLowerCase()
+          .includes(
+            busqueda.toLowerCase()
+          );
+
+      const coincideRol =
+        filtroRol === "todos"
+          ? true
+          : usuario.rol ===
+            filtroRol;
+
+      return (
+        coincideBusqueda &&
+        coincideRol
+      );
+    });
+
+  const abrirModal = (id) => {
+    setUsuarioSeleccionado(id);
+    setModalOpen(true);
+  };
+
+  const cerrarModal = () => {
+    setModalOpen(false);
+    setUsuarioSeleccionado(null);
+  };
+
+  const confirmarEliminacion =
+    () => {
+      eliminarUsuario(
+        usuarioSeleccionado
+      );
+
+      cerrarModal();
+    };
+
   return (
     <section>
+      {/* Encabezado */}
       <div
         className="
           flex
@@ -71,6 +133,86 @@ export const AdminUsuarios = () => {
         </Link>
       </div>
 
+      {/* Filtros */}
+      <div
+        className="
+          bg-white
+          dark:bg-slate-800
+          rounded-xl
+          shadow-md
+          p-4
+          mb-6
+        "
+      >
+        <div
+          className="
+            flex
+            flex-col
+            md:flex-row
+            gap-4
+          "
+        >
+          <input
+            type="text"
+            placeholder="Buscar usuario..."
+            value={busqueda}
+            onChange={(e) =>
+              setBusqueda(
+                e.target.value
+              )
+            }
+            className="
+              flex-1
+              border
+              border-slate-300
+              dark:border-slate-600
+              rounded-lg
+              px-4
+              py-3
+              bg-white
+              dark:bg-slate-700
+              dark:text-white
+              outline-none
+              focus:ring-2
+              focus:ring-[#6A0032]
+            "
+          />
+
+          <select
+            value={filtroRol}
+            onChange={(e) =>
+              setFiltroRol(
+                e.target.value
+              )
+            }
+            className="
+              border
+              border-slate-300
+              dark:border-slate-600
+              rounded-lg
+              px-4
+              py-3
+              bg-white
+              dark:bg-slate-700
+              dark:text-white
+            "
+          >
+            <option value="todos">
+              Todos
+            </option>
+
+            <option value="admin">
+              Administradores
+            </option>
+
+            <option value="usuario">
+              Usuarios
+            </option>
+          </select>
+        </div>
+      </div>
+
+      {/* Tabla */}
       <div
         className="
           bg-white
@@ -107,96 +249,118 @@ export const AdminUsuarios = () => {
           </thead>
 
           <tbody>
-            {usuarios.map((usuario) => (
-              <tr
-                key={usuario.id}
-                className="
-                  border-b
-                  border-slate-200
-                  dark:border-slate-700
-                "
-              >
-                <td className="p-4">
-                  {usuario.nombre}
-                </td>
-
-                <td className="p-4">
-                  {usuario.correo}
-                </td>
-
-                <td className="p-4">
-                  <span
-                    className={`
-                      px-3
-                      py-1
-                      rounded-full
-                      text-sm
-                      font-medium
-                      ${
-                        usuario.rol === "admin"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-blue-100 text-blue-700"
-                      }
-                    `}
-                  >
-                    {usuario.rol}
-                  </span>
-                </td>
-
-                <td className="p-4">
-                  <div
-                    className="
-                      flex
-                      justify-center
-                      gap-3
-                    "
-                  >
-                    <Link
-                      to={`/admin/usuarios/editar/${usuario.id}`}
-                      className="
-                        p-2
-                        rounded-lg
-                        bg-blue-100
-                        text-blue-700
-                        hover:bg-blue-200
-                        transition
-                      "
-                    >
-                      <Pencil size={18} />
-                    </Link>
-
-                    <button
-                      onClick={() => {
-                        const confirmar =
-                          window.confirm(
-                            "¿Deseas eliminar este usuario?"
-                          );
-
-                        if (confirmar) {
-                          eliminarUsuario(
-                            usuario.id
-                          );
-                        }
-                      }}
-                      className="
-                        p-2
-                        rounded-lg
-                        bg-red-100
-                        text-red-700
-                        hover:bg-red-200
-                        transition
-                        cursor-pointer
-                      "
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
+            {usuariosFiltrados.length ===
+            0 ? (
+              <tr>
+                <td
+                  colSpan="4"
+                  className="
+                    text-center
+                    p-8
+                    text-slate-500
+                  "
+                >
+                  No se encontraron usuarios.
                 </td>
               </tr>
-            ))}
+            ) : (
+              usuariosFiltrados.map(
+                (usuario) => (
+                  <tr
+                    key={usuario.id}
+                    className="
+                      border-b
+                      border-slate-200
+                      dark:border-slate-700
+                    "
+                  >
+                    <td className="p-4">
+                      {usuario.nombre}
+                    </td>
+
+                    <td className="p-4">
+                      {usuario.correo}
+                    </td>
+
+                    <td className="p-4">
+                      <span
+                        className={`
+                          px-3
+                          py-1
+                          rounded-full
+                          text-sm
+                          font-medium
+                          ${
+                            usuario.rol ===
+                            "admin"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-blue-100 text-blue-700"
+                          }
+                        `}
+                      >
+                        {usuario.rol}
+                      </span>
+                    </td>
+
+                    <td className="p-4">
+                      <div
+                        className="
+                          flex
+                          justify-center
+                          gap-3
+                        "
+                      >
+                        <Link
+                          to={`/admin/usuarios/editar/${usuario.id}`}
+                          className="
+                            p-2
+                            rounded-lg
+                            bg-blue-100
+                            text-blue-700
+                            hover:bg-blue-200
+                            transition
+                          "
+                        >
+                          <Pencil size={18} />
+                        </Link>
+
+                        <button
+                          onClick={() =>
+                            abrirModal(
+                              usuario.id
+                            )
+                          }
+                          className="
+                            p-2
+                            rounded-lg
+                            bg-red-100
+                            text-red-700
+                            hover:bg-red-200
+                            transition
+                            cursor-pointer
+                          "
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                )
+              )
+            )}
           </tbody>
         </table>
       </div>
+
+      <ConfirmModal
+        isOpen={modalOpen}
+        title="Eliminar Usuario"
+        message="¿Deseas eliminar este usuario? Esta acción no se puede deshacer."
+        onConfirm={
+          confirmarEliminacion
+        }
+        onCancel={cerrarModal}
+      />
     </section>
   );
 };
