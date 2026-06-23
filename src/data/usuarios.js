@@ -5,6 +5,9 @@ export const usuarios = [
     correo: "admin@esime.mx",
     password: "123456",
     rol: "admin",
+    boleta: "ADMIN-001",
+    carrera: "Administración del Portal",
+    semestre: "N/A",
   },
   {
     id: 2,
@@ -12,5 +15,8 @@ export const usuarios = [
     correo: "usuario@esime.mx",
     password: "123456",
     rol: "usuario",
+    boleta: "2023630000",
+    carrera: "Ingeniería en Computación",
+    semestre: "6° Semestre",
   },
 ];

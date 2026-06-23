@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import ipnLogo from "../../assets/images/ipn-logo.webp";
+import { useAuth } from "../../context/AuthContext";
 
 import {
   House,
@@ -9,6 +10,7 @@ import {
   Calendar,
   FileText,
   Trophy,
+  ShieldCheck,
   Menu,
   X,
 } from "lucide-react";
@@ -19,9 +21,12 @@ export const Sidebar = ({
 }) => {
   const [collapsed, setCollapsed] = useState(false);
 
+  const { user } = useAuth();
+
   const closeSidebar = () => {
     setMobileOpen(false);
   };
+
 
   const menuItems = [
     {
@@ -49,6 +54,16 @@ export const Sidebar = ({
       label: "Eventos",
       path: "/eventos",
     },
+
+    ...(user?.rol === "admin"
+      ? [
+          {
+            icon: ShieldCheck,
+            label: "Administración",
+            path: "/admin",
+          },
+        ]
+      : []),
   ];
 
   return (

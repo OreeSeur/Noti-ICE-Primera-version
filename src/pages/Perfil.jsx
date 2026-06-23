@@ -6,15 +6,20 @@ import {
   BadgeCheck,
 } from "lucide-react";
 
+import { useAuth } from "../context/AuthContext";
+
+
 export const Perfil = () => {
-  const usuario = {
-    nombre: "Leonardo Ariel Rangel Hernández",
-    correo: "usuario@esime.mx",
-    boleta: "2023630000",
-    carrera: "Ingeniería en Computación",
-    semestre: "6° Semestre",
-    rol: "Alumno",
-  };
+  
+  const { user } = useAuth();
+  if (!user) {
+    return null;
+  }
+  const usuario = user;
+  console.log(
+    "USUARIO PERFIL:",
+    JSON.stringify(usuario, null, 2)
+  );
 
   return (
     <section>
