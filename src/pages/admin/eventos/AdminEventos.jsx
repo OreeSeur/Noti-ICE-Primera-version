@@ -9,6 +9,7 @@ import {
 
 import { useEventos } from "../../../context/EventosContext";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
+import { ROUTES } from "../../../constants/routes";
 
 export const AdminEventos = () => {
   const {
@@ -91,7 +92,7 @@ export const AdminEventos = () => {
         </div>
 
         <Link
-          to="/admin/eventos/nuevo"
+          to={ROUTES.ADMIN_EVENTOS_NUEVO}
           className="
             flex
             items-center

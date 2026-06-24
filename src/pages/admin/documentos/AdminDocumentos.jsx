@@ -5,6 +5,7 @@ import { Pencil, Trash2, Plus } from "lucide-react";
 
 import { useDocumentos } from "../../../context/DocumentosContext";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
+import { ROUTES } from "../../../constants/routes";
 
 export const AdminDocumentos = () => {
   const { documentos, eliminarDocumento } = useDocumentos();
@@ -62,7 +63,7 @@ export const AdminDocumentos = () => {
         </div>
 
         <Link
-          to="/admin/documentos/nuevo"
+          to={ROUTES.ADMIN_DOCUMENTOS_NUEVO}
           className="flex items-center gap-2 bg-[#6A0032] text-white px-5 py-3 rounded-lg hover:opacity-90 transition w-fit"
         >
           <Plus size={18} />

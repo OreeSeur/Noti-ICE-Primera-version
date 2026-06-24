@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useAvisos } from "../../../context/AvisosContext";
 import { AvisoForm } from "../../../components/avisos/AvisoForm";
+import { ROUTES } from "../../../constants/routes";
 
 export const AdminNuevoAviso = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export const AdminNuevoAviso = () => {
 
     agregarAviso(formData);
 
-    navigate("/admin/avisos");
+    navigate(ROUTES.ADMIN_AVISOS);
   };
 
   return (

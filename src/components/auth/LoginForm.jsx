@@ -1,3 +1,4 @@
+import { ROLES } from "../../constants/roles";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -73,7 +74,7 @@ export const LoginForm = () => {
       boleta: formData.boleta,
       carrera: formData.carrera,
       semestre: formData.semestre,
-      rol: "usuario",
+      rol: ROLES.ALUMNO,
       estado: "activo",
     });
 

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ROUTES } from "../constants/routes";
 
 import {
   Bell,
@@ -239,7 +240,7 @@ const actividadReciente = [
           "
         >
           <Link
-            to="/admin/avisos"
+            to={ROUTES.ADMIN_AVISOS}
             className="
               flex
               items-center
@@ -258,7 +259,7 @@ const actividadReciente = [
           </Link>
 
           <Link
-            to="/admin/eventos"
+            to={ROUTES.ADMIN_EVENTOS}
             className="
               flex
               items-center
@@ -277,7 +278,7 @@ const actividadReciente = [
           </Link>
 
           <Link
-            to="/admin/documentos"
+            to={ROUTES.ADMIN_DOCUMENTOS}
             className="
               flex
               items-center
@@ -296,7 +297,7 @@ const actividadReciente = [
           </Link>
 
           <Link
-            to="/admin/usuarios"
+            to={ROUTES.ADMIN_USUARIOS}
             className="
               flex
               items-center

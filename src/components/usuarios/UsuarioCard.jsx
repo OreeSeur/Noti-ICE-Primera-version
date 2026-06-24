@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import { buildRoute, ROUTES } from "../../constants/routes";
 
 import {
 Pencil,
 Trash2,
 } from "lucide-react";
+import { getRoleLabel, normalizeRole, ROLES } from "../../constants/roles";
 
 export const UsuarioCard = ({
 usuario,
@@ -46,23 +48,22 @@ return (
     <div>
       <span
         className={`px-3 py-1 rounded-full text-sm font-medium ${
-          usuario.rol ===
-          "admin"
+          normalizeRole(usuario.rol) === ROLES.ADMIN ||
+          normalizeRole(usuario.rol) === ROLES.SUPERADMIN
             ? "bg-green-100 text-green-700"
-            : usuario.rol ===
-              "editor"
+            : normalizeRole(usuario.rol) === ROLES.PERSONAL
             ? "bg-yellow-100 text-yellow-700"
             : "bg-blue-100 text-blue-700"
         }`}
       >
-        {usuario.rol}
+        {getRoleLabel(usuario.rol)}
       </span>
     </div>
   </div>
 
   <div className="flex gap-3 mt-4">
     <Link
-      to={`/admin/usuarios/editar/${usuario.id}`}
+      to={buildRoute(ROUTES.ADMIN_USUARIOS_EDITAR, { id: usuario.id })}
       className="
         flex-1
         flex

@@ -9,6 +9,7 @@ import {
 
 import { useAvisos } from "../../../context/AvisosContext";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
+import { ROUTES } from "../../../constants/routes";
 
 export const AdminAvisos = () => {
   const {
@@ -91,7 +92,7 @@ export const AdminAvisos = () => {
         </div>
 
         <Link
-          to="/admin/avisos/nuevo"
+          to={ROUTES.ADMIN_AVISOS_NUEVO}
           className="
             flex
             items-center

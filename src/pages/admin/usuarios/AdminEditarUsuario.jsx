@@ -3,6 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { UsuarioForm } from "../../../components/usuarios/UsuarioForm";
 import { useUsuarios } from "../../../context/UsuariosContext";
+import { ROUTES } from "../../../constants/routes";
+import { ROLES } from "../../../constants/roles";
+import { mismoId } from "../../../utils/id";
 
 export const AdminEditarUsuario = () => {
   const { id } = useParams();
@@ -11,7 +14,7 @@ export const AdminEditarUsuario = () => {
   const { usuarios, editarUsuario } = useUsuarios();
 
   const usuario = usuarios.find(
-    (u) => u.id === Number(id)
+    (u) => mismoId(u.id, id)
   );
 
   const [formulario, setFormulario] = useState(
@@ -21,7 +24,7 @@ export const AdminEditarUsuario = () => {
       boleta: "",
       carrera: "",
       semestre: "",
-      rol: "",
+      rol: ROLES.ALUMNO,
       estado: "",
       password: "",
     }
@@ -39,7 +42,7 @@ export const AdminEditarUsuario = () => {
 
     editarUsuario(id, formulario);
 
-    navigate("/admin/usuarios");
+    navigate(ROUTES.ADMIN_USUARIOS);
   };
 
   return (

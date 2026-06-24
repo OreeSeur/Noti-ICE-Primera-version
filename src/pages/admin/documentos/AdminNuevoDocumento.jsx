@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { DocumentoForm } from "../../../components/documentos/DocumentoForm";
 import { useDocumentos } from "../../../context/DocumentosContext";
 import { useToast } from "../../../context/ToastContext";
+import { ROUTES } from "../../../constants/routes";
 
 export const AdminNuevoDocumento = () => {
   const navigate = useNavigate();
@@ -33,8 +34,8 @@ export const AdminNuevoDocumento = () => {
 
       success("Documento creado correctamente");
 
-      navigate("/admin/documentos");
-    } catch (err) {
+      navigate(ROUTES.ADMIN_DOCUMENTOS);
+    } catch {
       error("Error al crear documento");
     }
   };

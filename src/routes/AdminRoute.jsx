@@ -1,6 +1,8 @@
 import { Navigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+import { ROUTES } from "../constants/routes";
+import { canAccessAdmin } from "../utils/permissions";
 
 export const AdminRoute = ({
   children,
@@ -10,16 +12,16 @@ export const AdminRoute = ({
   if (!user) {
     return (
       <Navigate
-        to="/login"
+        to={ROUTES.LOGIN}
         replace
       />
     );
   }
 
-  if (user.rol !== "admin") {
+  if (!canAccessAdmin(user)) {
     return (
       <Navigate
-        to="/"
+        to={ROUTES.HOME}
         replace
       />
     );

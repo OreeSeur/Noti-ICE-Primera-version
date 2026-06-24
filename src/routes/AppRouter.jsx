@@ -44,6 +44,7 @@ import { AdminEditarUsuario } from "../pages/admin/usuarios/AdminEditarUsuario";
 /* Rutas protegidas */
 import { PrivateRoute } from "./PrivateRoute";
 import { AdminRoute } from "./AdminRoute";
+import { ROUTES } from "../constants/routes";
 
 /* Error 404 */
 import { NotFound } from "../pages/NotFound";
@@ -53,13 +54,13 @@ return ( <Routes>
 
   {/* Login */}
   <Route
-    path="/login"
+    path={ROUTES.LOGIN}
     element={<Login />}
   />
 
   {/* Home */}
   <Route
-    path="/"
+    path={ROUTES.HOME}
     element={
       <Layout>
         <Home />
@@ -69,7 +70,7 @@ return ( <Routes>
 
   {/* Avisos */}
   <Route
-    path="/avisos"
+    path={ROUTES.AVISOS}
     element={
       <Layout>
         <Avisos />
@@ -78,7 +79,7 @@ return ( <Routes>
   />
 
   <Route
-    path="/avisos/:id"
+    path={ROUTES.AVISO_DETALLE}
     element={
       <Layout>
         <AvisoDetalle />
@@ -88,7 +89,7 @@ return ( <Routes>
 
   {/* Eventos */}
   <Route
-    path="/eventos"
+    path={ROUTES.EVENTOS}
     element={
       <Layout>
         <Eventos />
@@ -97,7 +98,7 @@ return ( <Routes>
   />
 
   <Route
-    path="/eventos/:id"
+    path={ROUTES.EVENTO_DETALLE}
     element={
       <Layout>
         <EventoDetalle />
@@ -107,7 +108,7 @@ return ( <Routes>
 
   {/* Calendario */}
   <Route
-    path="/calendario"
+    path={ROUTES.CALENDARIO}
     element={
       <Layout>
         <Calendario />
@@ -117,7 +118,7 @@ return ( <Routes>
 
   {/* Documentos */}
   <Route
-    path="/documentos"
+    path={ROUTES.DOCUMENTOS}
     element={
       <Layout>
         <Documentos />
@@ -126,7 +127,7 @@ return ( <Routes>
   />
 
   <Route
-    path="/documentos/:id"
+    path={ROUTES.DOCUMENTO_DETALLE}
     element={
       <Layout>
         <DocumentoDetalle />
@@ -136,17 +137,19 @@ return ( <Routes>
 
   {/* Perfil */}
   <Route
-    path="/perfil"
+    path={ROUTES.PERFIL}
     element={
-      <Layout>
-        <Perfil />
-      </Layout>
+      <PrivateRoute>
+        <Layout>
+          <Perfil />
+        </Layout>
+      </PrivateRoute>
     }
   />
 
 {/* Administración */}
 <Route
-  path="/admin"
+  path={ROUTES.ADMIN}
   element={
     <AdminRoute>
       <Layout>
@@ -157,7 +160,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/avisos"
+  path={ROUTES.ADMIN_AVISOS}
   element={
     <AdminRoute>
       <Layout>
@@ -168,7 +171,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/avisos/nuevo"
+  path={ROUTES.ADMIN_AVISOS_NUEVO}
   element={
     <AdminRoute>
       <Layout>
@@ -179,7 +182,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/avisos/editar/:id"
+  path={ROUTES.ADMIN_AVISOS_EDITAR}
   element={
     <AdminRoute>
       <Layout>
@@ -190,7 +193,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/eventos"
+  path={ROUTES.ADMIN_EVENTOS}
   element={
     <AdminRoute>
       <Layout>
@@ -201,7 +204,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/eventos/nuevo"
+  path={ROUTES.ADMIN_EVENTOS_NUEVO}
   element={
     <AdminRoute>
       <Layout>
@@ -212,7 +215,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/eventos/editar/:id"
+  path={ROUTES.ADMIN_EVENTOS_EDITAR}
   element={
     <AdminRoute>
       <Layout>
@@ -223,7 +226,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/documentos"
+  path={ROUTES.ADMIN_DOCUMENTOS}
   element={
     <AdminRoute>
       <Layout>
@@ -234,7 +237,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/documentos/nuevo"
+  path={ROUTES.ADMIN_DOCUMENTOS_NUEVO}
   element={
     <AdminRoute>
       <Layout>
@@ -245,7 +248,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/documentos/editar/:id"
+  path={ROUTES.ADMIN_DOCUMENTOS_EDITAR}
   element={
     <AdminRoute>
       <Layout>
@@ -255,7 +258,7 @@ return ( <Routes>
   }
 />
 <Route
-  path="/admin/usuarios"
+  path={ROUTES.ADMIN_USUARIOS}
   element={
     <AdminRoute>
       <Layout>
@@ -266,7 +269,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/usuarios/nuevo"
+  path={ROUTES.ADMIN_USUARIOS_NUEVO}
   element={
     <AdminRoute>
       <Layout>
@@ -277,13 +280,21 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/usuarios/editar/:id"
+  path={ROUTES.ADMIN_USUARIOS_EDITAR}
   element={
     <AdminRoute>
       <Layout>
         <AdminEditarUsuario />
       </Layout>
     </AdminRoute>
+  }
+/>
+<Route
+  path="*"
+  element={
+    <Layout>
+      <NotFound />
+    </Layout>
   }
 />
 </Routes>

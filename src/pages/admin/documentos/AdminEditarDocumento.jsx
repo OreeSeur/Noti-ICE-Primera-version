@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { DocumentoForm } from "../../../components/documentos/DocumentoForm";
+import { ROUTES } from "../../../constants/routes";
 
 export const AdminEditarDocumento = () => {
   const { id } = useParams();
@@ -28,7 +29,7 @@ export const AdminEditarDocumento = () => {
     e.preventDefault();
 
 
-    navigate("/admin/documentos");
+    navigate(ROUTES.ADMIN_DOCUMENTOS);
   };
 
   return (

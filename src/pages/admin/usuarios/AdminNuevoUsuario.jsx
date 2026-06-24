@@ -4,64 +4,59 @@ import { useNavigate } from "react-router-dom";
 import { UsuarioForm } from "../../../components/usuarios/UsuarioForm";
 import { useUsuarios } from "../../../context/UsuariosContext";
 import { useToast } from "../../../context/ToastContext";
+import { ROLES } from "../../../constants/roles";
+import { ROUTES } from "../../../constants/routes";
 
 export const AdminNuevoUsuario = () => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-const { agregarUsuario } = useUsuarios();
-const { success, error } = useToast();
+  const { agregarUsuario } = useUsuarios();
+  const { success, error } = useToast();
 
-const [formulario, setFormulario] = useState({
-nombre: "",
-correo: "",
-boleta: "",
-carrera: "",
-semestre: "",
-rol: "usuario",
-estado: "activo",
-password: "",
-});
+  const [formulario, setFormulario] = useState({
+    nombre: "",
+    correo: "",
+    boleta: "",
+    carrera: "",
+    semestre: "",
+    rol: ROLES.ALUMNO,
+    estado: "activo",
+    password: "",
+  });
 
-const handleChange = (e) => {
-setFormulario({
-...formulario,
-[e.target.name]: e.target.value,
-});
-};
+  const handleChange = (e) => {
+    setFormulario({
+      ...formulario,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-const handleSubmit = (e) => {
-e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-```
-try {
-  agregarUsuario(formulario);
+    try {
+      agregarUsuario(formulario);
 
-  success(
-    "Usuario creado correctamente"
+      success("Usuario creado correctamente");
+
+      navigate(ROUTES.ADMIN_USUARIOS);
+    } catch (err) {
+      error(err.message || "Error al crear usuario");
+    }
+  };
+
+  return (
+    <section className="space-y-6">
+      <h1 className="text-3xl font-bold">
+        Nuevo Usuario
+      </h1>
+
+      <UsuarioForm
+        formulario={formulario}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        buttonText="Guardar Usuario"
+      />
+    </section>
   );
-
-  navigate("/admin/usuarios");
-} catch (err) {
-  error(
-    err.message ||
-      "Error al crear usuario"
-  );
-}
-```
-
-};
-
-return ( <section className="space-y-6"> <h1 className="text-3xl font-bold">
-Nuevo Usuario </h1>
-
-```
-  <UsuarioForm
-    formulario={formulario}
-    handleChange={handleChange}
-    handleSubmit={handleSubmit}
-    buttonText="Guardar Usuario"
-  />
-</section>
-
-);
 };

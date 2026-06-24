@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { useEventos } from "../../../context/EventosContext";
 import { EventoForm } from "../../../components/eventos/EventoForm";
+import { ROUTES } from "../../../constants/routes";
+import { mismoId } from "../../../utils/id";
 
 export const AdminEditarEvento = () => {
   const { id } = useParams();
@@ -11,7 +13,7 @@ export const AdminEditarEvento = () => {
   const { eventos, editarEvento } = useEventos();
 
   const evento = eventos.find(
-    (evento) => evento.id === Number(id)
+    (evento) => mismoId(evento.id, id)
   );
 
   const [formulario, setFormulario] = useState(
@@ -36,7 +38,7 @@ export const AdminEditarEvento = () => {
 
     editarEvento(id, formulario);
 
-    navigate("/admin/eventos");
+    navigate(ROUTES.ADMIN_EVENTOS);
   };
 
   if (!evento) {

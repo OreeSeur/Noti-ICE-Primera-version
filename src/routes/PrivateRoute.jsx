@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+import { ROUTES } from "../constants/routes";
 
 export const PrivateRoute = ({
   children,
@@ -10,7 +11,7 @@ export const PrivateRoute = ({
   if (!user) {
     return (
       <Navigate
-        to="/login"
+        to={ROUTES.LOGIN}
         replace
       />
     );

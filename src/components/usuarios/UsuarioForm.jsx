@@ -1,3 +1,5 @@
+import { ROLE_OPTIONS } from "../../constants/roles";
+
 export const UsuarioForm = ({
   formulario,
   handleChange,
@@ -99,9 +101,14 @@ export const UsuarioForm = ({
           required
         >
           <option value="">Selecciona un rol</option>
-          <option value="admin">Admin</option>
-          <option value="editor">Editor</option>
-          <option value="usuario">Usuario</option>
+          {ROLE_OPTIONS.map((rol) => (
+            <option
+              key={rol.value}
+              value={rol.value}
+            >
+              {rol.label}
+            </option>
+          ))}
         </select>
       </div>
 

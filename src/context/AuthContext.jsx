@@ -14,6 +14,7 @@ import {
   cerrarSesion,
 } from "../services/authService";
 import { existeCorreo } from "../services/usuariosService";
+import { hasRole, canAccessAdmin } from "../utils/permissions";
 
 const AuthContext = createContext();
 
@@ -60,6 +61,8 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         register,
+        hasRole: (rolesPermitidos) => hasRole(user, rolesPermitidos),
+        canAccessAdmin: () => canAccessAdmin(user),
       }}
     >
       {children}

@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 import ipnLogo from "../../assets/images/ipn-logo.webp";
 import { useAuth } from "../../context/AuthContext";
+import { ROUTES } from "../../constants/routes";
 
 import {
   House,
@@ -21,7 +22,7 @@ export const Sidebar = ({
 }) => {
   const [collapsed, setCollapsed] = useState(false);
 
-  const { user } = useAuth();
+  const { canAccessAdmin } = useAuth();
 
   const closeSidebar = () => {
     setMobileOpen(false);
@@ -32,35 +33,35 @@ export const Sidebar = ({
     {
       icon: House,
       label: "Inicio",
-      path: "/",
+      path: ROUTES.HOME,
     },
     {
       icon: Megaphone,
       label: "Avisos",
-      path: "/avisos",
+      path: ROUTES.AVISOS,
     },
     {
       icon: Calendar,
       label: "Calendario",
-      path: "/calendario",
+      path: ROUTES.CALENDARIO,
     },
     {
       icon: FileText,
       label: "Documentos",
-      path: "/documentos",
+      path: ROUTES.DOCUMENTOS,
     },
     {
       icon: Trophy,
       label: "Eventos",
-      path: "/eventos",
+      path: ROUTES.EVENTOS,
     },
 
-    ...(user?.rol === "admin"
+    ...(canAccessAdmin()
       ? [
           {
             icon: ShieldCheck,
             label: "Administración",
-            path: "/admin",
+            path: ROUTES.ADMIN,
           },
         ]
       : []),
@@ -179,7 +180,7 @@ export const Sidebar = ({
               <NavLink
                 key={item.label}
                 to={item.path}
-                end={item.path === "/"}
+                end={item.path === ROUTES.HOME}
                 onClick={closeSidebar}
                 className={({ isActive }) =>
                   `

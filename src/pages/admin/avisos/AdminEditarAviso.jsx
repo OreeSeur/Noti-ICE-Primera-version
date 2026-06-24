@@ -1,7 +1,4 @@
-import {
-  useState,
-  useEffect,
-} from "react";
+import { useState } from "react";
 
 import {
   useNavigate,
@@ -10,6 +7,8 @@ import {
 
 import { useAvisos } from "../../../context/AvisosContext";
 import { AvisoForm } from "../../../components/avisos/AvisoForm";
+import { ROUTES } from "../../../constants/routes";
+import { mismoId } from "../../../utils/id";
 
 export const AdminEditarAviso = () => {
   const { id } = useParams();
@@ -21,29 +20,18 @@ export const AdminEditarAviso = () => {
     editarAviso,
   } = useAvisos();
 
+  const aviso = avisos.find(
+    (item) => mismoId(item.id, id)
+  );
+
   const [formData, setFormData] =
-    useState({
-      titulo: "",
-      fecha: "",
-      descripcion: "",
-    });
-
-  useEffect(() => {
-    const aviso =
-      avisos.find(
-        (item) =>
-          item.id === Number(id)
-      );
-
-    if (aviso) {
-      setFormData({
-        titulo: aviso.titulo,
-        fecha: aviso.fecha,
-        descripcion:
-          aviso.descripcion,
-      });
-    }
-  }, [id, avisos]);
+    useState(
+      aviso || {
+        titulo: "",
+        fecha: "",
+        descripcion: "",
+      }
+    );
 
   const handleChange = (e) => {
     setFormData({
@@ -61,8 +49,18 @@ export const AdminEditarAviso = () => {
       formData
     );
 
-    navigate("/admin/avisos");
+    navigate(ROUTES.ADMIN_AVISOS);
   };
+
+  if (!aviso) {
+    return (
+      <section>
+        <h2 className="text-red-600 font-bold text-xl">
+          Aviso no encontrado
+        </h2>
+      </section>
+    );
+  }
 
   return (
     <section>

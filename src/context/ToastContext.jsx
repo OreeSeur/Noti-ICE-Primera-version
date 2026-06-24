@@ -36,6 +36,8 @@ export const ToastProvider = ({ children }) => {
       value={{
         toasts,
         showToast,
+        success: (message) => showToast(message, "success"),
+        error: (message) => showToast(message, "error"),
         removeToast,
       }}
     >

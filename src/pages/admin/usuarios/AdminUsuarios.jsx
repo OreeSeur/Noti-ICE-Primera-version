@@ -9,6 +9,8 @@ import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 import { UsuariosFilters } from "../../../components/usuarios/UsuariosFilters";
 import { UsuarioCard } from "../../../components/usuarios/UsuarioCard";
 import { UsuariosTable } from "../../../components/usuarios/UsuariosTable";
+import { normalizeRole } from "../../../constants/roles";
+import { ROUTES } from "../../../constants/routes";
 
 export const AdminUsuarios = () => {
 const { usuarios, eliminarUsuario } =
@@ -50,8 +52,8 @@ busqueda.toLowerCase()
   const coincideRol =
     filtroRol === "todos"
       ? true
-      : usuario.rol ===
-        filtroRol;
+      : normalizeRole(usuario.rol) ===
+        normalizeRole(filtroRol);
 
   return (
     coincideBusqueda &&
@@ -105,7 +107,7 @@ Administración de Usuarios
     </div>
 
     <Link
-      to="/admin/usuarios/nuevo"
+      to={ROUTES.ADMIN_USUARIOS_NUEVO}
       className="flex items-center gap-2 bg-[#6A0032] text-white px-5 py-3 rounded-lg hover:opacity-90 transition w-fit"
     >
       <Plus size={18} />

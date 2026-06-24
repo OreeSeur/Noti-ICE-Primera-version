@@ -15,13 +15,15 @@ import { useAuth } from "../../context/AuthContext";
 import { useAvisos } from "../../context/AvisosContext";
 import { useEventos } from "../../context/EventosContext";
 import { useDocumentos } from "../../context/DocumentosContext";
+import { ROUTES } from "../../constants/routes";
+import { getRoleLabel } from "../../constants/roles";
 
 export const Topbar = ({
   setMobileOpen,
   darkMode,
   setDarkMode,
 }) => {
-  const { user, logout } = useAuth();
+  const { user, logout, canAccessAdmin } = useAuth();
   const { avisos } = useAvisos();
   const { eventos } = useEventos();
   const { documentos } = useDocumentos();
@@ -37,21 +39,21 @@ export const Topbar = ({
   const resultados = [
     ...avisos.map((item) => ({
       id: item.id,
-      titulo: item.titulo,
+      titulo: item.titulo ?? "",
       tipo: "Aviso",
       ruta: `/avisos/${item.id}`,
     })),
 
     ...eventos.map((item) => ({
       id: item.id,
-      titulo: item.titulo,
+      titulo: item.titulo ?? "",
       tipo: "Evento",
       ruta: `/eventos/${item.id}`,
     })),
 
     ...documentos.map((item) => ({
       id: item.id,
-      titulo: item.nombre,
+      titulo: item.titulo ?? item.nombre ?? "",
       tipo: "Documento",
       ruta: `/documentos/${item.id}`,
     })),
@@ -293,7 +295,7 @@ export const Topbar = ({
         {/* Usuario NO autenticado */}
         {!user && (
           <Link
-            to="/login"
+            to={ROUTES.LOGIN}
             className="
               hidden
               md:flex
@@ -346,9 +348,7 @@ export const Topbar = ({
                     dark:text-slate-400
                   "
                 >
-                  {user.rol === "admin"
-                    ? "Administrador"
-                    : "Alumno"}
+                  {getRoleLabel(user.rol)}
                 </p>
               </div>
             </button>
@@ -369,7 +369,7 @@ export const Topbar = ({
                 "
               >
                 <Link
-                  to="/perfil"
+                  to={ROUTES.PERFIL}
                   onClick={() =>
                     setShowUserMenu(false)
                   }
@@ -384,9 +384,9 @@ export const Topbar = ({
                 >
                   Mi Perfil
                 </Link>
-                {user.rol === "admin" && (
+                {canAccessAdmin() && (
                   <Link
-                    to="/admin"
+                    to={ROUTES.ADMIN}
                     onClick={() =>
                       setShowUserMenu(false)
                     }

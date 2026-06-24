@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useEventos } from "../../../context/EventosContext";
 import { EventoForm } from "../../../components/eventos/EventoForm";
+import { ROUTES } from "../../../constants/routes";
 
 export const AdminNuevoEvento = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export const AdminNuevoEvento = () => {
 
     agregarEvento(formulario);
 
-    navigate("/admin/eventos");
+    navigate(ROUTES.ADMIN_EVENTOS);
   };
 
   return (

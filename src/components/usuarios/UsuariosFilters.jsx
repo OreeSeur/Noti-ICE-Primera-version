@@ -1,3 +1,5 @@
+import { ROLE_OPTIONS } from "../../constants/roles";
+
 export const UsuariosFilters = ({
 busqueda,
 setBusqueda,
@@ -51,17 +53,14 @@ focus:ring-[#6A0032]
         Todos
       </option>
 
-      <option value="admin">
-        Administradores
-      </option>
-
-      <option value="editor">
-        Editores
-      </option>
-
-      <option value="usuario">
-        Usuarios
-      </option>
+      {ROLE_OPTIONS.map((rol) => (
+        <option
+          key={rol.value}
+          value={rol.value}
+        >
+          {rol.label}
+        </option>
+      ))}
     </select>
   </div>
 </div>

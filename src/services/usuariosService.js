@@ -1,4 +1,5 @@
 import { crearId, mismoId } from "../utils/id";
+import { ROLES } from "../constants/roles";
 import {
   obtenerUsuariosStorage,
   guardarUsuariosStorage,
@@ -17,7 +18,7 @@ export const crearUsuario = (nuevoUsuario) => {
     boleta: "",
     carrera: "",
     semestre: "",
-    rol: "usuario",
+    rol: ROLES.ALUMNO,
     estado: "activo",
     password: "",
     ...nuevoUsuario,
