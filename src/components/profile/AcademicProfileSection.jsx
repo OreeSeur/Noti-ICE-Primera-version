@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { getPlanLabel, PERIODOS_ACADEMICOS, PLANES_ESTUDIO } from "../../constants/academic";
+import { ROUTES } from "../../constants/routes";
 import { ROLES, normalizeRole } from "../../constants/roles";
 import { useAcademico } from "../../context/academico/useAcademico";
 import { useToast } from "../../context/toast/useToast";
@@ -567,11 +568,20 @@ const DocenteAcademicProfile = ({ user }) => {
       </form>
 
       <section className={`${cardClass} space-y-4`}>
-        <div>
-          <h2 className="text-xl font-bold text-slate-800 dark:text-white">Mis materias y grupos</h2>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Estas asignaciones serán la base para publicar avisos, eventos y documentos dirigidos a tus grupos.
-          </p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h2 className="text-xl font-bold text-slate-800 dark:text-white">Mis materias y grupos</h2>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              Estas asignaciones serán la base para publicar avisos, eventos y documentos dirigidos a tus grupos.
+            </p>
+          </div>
+          <Link
+            to={ROUTES.DOCENTE_PUBLICACIONES}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
+          >
+            <ClipboardList size={16} />
+            Publicar
+          </Link>
         </div>
 
         {misAsignaciones.length === 0 ? (
@@ -606,7 +616,7 @@ const AdminAcademicHint = () => (
         </p>
       </div>
       <Link
-        to="/admin/academico"
+        to={ROUTES.ADMIN_ACADEMICO}
         className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90"
       >
         <ClipboardList size={18} />

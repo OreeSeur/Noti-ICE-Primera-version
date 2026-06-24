@@ -96,7 +96,47 @@ export const canReceiveAudience = (audiencia, user) => {
   return matchesRole && matchesCareer && matchesSemester;
 };
 
-export const canReceiveItem = (item, user) => canReceiveAudience(getItemAudience(item), user);
+export const getAcademicTarget = (item = {}) => item.academicTarget || null;
+
+const userMatchesAcademicTarget = (target, user) => {
+  if (!target) return true;
+  if (!user) return false;
+
+  const userRole = normalizeRole(user.rol);
+
+  if (userRole === ROLES.ADMIN || userRole === ROLES.SUPERADMIN) return true;
+
+  if (userRole === ROLES.DOCENTE) {
+    return String(target.profesorId || target.docenteId || "") === String(user.id || "");
+  }
+
+  const profile = user.academicProfile || {};
+  const materiasIds = Array.isArray(profile.materiasIds)
+    ? profile.materiasIds.map(String)
+    : [];
+
+  const matchesPlan = !target.plan || String(profile.plan || "") === String(target.plan);
+  const matchesGrupo = !target.grupoId || String(profile.grupoId || "") === String(target.grupoId);
+  const matchesPeriodo = !target.periodo || !profile.periodo || String(profile.periodo) === String(target.periodo);
+  const matchesMateria = !target.materiaId || materiasIds.includes(String(target.materiaId));
+
+  return matchesPlan && matchesGrupo && matchesPeriodo && matchesMateria;
+};
+
+export const canReceiveItem = (item, user) => {
+  const target = getAcademicTarget(item);
+
+  if (!target) return canReceiveAudience(getItemAudience(item), user);
+
+  const userRole = normalizeRole(user?.rol);
+  const isOwnerTeacher =
+    userRole === ROLES.DOCENTE &&
+    String(target.profesorId || target.docenteId || "") === String(user?.id || "");
+
+  if (isOwnerTeacher) return true;
+
+  return canReceiveAudience(getItemAudience(item), user) && userMatchesAcademicTarget(target, user);
+};
 
 export const itemMatchesTargetCategory = (item, topicValue) => {
   const audiencia = getItemAudience(item);
@@ -158,6 +198,7 @@ export const getPriorityLabel = (prioridad = "normal") =>
 
 export const buildAudienceSearchText = (item) => {
   const summary = getAudienceSummary(getItemAudience(item));
+  const target = getAcademicTarget(item);
 
   return [
     summary.roles,
@@ -165,6 +206,13 @@ export const buildAudienceSearchText = (item) => {
     summary.semestres,
     summary.categorias,
     summary.prioridad,
+    target?.plan,
+    target?.periodo,
+    target?.profesorNombre,
+    target?.materiaNombre,
+    target?.grupoNombre,
+    target?.semestre,
+    target?.turno,
   ].join(" ");
 };
 

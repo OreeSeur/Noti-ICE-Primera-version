@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import ipnLogo from "../../assets/images/ipn-logo.webp";
 import { useAuth } from "../../context/auth/useAuth";
 import { ROUTES } from "../../constants/routes";
+import { ROLES, normalizeRole } from "../../constants/roles";
 
 import {
   House,
@@ -15,6 +16,7 @@ import {
   UserRound,
   GraduationCap,
   Bell,
+  Send,
   Menu,
   X,
 } from "lucide-react";
@@ -26,6 +28,7 @@ export const Sidebar = ({
   const [collapsed, setCollapsed] = useState(false);
 
   const { user, canAccessAdmin } = useAuth();
+  const isDocente = normalizeRole(user?.rol) === ROLES.DOCENTE;
 
   const closeSidebar = () => {
     setMobileOpen(false);
@@ -70,6 +73,16 @@ export const Sidebar = ({
             icon: UserRound,
             label: "Mi perfil",
             path: ROUTES.PERFIL,
+          },
+        ]
+      : []),
+
+    ...(isDocente
+      ? [
+          {
+            icon: Send,
+            label: "Mis publicaciones",
+            path: ROUTES.DOCENTE_PUBLICACIONES,
           },
         ]
       : []),

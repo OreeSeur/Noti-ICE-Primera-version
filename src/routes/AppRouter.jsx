@@ -19,6 +19,7 @@ import { DocumentoDetalle } from "../pages/public/DocumentoDetalle";
 
 import { Perfil } from "../pages/public/Perfil";
 import { Notificaciones } from "../pages/public/Notificaciones";
+import { DocentePublicaciones } from "../pages/docente/DocentePublicaciones";
 
 /* Autenticación */
 import { Login } from "../pages/auth/Login";
@@ -156,6 +157,19 @@ return ( <Routes>
       <PrivateRoute>
         <Layout>
           <Notificaciones />
+        </Layout>
+      </PrivateRoute>
+    }
+  />
+
+
+  {/* Publicaciones docentes */}
+  <Route
+    path={ROUTES.DOCENTE_PUBLICACIONES}
+    element={
+      <PrivateRoute>
+        <Layout>
+          <DocentePublicaciones />
         </Layout>
       </PrivateRoute>
     }
