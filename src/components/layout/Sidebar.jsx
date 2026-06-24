@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import ipnLogo from "../../assets/images/ipn-logo.webp";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/auth/useAuth";
 import { ROUTES } from "../../constants/routes";
 
 import {

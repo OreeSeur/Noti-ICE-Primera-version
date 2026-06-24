@@ -11,10 +11,10 @@ import {
   LogOut,
 } from "lucide-react";
 
-import { useAuth } from "../../context/AuthContext";
-import { useAvisos } from "../../context/AvisosContext";
-import { useEventos } from "../../context/EventosContext";
-import { useDocumentos } from "../../context/DocumentosContext";
+import { useAuth } from "../../context/auth/useAuth";
+import { useAvisos } from "../../context/avisos/useAvisos";
+import { useEventos } from "../../context/eventos/useEventos";
+import { useDocumentos } from "../../context/documentos/useDocumentos";
 import { ROUTES } from "../../constants/routes";
 import { getRoleLabel } from "../../constants/roles";
 

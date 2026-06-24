@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { InfoCard } from "../../components/cards/InfoCard";
-import { useEventos } from "../../context/EventosContext";
+import { useEventos } from "../../context/eventos/useEventos";
 
 export const Eventos = () => {
   const { eventos } = useEventos();

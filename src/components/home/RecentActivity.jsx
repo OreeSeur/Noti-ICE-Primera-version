@@ -1,5 +1,5 @@
 import { DashboardCard } from "../cards/DashboardCard";
-import { useAvisos } from "../../context/AvisosContext";
+import { useAvisos } from "../../context/avisos/useAvisos";
 
 export const RecentActivity = () => {
   const { avisos } = useAvisos();

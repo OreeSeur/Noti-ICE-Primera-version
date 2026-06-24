@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 
-import { useAvisos } from "../../context/AvisosContext";
+import { useAvisos } from "../../context/avisos/useAvisos";
 import { mismoId } from "../../utils/id";
 
 export const AvisoDetalle = () => {

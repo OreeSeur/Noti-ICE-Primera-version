@@ -5,12 +5,12 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 
-import { AuthProvider } from "./context/AuthContext";
-import { UsuariosProvider } from "./context/UsuariosContext";
-import { AvisosProvider } from "./context/AvisosContext";
-import { EventosProvider } from "./context/EventosContext";
-import { DocumentosProvider } from "./context/DocumentosContext";
-import { ToastProvider } from "./context/ToastContext";
+import { AuthProvider } from "./context/auth/AuthProvider";
+import { UsuariosProvider } from "./context/usuarios/UsuariosProvider";
+import { AvisosProvider } from "./context/avisos/AvisosProvider";
+import { EventosProvider } from "./context/eventos/EventosProvider";
+import { DocumentosProvider } from "./context/documentos/DocumentosProvider";
+import { ToastProvider } from "./context/toast/ToastProvider";
 
 ReactDOM.createRoot(
   document.getElementById("root")

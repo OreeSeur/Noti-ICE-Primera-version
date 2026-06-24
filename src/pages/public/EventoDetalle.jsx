@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 
-import { useEventos } from "../../context/EventosContext";
+import { useEventos } from "../../context/eventos/useEventos";
 import { mismoId } from "../../utils/id";
 
 export const EventoDetalle = () => {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { UsuarioForm } from "../../../components/usuarios/UsuarioForm";
-import { useUsuarios } from "../../../context/UsuariosContext";
+import { useUsuarios } from "../../../context/usuarios/useUsuarios";
 import { ROUTES } from "../../../constants/routes";
 import { ROLES } from "../../../constants/roles";
 import { mismoId } from "../../../utils/id";

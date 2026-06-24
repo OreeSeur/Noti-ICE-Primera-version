@@ -7,7 +7,7 @@ import {
   Plus,
 } from "lucide-react";
 
-import { useEventos } from "../../../context/EventosContext";
+import { useEventos } from "../../../context/eventos/useEventos";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 import { ROUTES } from "../../../constants/routes";
 

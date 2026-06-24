@@ -10,7 +10,7 @@ import {
   User,
 } from "lucide-react";
 
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/auth/useAuth";
 
 export const LoginForm = () => {
   const navigate = useNavigate();

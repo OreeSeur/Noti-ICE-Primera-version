@@ -1,5 +1,5 @@
 import { DashboardCard } from "../cards/DashboardCard";
-import { useDocumentos } from "../../context/DocumentosContext";
+import { useDocumentos } from "../../context/documentos/useDocumentos";
 
 export const RecentDocuments = () => {
   const { documentos } = useDocumentos();

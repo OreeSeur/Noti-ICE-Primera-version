@@ -7,7 +7,7 @@ import {
   Plus,
 } from "lucide-react";
 
-import { useAvisos } from "../../../context/AvisosContext";
+import { useAvisos } from "../../../context/avisos/useAvisos";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 import { ROUTES } from "../../../constants/routes";
 

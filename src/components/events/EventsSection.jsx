@@ -1,5 +1,5 @@
 import { EventCard } from "./EventCard";
-import { useEventos } from "../../context/EventosContext";
+import { useEventos } from "../../context/eventos/useEventos";
 
 export const EventsSection = () => {
   const { eventos } = useEventos();

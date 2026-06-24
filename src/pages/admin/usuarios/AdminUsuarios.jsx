@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Plus } from "lucide-react";
 
-import { useUsuarios } from "../../../context/UsuariosContext";
+import { useUsuarios } from "../../../context/usuarios/useUsuarios";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 
 import { UsuariosFilters } from "../../../components/usuarios/UsuariosFilters";

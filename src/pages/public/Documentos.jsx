@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { useDocumentos } from "../../context/DocumentosContext";
+import { useDocumentos } from "../../context/documentos/useDocumentos";
 
 export const Documentos = () => {
   const { documentos } =

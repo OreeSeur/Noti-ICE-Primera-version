@@ -9,10 +9,10 @@ import {
   Plus,
 } from "lucide-react";
 
-import { useAvisos } from "../context/AvisosContext";
-import { useEventos } from "../context/EventosContext";
-import { useDocumentos } from "../context/DocumentosContext";
-import { useUsuarios } from "../context/UsuariosContext";
+import { useAvisos } from "../context/avisos/useAvisos";
+import { useEventos } from "../context/eventos/useEventos";
+import { useDocumentos } from "../context/documentos/useDocumentos";
+import { useUsuarios } from "../context/usuarios/useUsuarios";
 
 export const PanelAdmin = () => {
   const { avisos } = useAvisos();

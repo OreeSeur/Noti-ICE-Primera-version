@@ -1,6 +1,6 @@
-import { useAvisos } from "../../context/AvisosContext";
-import { useEventos } from "../../context/EventosContext";
-import { useDocumentos } from "../../context/DocumentosContext";
+import { useAvisos } from "../../context/avisos/useAvisos";
+import { useEventos } from "../../context/eventos/useEventos";
+import { useDocumentos } from "../../context/documentos/useDocumentos";
 
 export const WelcomeCard = () => {
   const { avisos } = useAvisos();

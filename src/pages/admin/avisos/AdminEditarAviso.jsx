@@ -5,7 +5,7 @@ import {
   useParams,
 } from "react-router-dom";
 
-import { useAvisos } from "../../../context/AvisosContext";
+import { useAvisos } from "../../../context/avisos/useAvisos";
 import { AvisoForm } from "../../../components/avisos/AvisoForm";
 import { ROUTES } from "../../../constants/routes";
 import { mismoId } from "../../../utils/id";

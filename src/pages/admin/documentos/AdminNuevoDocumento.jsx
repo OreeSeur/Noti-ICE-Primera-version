@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { DocumentoForm } from "../../../components/documentos/DocumentoForm";
-import { useDocumentos } from "../../../context/DocumentosContext";
-import { useToast } from "../../../context/ToastContext";
+import { useDocumentos } from "../../../context/documentos/useDocumentos";
+import { useToast } from "../../../context/toast/useToast";
 import { ROUTES } from "../../../constants/routes";
 
 export const AdminNuevoDocumento = () => {

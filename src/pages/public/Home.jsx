@@ -8,9 +8,9 @@ import { RecentActivity } from "../../components/home/RecentActivity";
 //import { UpcomingEvents } from "../components/home/UpcomingEvents";
 import { RecentDocuments } from "../../components/home/RecentDocuments";
 import { WelcomeCard } from "../../components/home/WelcomeCard";
-import { useAvisos } from "../../context/AvisosContext";
-import { useEventos } from "../../context/EventosContext";
-import { useDocumentos } from "../../context/DocumentosContext";
+import { useAvisos } from "../../context/avisos/useAvisos";
+import { useEventos } from "../../context/eventos/useEventos";
+import { useDocumentos } from "../../context/documentos/useDocumentos";
 
 import {
   Megaphone,

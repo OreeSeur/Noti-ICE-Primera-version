@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { UsuarioForm } from "../../../components/usuarios/UsuarioForm";
-import { useUsuarios } from "../../../context/UsuariosContext";
-import { useToast } from "../../../context/ToastContext";
+import { useUsuarios } from "../../../context/usuarios/useUsuarios";
+import { useToast } from "../../../context/toast/useToast";
 import { ROLES } from "../../../constants/roles";
 import { ROUTES } from "../../../constants/routes";
 

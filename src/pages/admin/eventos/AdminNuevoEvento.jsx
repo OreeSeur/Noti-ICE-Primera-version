@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useEventos } from "../../../context/EventosContext";
+import { useEventos } from "../../../context/eventos/useEventos";
 import { EventoForm } from "../../../components/eventos/EventoForm";
 import { ROUTES } from "../../../constants/routes";
 

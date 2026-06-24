@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { InfoCard } from "../../components/cards/InfoCard";
 
-import { useAvisos } from "../../context/AvisosContext";
+import { useAvisos } from "../../context/avisos/useAvisos";
 
 export const Avisos = () => {
   const { avisos } =

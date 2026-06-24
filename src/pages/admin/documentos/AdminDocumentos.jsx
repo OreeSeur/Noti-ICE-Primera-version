@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Pencil, Trash2, Plus } from "lucide-react";
 
-import { useDocumentos } from "../../../context/DocumentosContext";
+import { useDocumentos } from "../../../context/documentos/useDocumentos";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 import { ROUTES } from "../../../constants/routes";
 

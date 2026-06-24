@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEventos } from "../../context/EventosContext";
+import { useEventos } from "../../context/eventos/useEventos";
 
 export const UpcomingEvents = () => {
   const { eventos } = useEventos();

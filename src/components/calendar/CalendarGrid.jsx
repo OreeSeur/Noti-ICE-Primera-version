@@ -1,4 +1,4 @@
-import { useEventos } from "../../context/EventosContext";
+import { useEventos } from "../../context/eventos/useEventos";
 
 export const CalendarGrid = () => {
   const { eventos } = useEventos();
