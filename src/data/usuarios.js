@@ -25,6 +25,15 @@ export const usuarios = [
       periodo: "2026-1",
       grupoId: "grp-2cm1",
       materiasIds: ["mat-2024-2-programacion-avanzada"],
+      inscripciones: [
+        {
+          id: "insc-demo-alumno-programacion-avanzada-2cm1",
+          plan: "2024",
+          periodo: "2026-1",
+          materiaId: "mat-2024-2-programacion-avanzada",
+          grupoId: "grp-2cm1",
+        },
+      ],
     },
   },
   {

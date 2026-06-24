@@ -88,15 +88,57 @@ export const canReceiveAudience = (audiencia, user) => {
 
   const matchesRole = valueMatchesSelection(normalizedAudience.roles, userRole);
   const matchesCareer = valueMatchesSelection(normalizedAudience.carreras, user.carrera);
-  const matchesSemester = valueMatchesSelection(
-    normalizedAudience.semestres,
-    normalizeSemestreValue(user.semestre)
-  );
+  const profile = user.academicProfile || {};
+  const enrollments = normalizeEnrollmentList(profile);
+  const semesterCandidates = [
+    normalizeSemestreValue(user.semestre),
+    ...enrollments.map((enrollment) => normalizeSemestreValue(enrollment.semestre)),
+  ].filter(Boolean);
+  const matchesSemester = selectionIncludesAll(normalizedAudience.semestres)
+    ? true
+    : semesterCandidates.some((semester) => valueMatchesSelection(normalizedAudience.semestres, semester));
 
   return matchesRole && matchesCareer && matchesSemester;
 };
 
 export const getAcademicTarget = (item = {}) => item.academicTarget || null;
+
+const normalizeEnrollmentList = (profile = {}) => {
+  if (Array.isArray(profile.inscripciones) && profile.inscripciones.length > 0) {
+    return profile.inscripciones.map((inscripcion) => ({
+      plan: inscripcion.plan,
+      periodo: inscripcion.periodo,
+      materiaId: inscripcion.materiaId,
+      grupoId: inscripcion.grupoId,
+      semestre: inscripcion.semestre || inscripcion.semestreNumero,
+      semestreNumero: inscripcion.semestreNumero,
+    }));
+  }
+
+  const materiasIds = Array.isArray(profile.materiasIds)
+    ? profile.materiasIds.map(String)
+    : [];
+
+  if (!profile.grupoId || materiasIds.length === 0) return [];
+
+  return materiasIds.map((materiaId) => ({
+    plan: profile.plan,
+    periodo: profile.periodo,
+    materiaId,
+    grupoId: profile.grupoId,
+  }));
+};
+
+const enrollmentMatchesAcademicTarget = (enrollment = {}, target = {}) => {
+  const matchesPlan = !target.plan || String(enrollment.plan || "") === String(target.plan);
+  const matchesGrupo = !target.grupoId || String(enrollment.grupoId || "") === String(target.grupoId);
+  const matchesPeriodo =
+    !target.periodo || !enrollment.periodo || String(enrollment.periodo) === String(target.periodo);
+  const matchesMateria =
+    !target.materiaId || String(enrollment.materiaId || "") === String(target.materiaId);
+
+  return matchesPlan && matchesGrupo && matchesPeriodo && matchesMateria;
+};
 
 const userMatchesAcademicTarget = (target, user) => {
   if (!target) return true;
@@ -111,16 +153,9 @@ const userMatchesAcademicTarget = (target, user) => {
   }
 
   const profile = user.academicProfile || {};
-  const materiasIds = Array.isArray(profile.materiasIds)
-    ? profile.materiasIds.map(String)
-    : [];
+  const enrollments = normalizeEnrollmentList(profile);
 
-  const matchesPlan = !target.plan || String(profile.plan || "") === String(target.plan);
-  const matchesGrupo = !target.grupoId || String(profile.grupoId || "") === String(target.grupoId);
-  const matchesPeriodo = !target.periodo || !profile.periodo || String(profile.periodo) === String(target.periodo);
-  const matchesMateria = !target.materiaId || materiasIds.includes(String(target.materiaId));
-
-  return matchesPlan && matchesGrupo && matchesPeriodo && matchesMateria;
+  return enrollments.some((enrollment) => enrollmentMatchesAcademicTarget(enrollment, target));
 };
 
 export const canReceiveItem = (item, user) => {

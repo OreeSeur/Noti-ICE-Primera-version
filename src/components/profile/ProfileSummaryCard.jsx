@@ -3,13 +3,14 @@ import { BadgeCheck, BookOpen, GraduationCap, Mail, School, User, Users } from "
 import { getPlanLabel } from "../../constants/academic";
 import { getRoleLabel } from "../../constants/roles";
 import { useAcademico } from "../../context/academico/useAcademico";
-import { getGrupoById, normalizeAcademicProfile } from "../../utils/academicProfile";
+import { getAcademicProfileOverview, normalizeAcademicProfile } from "../../utils/academicProfile";
 
 export const ProfileSummaryCard = ({ usuario }) => {
-  const { grupos } = useAcademico();
+  const { grupos, materias } = useAcademico();
   const inicial = usuario.nombre?.charAt(0)?.toUpperCase() || "U";
   const academicProfile = normalizeAcademicProfile(usuario.academicProfile);
-  const grupo = getGrupoById(grupos, academicProfile.grupoId);
+  const overview = getAcademicProfileOverview({ profile: academicProfile, grupos, materias });
+  const hasAcademicData = academicProfile.inscripciones.length > 0 || usuario.academicProfile?.plan;
 
   return (
     <article className="rounded-2xl bg-white p-8 shadow-md dark:bg-slate-800">
@@ -55,7 +56,7 @@ export const ProfileSummaryCard = ({ usuario }) => {
             <BookOpen size={18} /> Semestre
           </div>
           <p className="text-sm text-slate-500 dark:text-slate-300">
-            {usuario.semestre || "No registrado"}
+            {hasAcademicData ? overview.semestre : usuario.semestre || "No registrado"}
           </p>
         </div>
 
@@ -64,25 +65,25 @@ export const ProfileSummaryCard = ({ usuario }) => {
             <School size={18} /> Plan
           </div>
           <p className="text-sm text-slate-500 dark:text-slate-300">
-            {usuario.academicProfile?.plan ? getPlanLabel(academicProfile.plan) : "No definido"}
+            {hasAcademicData && overview.plan ? getPlanLabel(overview.plan) : "No definido"}
           </p>
         </div>
 
         <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-700/60">
           <div className="mb-2 flex items-center gap-2 font-semibold text-slate-700 dark:text-white">
-            <Users size={18} /> Grupo
+            <Users size={18} /> Grupo(s)
           </div>
           <p className="text-sm text-slate-500 dark:text-slate-300">
-            {grupo?.nombre || "No definido"}
+            {hasAcademicData ? overview.grupo : "No definido"}
           </p>
         </div>
 
         <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-700/60">
           <div className="mb-2 flex items-center gap-2 font-semibold text-slate-700 dark:text-white">
-            <Mail size={18} /> Estado
+            <Mail size={18} /> Materias
           </div>
           <p className="text-sm capitalize text-slate-500 dark:text-slate-300">
-            {usuario.estado || "Activo"}
+            {hasAcademicData ? `${overview.materias} inscritas` : usuario.estado || "Activo"}
           </p>
         </div>
       </div>
