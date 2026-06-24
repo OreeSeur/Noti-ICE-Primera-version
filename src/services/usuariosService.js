@@ -1,5 +1,6 @@
 import { crearId, mismoId } from "../utils/id";
 import { ROLES } from "../constants/roles";
+import { DEFAULT_SUBSCRIPTIONS, normalizeSubscriptions } from "../constants/subscriptions";
 import {
   obtenerUsuariosStorage,
   guardarUsuariosStorage,
@@ -22,6 +23,7 @@ export const crearUsuario = (nuevoUsuario) => {
     rol: ROLES.ALUMNO,
     estado: "activo",
     password: "",
+    subscriptions: DEFAULT_SUBSCRIPTIONS,
     ...nuevoUsuario,
   };
 
@@ -30,6 +32,8 @@ export const crearUsuario = (nuevoUsuario) => {
   }
 
   delete usuario.email;
+
+  usuario.subscriptions = normalizeSubscriptions(usuario.subscriptions);
 
   return usuario;
 };
@@ -52,6 +56,10 @@ export const editarUsuarioLista = (usuarios, id, datosActualizados) =>
       ? {
           ...usuario,
           ...datosActualizados,
+          subscriptions: datosActualizados.subscriptions
+            ? normalizeSubscriptions(datosActualizados.subscriptions)
+            : usuario.subscriptions,
+          updatedAt: new Date().toISOString(),
         }
       : usuario
   );

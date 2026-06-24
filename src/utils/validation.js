@@ -212,7 +212,46 @@ export const usuarioRules = [
   },
 ];
 
+export const perfilRules = [
+  {
+    field: "nombre",
+    required: true,
+    minLength: 3,
+    requiredMessage: "El nombre es obligatorio",
+    minLengthMessage: "El nombre debe tener al menos 3 caracteres",
+  },
+  {
+    field: "correo",
+    required: true,
+    email: true,
+    requiredMessage: "El correo es obligatorio",
+    emailMessage: "Ingresa un correo válido",
+  },
+  {
+    field: "boleta",
+    required: true,
+    minLength: 3,
+    requiredMessage: "La boleta es obligatoria",
+    minLengthMessage: "La boleta debe tener al menos 3 caracteres",
+  },
+  {
+    field: "carrera",
+    required: true,
+    minLength: 3,
+    requiredMessage: "La carrera es obligatoria",
+    minLengthMessage: "La carrera debe tener al menos 3 caracteres",
+  },
+  {
+    field: "semestre",
+    required: true,
+    numberRange: { min: 1, max: 12 },
+    requiredMessage: "El semestre es obligatorio",
+    rangeMessage: "El semestre debe estar entre 1 y 12",
+  },
+];
+
 export const validateAviso = createValidator(avisoRules);
 export const validateEvento = createValidator(eventoRules);
 export const validateDocumento = createValidator(documentoRules);
 export const validateUsuario = createValidator(usuarioRules);
+export const validatePerfil = createValidator(perfilRules);

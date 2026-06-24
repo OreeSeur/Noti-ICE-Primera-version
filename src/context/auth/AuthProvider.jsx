@@ -10,12 +10,22 @@ import {
 } from "../../services/authService";
 import { existeCorreo } from "../../services/usuariosService";
 import { hasRole, canAccessAdmin } from "../../utils/permissions";
+import { normalizeSubscriptions } from "../../constants/subscriptions";
 import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }) => {
-  const { agregarUsuario, usuarios } = useUsuarios();
+  const { agregarUsuario, editarUsuario, usuarios } = useUsuarios();
 
-  const [user, setUser] = useState(() => obtenerSesion());
+  const [user, setUser] = useState(() => {
+    const storedUser = obtenerSesion();
+
+    return storedUser
+      ? {
+          ...storedUser,
+          subscriptions: normalizeSubscriptions(storedUser.subscriptions),
+        }
+      : null;
+  });
 
   useEffect(() => {
     guardarSesion(user);
@@ -27,7 +37,10 @@ export const AuthProvider = ({ children }) => {
 
       if (!usuario) return false;
 
-      setUser(usuario);
+      setUser({
+        ...usuario,
+        subscriptions: normalizeSubscriptions(usuario.subscriptions),
+      });
       return true;
     },
     [usuarios]
@@ -49,6 +62,26 @@ export const AuthProvider = ({ children }) => {
     [agregarUsuario, usuarios]
   );
 
+  const updateUserProfile = useCallback(
+    (datosActualizados) => {
+      if (!user) return null;
+
+      const usuarioActualizado = {
+        ...user,
+        ...datosActualizados,
+        subscriptions: normalizeSubscriptions(
+          datosActualizados.subscriptions || user.subscriptions
+        ),
+      };
+
+      editarUsuario(user.id, usuarioActualizado);
+      setUser(usuarioActualizado);
+
+      return usuarioActualizado;
+    },
+    [editarUsuario, user]
+  );
+
   const logout = useCallback(() => {
     setUser(null);
     cerrarSesion();
@@ -60,10 +93,11 @@ export const AuthProvider = ({ children }) => {
       login,
       logout,
       register,
+      updateUserProfile,
       hasRole: (rolesPermitidos) => hasRole(user, rolesPermitidos),
       canAccessAdmin: () => canAccessAdmin(user),
     }),
-    [user, login, logout, register]
+    [user, login, logout, register, updateUserProfile]
   );
 
   return (

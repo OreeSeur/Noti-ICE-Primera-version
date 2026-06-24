@@ -1,240 +1,164 @@
-import {
-  User,
-  Mail,
-  GraduationCap,
-  BookOpen,
-  BadgeCheck,
-} from "lucide-react";
+import { useMemo, useState } from "react";
 
+import { ProfileInfoForm } from "../../components/profile/ProfileInfoForm";
+import { ProfileSummaryCard } from "../../components/profile/ProfileSummaryCard";
+import { SubscriptionPreferences } from "../../components/profile/SubscriptionPreferences";
+import { PersonalizedRecommendations } from "../../components/profile/PersonalizedRecommendations";
 import { useAuth } from "../../context/auth/useAuth";
-
+import { useToast } from "../../context/toast/useToast";
+import { useAvisos } from "../../context/avisos/useAvisos";
+import { useEventos } from "../../context/eventos/useEventos";
+import { useDocumentos } from "../../context/documentos/useDocumentos";
+import { normalizeSubscriptions } from "../../constants/subscriptions";
+import {
+  hasValidationErrors,
+  normalizeFormValues,
+  validatePerfil,
+} from "../../utils/validation";
+import { getPersonalizedRecommendations } from "../../utils/recommendations";
 
 export const Perfil = () => {
-  
-  const { user } = useAuth();
-  if (!user) {
-    return null;
-  }
-  const usuario = user;
+  const { user, updateUserProfile } = useAuth();
+  const { success, error } = useToast();
+  const { avisos } = useAvisos();
+  const { eventos } = useEventos();
+  const { documentos } = useDocumentos();
+
+  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState(() => ({
+    nombre: user?.nombre ?? "",
+    correo: user?.correo ?? "",
+    boleta: user?.boleta ?? "",
+    carrera: user?.carrera ?? "",
+    semestre: user?.semestre ?? "",
+  }));
+  const [subscriptions, setSubscriptions] = useState(() =>
+    normalizeSubscriptions(user?.subscriptions)
+  );
+
+  const recomendaciones = useMemo(
+    () =>
+      getPersonalizedRecommendations({
+        avisos,
+        eventos,
+        documentos,
+        user: user
+          ? {
+              ...user,
+              subscriptions,
+            }
+          : null,
+        limit: 5,
+      }),
+    [avisos, documentos, eventos, subscriptions, user]
+  );
+
+  if (!user) return null;
+
+  const usuarioPreview = {
+    ...user,
+    ...formData,
+    subscriptions,
+  };
+
+  const handleInfoChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
+  };
+
+  const handleSubmitInfo = (e) => {
+    e.preventDefault();
+
+    const datosNormalizados = normalizeFormValues(formData);
+    const validationErrors = validatePerfil(datosNormalizados);
+
+    if (hasValidationErrors(validationErrors)) {
+      setErrors(validationErrors);
+      error("Revisa los campos del perfil");
+      return;
+    }
+
+    try {
+      updateUserProfile(datosNormalizados);
+      success("Perfil actualizado correctamente");
+    } catch (err) {
+      error(err.message || "No se pudo actualizar el perfil");
+    }
+  };
+
+  const handleToggleTopic = (topicValue) => {
+    setSubscriptions((prev) => {
+      const topics = prev.topics.includes(topicValue)
+        ? prev.topics.filter((topic) => topic !== topicValue)
+        : [...prev.topics, topicValue];
+
+      return {
+        ...prev,
+        topics,
+      };
+    });
+  };
+
+  const handleToggleChannel = (channelName) => {
+    setSubscriptions((prev) => ({
+      ...prev,
+      [channelName]: !prev[channelName],
+    }));
+  };
+
+  const handleSubmitSubscriptions = (e) => {
+    e.preventDefault();
+
+    try {
+      updateUserProfile({ subscriptions });
+      success("Preferencias guardadas correctamente");
+    } catch (err) {
+      error(err.message || "No se pudieron guardar las preferencias");
+    }
+  };
 
   return (
-    <section>
-      {/* Encabezado */}
-      <div className="mb-8">
-        <h1
-          className="
-            text-3xl
-            font-bold
-            text-slate-800
-            dark:text-white
-          "
-        >
+    <section className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold text-slate-800 dark:text-white">
           Mi Perfil
         </h1>
-
-        <p
-          className="
-            text-slate-500
-            dark:text-slate-400
-            mt-2
-          "
-        >
-          Información académica y personal
+        <p className="mt-2 text-slate-500 dark:text-slate-400">
+          Administra tu información académica y tus preferencias de comunicación.
         </p>
       </div>
 
-      {/* Tarjeta principal */}
-      <div
-        className="
-          bg-white
-          dark:bg-slate-800
-          rounded-2xl
-          shadow-md
-          p-8
-          mb-8
-        "
-      >
-        <div
-          className="
-            flex
-            flex-col
-            md:flex-row
-            items-center
-            gap-8
-          "
-        >
-          {/* Avatar */}
-          <div
-            className="
-              w-32
-              h-32
-              rounded-full
-              bg-[#6A0032]
-              flex
-              items-center
-              justify-center
-              text-white
-            "
-          >
-            <User size={60} />
-          </div>
+      <ProfileSummaryCard usuario={usuarioPreview} />
 
-          {/* Datos */}
-          <div className="flex-1">
-            <h2
-              className="
-                text-2xl
-                font-bold
-                text-slate-800
-                dark:text-white
-                mb-2
-              "
-            >
-              {usuario.nombre}
-            </h2>
+      <div className="grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
+        <div className="space-y-8">
+          <ProfileInfoForm
+            formData={formData}
+            errors={errors}
+            onChange={handleInfoChange}
+            onSubmit={handleSubmitInfo}
+          />
 
-            <p
-              className="
-                text-slate-500
-                dark:text-slate-400
-              "
-            >
-              {usuario.correo}
-            </p>
-
-            <span
-              className="
-                inline-block
-                mt-4
-                bg-green-100
-                text-green-700
-                px-4
-                py-2
-                rounded-full
-                text-sm
-                font-medium
-              "
-            >
-              {usuario.rol}
-            </span>
-          </div>
+          <SubscriptionPreferences
+            subscriptions={subscriptions}
+            onToggleTopic={handleToggleTopic}
+            onToggleChannel={handleToggleChannel}
+            onSubmit={handleSubmitSubscriptions}
+          />
         </div>
-      </div>
 
-      {/* Información académica */}
-      <div
-        className="
-          grid
-          grid-cols-1
-          md:grid-cols-2
-          lg:grid-cols-4
-          gap-6
-        "
-      >
-        <article
-          className="
-            bg-white
-            dark:bg-slate-800
-            rounded-xl
-            shadow-md
-            p-6
-          "
-        >
-          <div className="flex items-center gap-3 mb-3">
-            <BadgeCheck size={22} />
-            <h3 className="font-semibold">
-              Boleta
-            </h3>
-          </div>
-
-          <p
-            className="
-              text-slate-600
-              dark:text-slate-300
-            "
-          >
-            {usuario.boleta}
-          </p>
-        </article>
-
-        <article
-          className="
-            bg-white
-            dark:bg-slate-800
-            rounded-xl
-            shadow-md
-            p-6
-          "
-        >
-          <div className="flex items-center gap-3 mb-3">
-            <GraduationCap size={22} />
-            <h3 className="font-semibold">
-              Carrera
-            </h3>
-          </div>
-
-          <p
-            className="
-              text-slate-600
-              dark:text-slate-300
-            "
-          >
-            {usuario.carrera}
-          </p>
-        </article>
-
-        <article
-          className="
-            bg-white
-            dark:bg-slate-800
-            rounded-xl
-            shadow-md
-            p-6
-          "
-        >
-          <div className="flex items-center gap-3 mb-3">
-            <BookOpen size={22} />
-            <h3 className="font-semibold">
-              Semestre
-            </h3>
-          </div>
-
-          <p
-            className="
-              text-slate-600
-              dark:text-slate-300
-            "
-          >
-            {usuario.semestre}
-          </p>
-        </article>
-
-        <article
-          className="
-            bg-white
-            dark:bg-slate-800
-            rounded-xl
-            shadow-md
-            p-6
-          "
-        >
-          <div className="flex items-center gap-3 mb-3">
-            <Mail size={22} />
-            <h3 className="font-semibold">
-              Correo
-            </h3>
-          </div>
-
-          <p
-            className="
-              text-slate-600
-              dark:text-slate-300
-              break-all
-            "
-          >
-            {usuario.correo}
-          </p>
-        </article>
+        <PersonalizedRecommendations items={recomendaciones} />
       </div>
     </section>
   );
