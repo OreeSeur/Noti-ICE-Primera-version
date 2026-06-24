@@ -76,7 +76,7 @@ export const DocumentoForm = ({
           className="w-full rounded-lg border border-dashed border-slate-300 px-4 py-3 text-sm dark:border-slate-700"
         />
         <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-          Tipos sugeridos: PDF, imagen, Word, Excel, PowerPoint o texto. En esta fase se guarda la información del archivo; la descarga real se conectará cuando exista backend.
+          Tipos sugeridos: PDF, imagen, Word, Excel, PowerPoint o texto. Por ahora se guarda la información del archivo; la descarga real se conectará cuando exista backend.
         </p>
 
         {formulario.archivoNombre && (

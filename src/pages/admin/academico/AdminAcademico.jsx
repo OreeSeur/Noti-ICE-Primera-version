@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { AdminStatCard } from "../../../components/admin/AdminStatCard";
+import { AcademicFlowReview } from "../../../components/admin/AcademicFlowReview";
 import { AdminTableWrapper } from "../../../components/common/AdminTableWrapper";
 import { EmptyState } from "../../../components/common/EmptyState";
 import { FormError } from "../../../components/common/FormError";
@@ -25,6 +26,9 @@ import {
 } from "../../../constants/academic";
 import { ROLES, getRoleLabel, normalizeRole } from "../../../constants/roles";
 import { useAcademico } from "../../../context/academico/useAcademico";
+import { useAvisos } from "../../../context/avisos/useAvisos";
+import { useDocumentos } from "../../../context/documentos/useDocumentos";
+import { useEventos } from "../../../context/eventos/useEventos";
 import { useToast } from "../../../context/toast/useToast";
 import { useUsuarios } from "../../../context/usuarios/useUsuarios";
 import {
@@ -181,6 +185,9 @@ export const AdminAcademico = () => {
     eliminarAsignacion,
   } = useAcademico();
   const { usuarios } = useUsuarios();
+  const { avisos } = useAvisos();
+  const { eventos } = useEventos();
+  const { documentos } = useDocumentos();
   const { success, error } = useToast();
 
   const [activeTab, setActiveTab] = useState("asignaciones");
@@ -468,7 +475,7 @@ export const AdminAcademico = () => {
   return (
     <section className="space-y-6">
       <PageHeader
-        eyebrow="Fase 2.12.2"
+        eyebrow="Gestión académica"
         title="Asignación docente académica"
         description="Consulta el catálogo de materias por plan y registra quién imparte cada materia, grupo y periodo."
       />
@@ -490,6 +497,16 @@ export const AdminAcademico = () => {
           <AdminStatCard key={item.title} {...item} />
         ))}
       </div>
+
+      <AcademicFlowReview
+        usuarios={usuarios}
+        materias={materias}
+        grupos={grupos}
+        asignaciones={asignaciones}
+        avisos={avisos}
+        eventos={eventos}
+        documentos={documentos}
+      />
 
       <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
