@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { DocumentoForm } from "../components/documentos/DocumentoForm";
+import { DocumentoForm } from "../../../components/documentos/DocumentoForm";
 
 export const AdminEditarDocumento = () => {
   const { id } = useParams();

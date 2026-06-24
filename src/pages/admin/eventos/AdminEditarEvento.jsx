@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useEventos } from "../context/EventosContext";
-import { EventoForm } from "../components/eventos/EventoForm";
+import { useEventos } from "../../../context/EventosContext";
+import { EventoForm } from "../../../components/eventos/EventoForm";
 
 export const AdminEditarEvento = () => {
   const { id } = useParams();

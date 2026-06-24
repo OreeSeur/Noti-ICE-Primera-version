@@ -1,4 +1,4 @@
-import { CalendarGrid } from "../components/calendar/CalendarGrid";
+import { CalendarGrid } from "../../components/calendar/CalendarGrid";
 
 export const Calendario = () => {
   return (

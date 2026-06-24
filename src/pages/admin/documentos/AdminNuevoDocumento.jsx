@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { DocumentoForm } from "../components/documentos/DocumentoForm";
-import { useDocumentos } from "../context/DocumentosContext";
-import { useToast } from "../context/ToastContext";
+import { DocumentoForm } from "../../../components/documentos/DocumentoForm";
+import { useDocumentos } from "../../../context/DocumentosContext";
+import { useToast } from "../../../context/ToastContext";
 
 export const AdminNuevoDocumento = () => {
   const navigate = useNavigate();

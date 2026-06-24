@@ -7,8 +7,8 @@ import {
   Plus,
 } from "lucide-react";
 
-import { useAvisos } from "../context/AvisosContext";
-import { ConfirmModal } from "../components/ui/ConfirmModal";
+import { useAvisos } from "../../../context/AvisosContext";
+import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 
 export const AdminAvisos = () => {
   const {

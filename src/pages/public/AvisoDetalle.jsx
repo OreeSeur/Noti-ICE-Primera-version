@@ -1,15 +1,15 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
-import { eventos } from "../data/eventos";
+import { avisos } from "../../data/avisos";
 
-export const EventoDetalle = () => {
+export const AvisoDetalle = () => {
   const { id } = useParams();
 
-  const evento = eventos.find(
+  const aviso = avisos.find(
     (item) => item.id === Number(id)
   );
 
-  if (!evento) {
+  if (!aviso) {
     return (
       <section>
         <h1
@@ -20,11 +20,11 @@ export const EventoDetalle = () => {
             dark:text-white
           "
         >
-          Evento no encontrado
+          Aviso no encontrado
         </h1>
 
         <Link
-          to="/eventos"
+          to="/avisos"
           className="
             text-[#6A0032]
             font-semibold
@@ -32,7 +32,7 @@ export const EventoDetalle = () => {
             inline-block
           "
         >
-          Volver a Eventos
+          Volver a Avisos
         </Link>
       </section>
     );
@@ -41,7 +41,7 @@ export const EventoDetalle = () => {
   return (
     <section>
       <Link
-        to="/eventos"
+        to="/avisos"
         className="
           text-[#6A0032]
           font-semibold
@@ -49,7 +49,7 @@ export const EventoDetalle = () => {
           inline-block
         "
       >
-        ← Volver a Eventos
+        ← Volver a Avisos
       </Link>
 
       <article
@@ -69,26 +69,17 @@ export const EventoDetalle = () => {
             dark:text-white
           "
         >
-          {evento.titulo}
+          {aviso.titulo}
         </h1>
 
         <p
           className="
             text-slate-500
             dark:text-slate-400
-            mt-3
+            mt-2
           "
         >
-          📅 {evento.fecha}
-        </p>
-
-        <p
-          className="
-            text-slate-500
-            dark:text-slate-400
-          "
-        >
-          📍 {evento.lugar}
+          {aviso.fecha}
         </p>
 
         <p
@@ -99,7 +90,7 @@ export const EventoDetalle = () => {
             dark:text-slate-300
           "
         >
-          {evento.descripcion}
+          {aviso.descripcion}
         </p>
       </article>
     </section>

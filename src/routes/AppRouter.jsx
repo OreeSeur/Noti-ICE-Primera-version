@@ -4,43 +4,46 @@ import { Routes, Route } from "react-router-dom";
 import { Layout } from "../components/layout/Layout";
 
 /* Páginas públicas */
-import { Home } from "../pages/Home";
+import { Home } from "../pages/public/Home";
 
-import { Avisos } from "../pages/Avisos";
-import { AvisoDetalle } from "../pages/AvisoDetalle";
+import { Avisos } from "../pages/public/Avisos";
+import { AvisoDetalle } from "../pages/public/AvisoDetalle";
 
-import { Eventos } from "../pages/Eventos";
-import { EventoDetalle } from "../pages/EventoDetalle";
+import { Eventos } from "../pages/public/Eventos";
+import { EventoDetalle } from "../pages/public/EventoDetalle";
 
-import { Calendario } from "../pages/Calendario";
+import { Calendario } from "../pages/public/Calendario";
 
-import { Documentos } from "../pages/Documentos";
-import { DocumentoDetalle } from "../pages/DocumentoDetalle";
+import { Documentos } from "../pages/public/Documentos";
+import { DocumentoDetalle } from "../pages/public/DocumentoDetalle";
+
+import { Perfil } from "../pages/public/Perfil";
 
 /* Autenticación */
-import { Login } from "../pages/Login";
-import { Perfil } from "../pages/Perfil";
-import { PrivateRoute } from "./PrivateRoute";
-import { AdminRoute } from "./AdminRoute";
+import { Login } from "../pages/auth/Login";
 
 /* Administración */
 import { PanelAdmin } from "../pages/PanelAdmin";
 
-import { AdminAvisos } from "../pages/AdminAvisos";
-import { AdminNuevoAviso } from "../pages/AdminNuevoAviso";
-import { AdminEditarAviso } from "../pages/AdminEditarAviso";
+import { AdminAvisos } from "../pages/admin/avisos/AdminAvisos";
+import { AdminNuevoAviso } from "../pages/admin/avisos/AdminNuevoAviso";
+import { AdminEditarAviso } from "../pages/admin/avisos/AdminEditarAviso";
 
-import { AdminEventos } from "../pages/AdminEventos";
-import { AdminNuevoEvento } from "../pages/AdminNuevoEvento";
-import { AdminEditarEvento } from "../pages/AdminEditarEvento";
+import { AdminEventos } from "../pages/admin/eventos/AdminEventos";
+import { AdminNuevoEvento } from "../pages/admin/eventos/AdminNuevoEvento";
+import { AdminEditarEvento } from "../pages/admin/eventos/AdminEditarEvento";
 
-import { AdminDocumentos } from "../pages/AdminDocumentos";
-import { AdminNuevoDocumento } from "../pages/AdminNuevoDocumento";
-import { AdminEditarDocumento } from "../pages/AdminEditarDocumento";
+import { AdminDocumentos } from "../pages/admin/documentos/AdminDocumentos";
+import { AdminNuevoDocumento } from "../pages/admin/documentos/AdminNuevoDocumento";
+import { AdminEditarDocumento } from "../pages/admin/documentos/AdminEditarDocumento";
 
-import { AdminUsuarios } from "../pages/AdminUsuarios";
-import { AdminNuevoUsuario } from "../pages/AdminNuevoUsuario";
-import { AdminEditarUsuario } from "../pages/AdminEditarUsuario";
+import { AdminUsuarios } from "../pages/admin/usuarios/AdminUsuarios";
+import { AdminNuevoUsuario } from "../pages/admin/usuarios/AdminNuevoUsuario";
+import { AdminEditarUsuario } from "../pages/admin/usuarios/AdminEditarUsuario";
+
+/* Rutas protegidas */
+import { PrivateRoute } from "./PrivateRoute";
+import { AdminRoute } from "./AdminRoute";
 
 /* Error 404 */
 import { NotFound } from "../pages/NotFound";
@@ -48,7 +51,6 @@ import { NotFound } from "../pages/NotFound";
 export const AppRouter = () => {
 return ( <Routes>
 
-```
   {/* Login */}
   <Route
     path="/login"

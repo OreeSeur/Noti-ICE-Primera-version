@@ -3,7 +3,7 @@ import {
   useParams,
 } from "react-router-dom";
 
-import { useDocumentos } from "../context/DocumentosContext";
+import { useDocumentos } from "../../context/DocumentosContext";
 
 export const DocumentoDetalle = () => {
   const { id } = useParams();

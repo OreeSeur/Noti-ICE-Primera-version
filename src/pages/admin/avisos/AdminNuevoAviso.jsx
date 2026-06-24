@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useAvisos } from "../context/AvisosContext";
-import { AvisoForm } from "../components/avisos/AvisoForm";
+import { useAvisos } from "../../../context/AvisosContext";
+import { AvisoForm } from "../../../components/avisos/AvisoForm";
 
 export const AdminNuevoAviso = () => {
   const navigate = useNavigate();

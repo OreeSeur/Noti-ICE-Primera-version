@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 
 import { Plus } from "lucide-react";
 
-import { useUsuarios } from "../context/UsuariosContext";
-import { ConfirmModal } from "../components/ui/ConfirmModal";
+import { useUsuarios } from "../../../context/UsuariosContext";
+import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 
-import { UsuariosFilters } from "../components/usuarios/UsuariosFilters";
-import { UsuarioCard } from "../components/usuarios/UsuarioCard";
-import { UsuariosTable } from "../components/usuarios/UsuariosTable";
+import { UsuariosFilters } from "../../../components/usuarios/UsuariosFilters";
+import { UsuarioCard } from "../../../components/usuarios/UsuarioCard";
+import { UsuariosTable } from "../../../components/usuarios/UsuariosTable";
 
 export const AdminUsuarios = () => {
 const { usuarios, eliminarUsuario } =

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { UsuarioForm } from "../components/usuarios/UsuarioForm";
-import { useUsuarios } from "../context/UsuariosContext";
+import { UsuarioForm } from "../../../components/usuarios/UsuarioForm";
+import { useUsuarios } from "../../../context/UsuariosContext";
 
 export const AdminEditarUsuario = () => {
   const { id } = useParams();

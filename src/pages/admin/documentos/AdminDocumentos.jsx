@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 import { Pencil, Trash2, Plus } from "lucide-react";
 
-import { useDocumentos } from "../context/DocumentosContext";
-import { ConfirmModal } from "../components/ui/ConfirmModal";
+import { useDocumentos } from "../../../context/DocumentosContext";
+import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 
 export const AdminDocumentos = () => {
   const { documentos, eliminarDocumento } = useDocumentos();

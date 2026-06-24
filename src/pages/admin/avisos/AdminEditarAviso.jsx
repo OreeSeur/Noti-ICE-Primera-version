@@ -8,8 +8,8 @@ import {
   useParams,
 } from "react-router-dom";
 
-import { useAvisos } from "../context/AvisosContext";
-import { AvisoForm } from "../components/avisos/AvisoForm";
+import { useAvisos } from "../../../context/AvisosContext";
+import { AvisoForm } from "../../../components/avisos/AvisoForm";
 
 export const AdminEditarAviso = () => {
   const { id } = useParams();

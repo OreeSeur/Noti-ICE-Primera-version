@@ -7,8 +7,8 @@ import {
   Plus,
 } from "lucide-react";
 
-import { useEventos } from "../context/EventosContext";
-import { ConfirmModal } from "../components/ui/ConfirmModal";
+import { useEventos } from "../../../context/EventosContext";
+import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 
 export const AdminEventos = () => {
   const {

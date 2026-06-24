@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { eventos } from "../data/eventos";
-import { InfoCard } from "../components/cards/InfoCard";
+import { eventos } from "../../data/eventos";
+import { InfoCard } from "../../components/cards/InfoCard";
 
 export const Eventos = () => {
   const [categoria, setCategoria] =

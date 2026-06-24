@@ -1,6 +1,6 @@
-import ipnLogo from "../assets/images/ipn-seeklogo.png";
+import ipnLogo from "../../assets/images/ipn-seeklogo.png";
 
-import { LoginForm } from "../components/auth/LoginForm";
+import { LoginForm } from "../../components/auth/LoginForm";
 
 export const Login = () => {
   return (

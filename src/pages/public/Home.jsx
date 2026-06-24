@@ -1,20 +1,20 @@
-import { Header } from "../components/layout/Header";
-import { StatCard } from "../components/cards/StatCard";
+import { Header } from "../../components/layout/Header";
+import { StatCard } from "../../components/cards/StatCard";
 //import { NewsSection } from "../components/news/NewsSection";
-import { EventsSection } from "../components/events/EventsSection";
-import { QuickActions } from "../components/home/QuickActions";
-import { avisos } from "../data/avisos";
-import { eventos } from "../data/eventos";
-import { documentos } from "../data/documentos";
+import { EventsSection } from "../../components/events/EventsSection";
+import { QuickActions } from "../../components/home/QuickActions";
+import { avisos } from "../../data/avisos";
+import { eventos } from "../../data/eventos";
+import { documentos } from "../../data/documentos";
 
-import { HeroBanner } from "../components/home/HeroBanner";
+import { HeroBanner } from "../../components/home/HeroBanner";
 
-import { RecentActivity } from "../components/home/RecentActivity";
+import { RecentActivity } from "../../components/home/RecentActivity";
 //import { UpcomingEvents } from "../components/home/UpcomingEvents";
 
-import { RecentDocuments } from "../components/home/RecentDocuments";
+import { RecentDocuments } from "../../components/home/RecentDocuments";
 
-import { WelcomeCard } from "../components/home/WelcomeCard";
+import { WelcomeCard } from "../../components/home/WelcomeCard";
 
 import {
   Megaphone,
