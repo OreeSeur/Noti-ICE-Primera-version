@@ -1,4 +1,5 @@
 import { crearId, mismoId } from "../utils/id";
+import { parseGrupoNombre } from "../utils/academic";
 import {
   obtenerAsignacionesStorage,
   obtenerGruposStorage,
@@ -24,8 +25,12 @@ export const crearMateria = (materia) => ({
   id: crearId(),
   clave: limpiarTexto(materia.clave).toUpperCase(),
   nombre: limpiarTexto(materia.nombre),
+  plan: limpiarTexto(materia.plan || "2024"),
   carrera: limpiarTexto(materia.carrera),
   semestre: limpiarTexto(materia.semestre),
+  semestreNumero: materia.semestreNumero || null,
+  tipo: limpiarTexto(materia.tipo || "Obligatoria"),
+  opcion: limpiarTexto(materia.opcion),
   area: limpiarTexto(materia.area),
   createdAt: new Date().toISOString(),
 });
@@ -51,14 +56,22 @@ export const editarMateriaLista = (materias, id, datosActualizados) =>
 export const eliminarMateriaLista = (materias, id) =>
   materias.filter((materia) => !mismoId(materia.id, id));
 
-export const crearGrupo = (grupo) => ({
-  id: crearId(),
-  nombre: limpiarTexto(grupo.nombre).toUpperCase(),
-  carrera: limpiarTexto(grupo.carrera),
-  semestre: limpiarTexto(grupo.semestre),
-  turno: limpiarTexto(grupo.turno),
-  createdAt: new Date().toISOString(),
-});
+export const crearGrupo = (grupo) => {
+  const datosGrupo = parseGrupoNombre(grupo.nombre);
+
+  return {
+    id: crearId(),
+    ...(datosGrupo || {}),
+    nombre: limpiarTexto(grupo.nombre).toUpperCase(),
+    carrera: datosGrupo?.carrera || limpiarTexto(grupo.carrera),
+    semestre: datosGrupo?.semestre || limpiarTexto(grupo.semestre),
+    semestreNumero: datosGrupo?.semestreNumero || grupo.semestreNumero || null,
+    turnoCodigo: datosGrupo?.turnoCodigo || limpiarTexto(grupo.turnoCodigo),
+    turno: datosGrupo?.turno || limpiarTexto(grupo.turno),
+    numeroGrupo: datosGrupo?.numeroGrupo || grupo.numeroGrupo || null,
+    createdAt: new Date().toISOString(),
+  };
+};
 
 export const agregarGrupoLista = (grupos, grupo) => [crearGrupo(grupo), ...grupos];
 
@@ -83,6 +96,7 @@ export const crearAsignacion = (asignacion) => ({
   profesorId: asignacion.profesorId,
   materiaId: asignacion.materiaId,
   grupoId: asignacion.grupoId,
+  plan: limpiarTexto(asignacion.plan || "2024"),
   periodo: limpiarTexto(asignacion.periodo),
   createdAt: new Date().toISOString(),
 });
