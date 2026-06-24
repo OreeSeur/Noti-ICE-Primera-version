@@ -31,8 +31,8 @@ export const UsuarioForm = ({
 
         <input
           type="email"
-          name="email"
-          value={formulario.email}
+          name="correo"
+          value={formulario.correo}
           onChange={handleChange}
           className="w-full border rounded-lg px-4 py-2"
           required

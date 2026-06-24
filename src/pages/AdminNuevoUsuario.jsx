@@ -13,7 +13,7 @@ export const AdminNuevoUsuario = () => {
 
   const [formulario, setFormulario] = useState({
     nombre: "",
-    email: "",
+    correo: "",
     rol: "usuario",
     estado: "activo",
     password: "",
