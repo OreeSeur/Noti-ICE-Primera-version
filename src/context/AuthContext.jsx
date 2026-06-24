@@ -5,62 +5,60 @@ import {
   useEffect,
 } from "react";
 
+import { useUsuarios } from "./UsuariosContext";
+
 const AuthContext = createContext();
 
-export const AuthProvider = ({
-  children,
-}) => {
-  const [user, setUser] =
-    useState(() => {
-      const guardado =
-        localStorage.getItem("user");
+export const AuthProvider = ({ children }) => {
+  const { agregarUsuario, usuarios } = useUsuarios();
 
-      return guardado
-        ? JSON.parse(guardado)
-        : null;
-    });
+  const [user, setUser] = useState(() => {
+    const guardado = localStorage.getItem("user");
+    return guardado ? JSON.parse(guardado) : null;
+  });
 
   useEffect(() => {
-    localStorage.setItem(
-      "user",
-      JSON.stringify(user)
-    );
+    localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
 
-  const login = (
-    correo,
-    password
-  ) => {
-    const usuarios =
-      JSON.parse(
-        localStorage.getItem(
-          "usuarios"
-        )
-      ) || [];
+  const login = (correo, password) => {
+    const usuario = usuarios.find(
+      (u) => u.correo === correo && u.password === password
+    );
 
-    const usuario =
-      usuarios.find(
-        (item) =>
-          item.correo === correo &&
-          item.password ===
-            password
-      );
-
-    if (!usuario) {
-      return false;
-    }
+    if (!usuario) return false;
 
     setUser(usuario);
-
     return true;
   };
 
+const register = (nuevoUsuario) => {
+  const existe = usuarios.find(
+    (u) => u.correo === nuevoUsuario.correo
+  );
+
+  if (existe) return false;
+
+  const usuarioCreado = {
+    id: Date.now(),
+    nombre: "",
+    correo: "",
+    rol: "usuario",
+    estado: "activo",
+    password: "",
+    ...nuevoUsuario,
+  };
+
+  agregarUsuario(usuarioCreado);
+
+  // 🔥 AUTO LOGIN DESPUÉS DE REGISTRO
+  setUser(usuarioCreado);
+
+  return true;
+};
   const logout = () => {
     setUser(null);
-
-    localStorage.removeItem(
-      "user"
-    );
+    localStorage.removeItem("user");
   };
 
   return (
@@ -69,6 +67,7 @@ export const AuthProvider = ({
         user,
         login,
         logout,
+        register,
       }}
     >
       {children}
@@ -76,5 +75,4 @@ export const AuthProvider = ({
   );
 };
 
-export const useAuth = () =>
-  useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext);

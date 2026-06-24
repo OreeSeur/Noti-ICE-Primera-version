@@ -116,7 +116,9 @@ export const AdminUsuarios = () => {
                 >
                   <td className="p-4">{usuario.nombre}</td>
 
-                  <td className="p-4">{usuario.email}</td>
+                  <td className="p-4">
+                  {usuario.correo || usuario.email || "Sin correo"}
+                  </td>
 
                   <td className="p-4">
                     <span

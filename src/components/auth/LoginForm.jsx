@@ -6,26 +6,24 @@ import {
   Lock,
   Eye,
   EyeOff,
+  User,
 } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
+  const { login, register } = useAuth();
 
-  const { login } = useAuth();
+  const [mode, setMode] = useState("login");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
 
-  const [showPassword, setShowPassword] =
-    useState(false);
-
-  const [error, setError] =
-    useState("");
-
-  const [formData, setFormData] =
-    useState({
-      email: "",
-      password: "",
-    });
+  const [formData, setFormData] = useState({
+    nombre: "",
+    correo: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
     setFormData({
@@ -36,236 +34,105 @@ export const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.clear();
-
-    console.log(
-      "========== LOGIN =========="
-    );
-
-    console.log(
-      "EMAIL:",
-      formData.email
-    );
-
-    console.log(
-      "PASSWORD:",
-      formData.password
-    );
-
     setError("");
 
-    const success = login(
-      formData.email,
-      formData.password
-    );
-
-    console.log(
-      "RESULTADO LOGIN:",
-      success
-    );
-
-    if (success) {
-      console.log(
-        "REDIRECCIONANDO AL HOME..."
+    if (mode === "login") {
+      const success = login(
+        formData.correo,
+        formData.password
       );
 
-      navigate("/");
-    } else {
-      console.log(
-        "LOGIN FALLIDO"
-      );
+      if (success) return navigate("/");
 
-      setError(
-        "Correo o contraseña incorrectos"
-      );
+      return setError("Credenciales incorrectas");
     }
+
+    const success = register({
+      nombre: formData.nombre,
+      correo: formData.correo,
+      password: formData.password,
+      rol: "usuario",
+      estado: "activo",
+    });
+
+    if (!success) {
+      return setError("El usuario ya existe");
+    }
+
+    navigate("/");
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="
-        bg-white
-        dark:bg-slate-800
-        p-8
-        rounded-2xl
-        shadow-lg
-        w-full
-      "
-    >
-      <h2
-        className="
-          text-3xl
-          font-bold
-          text-center
-          text-slate-800
-          dark:text-white
-          mb-2
-        "
-      >
-        Iniciar Sesión
+    <form className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-lg w-full" onSubmit={handleSubmit}>
+      <h2 className="text-3xl font-bold text-center mb-4">
+        {mode === "login" ? "Iniciar Sesión" : "Registro"}
       </h2>
 
-      <p
-        className="
-          text-center
-          text-slate-500
-          dark:text-slate-400
-          mb-8
-        "
-      >
-        Accede al Portal Académico ESIME
-      </p>
-
       {error && (
-        <div
-          className="
-            mb-6
-            bg-red-100
-            text-red-700
-            p-3
-            rounded-lg
-            text-sm
-          "
-        >
+        <div className="mb-4 text-red-600 bg-red-100 p-2 rounded">
           {error}
         </div>
       )}
 
-      <div className="mb-5">
-        <label
-          className="
-            block
-            mb-2
-            font-medium
-            text-slate-700
-            dark:text-slate-300
-          "
-        >
-          Correo Institucional
-        </label>
+      {mode === "register" && (
+        <div className="mb-4">
+          <label>Nombre</label>
+          <div className="flex items-center gap-2 border p-2 rounded">
+            <User size={18} />
+            <input
+              name="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+              className="w-full outline-none"
+            />
+          </div>
+        </div>
+      )}
 
-        <div
-          className="
-            flex
-            items-center
-            gap-3
-            border
-            border-slate-300
-            dark:border-slate-700
-            rounded-lg
-            px-4
-            py-3
-          "
-        >
+      <div className="mb-4">
+        <label>Correo</label>
+        <div className="flex items-center gap-2 border p-2 rounded">
           <Mail size={18} />
-
           <input
-            type="email"
-            name="email"
-            value={formData.email}
+            name="correo"
+            value={formData.correo}
             onChange={handleChange}
-            placeholder="usuario@esime.mx"
-            className="
-              w-full
-              bg-transparent
-              outline-none
-            "
+            className="w-full outline-none"
           />
         </div>
       </div>
 
-      <div className="mb-6">
-        <label
-          className="
-            block
-            mb-2
-            font-medium
-            text-slate-700
-            dark:text-slate-300
-          "
-        >
-          Contraseña
-        </label>
-
-        <div
-          className="
-            flex
-            items-center
-            gap-3
-            border
-            border-slate-300
-            dark:border-slate-700
-            rounded-lg
-            px-4
-            py-3
-          "
-        >
+      <div className="mb-4">
+        <label>Contraseña</label>
+        <div className="flex items-center gap-2 border p-2 rounded">
           <Lock size={18} />
-
           <input
-            type={
-              showPassword
-                ? "text"
-                : "password"
-            }
+            type={showPassword ? "text" : "password"}
             name="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="123456"
-            className="
-              w-full
-              bg-transparent
-              outline-none
-            "
+            className="w-full outline-none"
           />
-
-          <button
-            type="button"
-            onClick={() =>
-              setShowPassword(
-                !showPassword
-              )
-            }
-          >
-            {showPassword ? (
-              <EyeOff size={18} />
-            ) : (
-              <Eye size={18} />
-            )}
+          <button type="button" onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? <EyeOff /> : <Eye />}
           </button>
         </div>
       </div>
 
-      <button
-        type="submit"
-        className="
-          w-full
-          bg-[#6A0032]
-          text-white
-          py-3
-          rounded-lg
-          font-semibold
-          hover:opacity-90
-          transition
-        "
-      >
-        Ingresar
+      <button className="w-full bg-[#6A0032] text-white py-2 rounded">
+        {mode === "login" ? "Ingresar" : "Registrarse"}
       </button>
 
-      <div
-        className="
-          mt-6
-          text-sm
-          text-slate-500
-          dark:text-slate-400
-        "
+      <p
+        className="text-center mt-4 text-sm cursor-pointer"
+        onClick={() =>
+          setMode(mode === "login" ? "register" : "login")
+        }
       >
-        <p>Usuario: usuario@esime.mx</p>
-        <p>Admin: admin@esime.mx</p>
-        <p>Contraseña: 123456</p>
-      </div>
+        {mode === "login"
+          ? "¿No tienes cuenta? Regístrate"
+          : "¿Ya tienes cuenta? Inicia sesión"}
+      </p>
     </form>
   );
 };

@@ -10,27 +10,26 @@ import { UsuariosProvider } from "./context/UsuariosContext";
 import { AvisosProvider } from "./context/AvisosContext";
 import { EventosProvider } from "./context/EventosContext";
 import { DocumentosProvider } from "./context/DocumentosContext";
-
 import { ToastProvider } from "./context/ToastContext";
 
 ReactDOM.createRoot(
   document.getElementById("root")
 ).render(
   <React.StrictMode>
-    <AuthProvider>
-      <AvisosProvider>
-        <EventosProvider>
-          <DocumentosProvider>
-            <UsuariosProvider>
+    <UsuariosProvider>
+      <AuthProvider>
+        <AvisosProvider>
+          <EventosProvider>
+            <DocumentosProvider>
               <BrowserRouter>
                 <ToastProvider>
                   <App />
                 </ToastProvider>
               </BrowserRouter>
-            </UsuariosProvider>
-          </DocumentosProvider>
-        </EventosProvider>
-      </AvisosProvider>
-    </AuthProvider>
+            </DocumentosProvider>
+          </EventosProvider>
+        </AvisosProvider>
+      </AuthProvider>
+    </UsuariosProvider>
   </React.StrictMode>
 );
