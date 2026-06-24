@@ -13,6 +13,7 @@ export const guardarUsuarios = (usuarios) =>
 export const crearUsuario = (nuevoUsuario) => {
   const usuario = {
     id: crearId(),
+    createdAt: new Date().toISOString(),
     nombre: "",
     correo: "",
     boleta: "",

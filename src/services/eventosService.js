@@ -10,6 +10,7 @@ export const guardarEventos = (eventos) => guardarEventosStorage(eventos);
 
 export const crearEvento = (nuevoEvento) => ({
   id: crearId(),
+  createdAt: new Date().toISOString(),
   ...nuevoEvento,
 });
 

@@ -1,87 +1,81 @@
+import { FormError } from "../common/FormError";
+
 export const EventoForm = ({
   formulario,
   handleChange,
   handleSubmit,
   buttonText,
+  errors = {},
 }) => {
+  const inputClass = (field) =>
+    `w-full border rounded-lg px-4 py-2 bg-transparent ${
+      errors[field] ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+    }`;
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white rounded-xl shadow-md p-6 space-y-4"
+      noValidate
+      className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 space-y-4"
     >
       <div>
-        <label className="block mb-2 font-medium">
-          Título
-        </label>
-
+        <label className="block mb-2 font-medium">Título</label>
         <input
           type="text"
           name="titulo"
-          value={formulario.titulo}
+          value={formulario.titulo ?? ""}
           onChange={handleChange}
-          className="w-full border rounded-lg px-4 py-2"
-          required
+          className={inputClass("titulo")}
         />
+        <FormError message={errors.titulo} />
       </div>
 
       <div>
-        <label className="block mb-2 font-medium">
-          Fecha
-        </label>
-
+        <label className="block mb-2 font-medium">Fecha</label>
         <input
           type="date"
           name="fecha"
-          value={formulario.fecha}
+          value={formulario.fecha ?? ""}
           onChange={handleChange}
-          className="w-full border rounded-lg px-4 py-2"
-          required
+          className={inputClass("fecha")}
         />
+        <FormError message={errors.fecha} />
       </div>
 
       <div>
-        <label className="block mb-2 font-medium">
-          Lugar
-        </label>
-
+        <label className="block mb-2 font-medium">Lugar</label>
         <input
           type="text"
           name="lugar"
-          value={formulario.lugar}
+          value={formulario.lugar ?? ""}
           onChange={handleChange}
-          className="w-full border rounded-lg px-4 py-2"
-          required
+          className={inputClass("lugar")}
         />
+        <FormError message={errors.lugar} />
       </div>
 
       <div>
-        <label className="block mb-2 font-medium">
-          Categoría
-        </label>
-
+        <label className="block mb-2 font-medium">Categoría</label>
         <input
           type="text"
           name="categoria"
-          value={formulario.categoria}
+          value={formulario.categoria ?? ""}
           onChange={handleChange}
-          className="w-full border rounded-lg px-4 py-2"
-          required
+          className={inputClass("categoria")}
         />
+        <FormError message={errors.categoria} />
       </div>
 
       <div>
-        <label className="block mb-2 font-medium">
-          Descripción
-        </label>
-
+        <label className="block mb-2 font-medium">Descripción</label>
         <textarea
           name="descripcion"
-          value={formulario.descripcion}
+          value={formulario.descripcion ?? ""}
           onChange={handleChange}
           rows="5"
-          className="w-full border rounded-lg px-4 py-2"
-          required
+          className={inputClass("descripcion")}
         />
+        <FormError message={errors.descripcion} />
       </div>
 
       <div className="flex gap-4">

@@ -1,12 +1,16 @@
+import { FormError } from "../common/FormError";
+
 export const AvisoForm = ({
   formData,
   handleChange,
   handleSubmit,
   buttonText,
+  errors = {},
 }) => {
   return (
     <form
       onSubmit={handleSubmit}
+      noValidate
       className="
         bg-white
         dark:bg-slate-800
@@ -17,93 +21,66 @@ export const AvisoForm = ({
       "
     >
       <div className="mb-5">
-        <label
-          className="
-            block
-            mb-2
-            font-medium
-          "
-        >
-          Título
-        </label>
+        <label className="block mb-2 font-medium">Título</label>
 
         <input
           type="text"
           name="titulo"
-          value={formData.titulo}
+          value={formData.titulo ?? ""}
           onChange={handleChange}
-          required
-          className="
+          className={`
             w-full
             border
-            border-slate-300
-            dark:border-slate-700
             rounded-lg
             px-4
             py-3
             bg-transparent
-          "
+            ${errors.titulo ? "border-red-500" : "border-slate-300 dark:border-slate-700"}
+          `}
         />
+        <FormError message={errors.titulo} />
       </div>
 
       <div className="mb-5">
-        <label
-          className="
-            block
-            mb-2
-            font-medium
-          "
-        >
-          Fecha
-        </label>
+        <label className="block mb-2 font-medium">Fecha</label>
 
         <input
           type="date"
           name="fecha"
-          value={formData.fecha}
+          value={formData.fecha ?? ""}
           onChange={handleChange}
-          required
-          className="
+          className={`
             w-full
             border
-            border-slate-300
-            dark:border-slate-700
             rounded-lg
             px-4
             py-3
             bg-transparent
-          "
+            ${errors.fecha ? "border-red-500" : "border-slate-300 dark:border-slate-700"}
+          `}
         />
+        <FormError message={errors.fecha} />
       </div>
 
       <div className="mb-6">
-        <label
-          className="
-            block
-            mb-2
-            font-medium
-          "
-        >
-          Descripción
-        </label>
+        <label className="block mb-2 font-medium">Descripción</label>
 
         <textarea
           rows="6"
           name="descripcion"
-          value={formData.descripcion}
+          value={formData.descripcion ?? ""}
           onChange={handleChange}
-          required
-          className="
+          className={`
             w-full
             border
-            border-slate-300
-            dark:border-slate-700
             rounded-lg
             px-4
             py-3
             bg-transparent
-          "
+            ${errors.descripcion ? "border-red-500" : "border-slate-300 dark:border-slate-700"}
+          `}
         />
+        <FormError message={errors.descripcion} />
       </div>
 
       <button

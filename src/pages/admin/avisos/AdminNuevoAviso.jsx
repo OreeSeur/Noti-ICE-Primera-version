@@ -2,32 +2,56 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAvisos } from "../../../context/avisos/useAvisos";
+import { useToast } from "../../../context/toast/useToast";
 import { AvisoForm } from "../../../components/avisos/AvisoForm";
 import { ROUTES } from "../../../constants/routes";
+import {
+  hasValidationErrors,
+  normalizeFormValues,
+  validateAviso,
+} from "../../../utils/validation";
 
 export const AdminNuevoAviso = () => {
   const navigate = useNavigate();
 
   const { agregarAviso } = useAvisos();
+  const { success, error } = useToast();
 
   const [formData, setFormData] = useState({
     titulo: "",
     fecha: "",
     descripcion: "",
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+
+    if (errors[e.target.name]) {
+      setErrors({
+        ...errors,
+        [e.target.name]: "",
+      });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    agregarAviso(formData);
+    const datosNormalizados = normalizeFormValues(formData);
+    const validationErrors = validateAviso(datosNormalizados);
 
+    if (hasValidationErrors(validationErrors)) {
+      setErrors(validationErrors);
+      error("Revisa los campos marcados");
+      return;
+    }
+
+    agregarAviso(datosNormalizados);
+    success("Aviso creado correctamente");
     navigate(ROUTES.ADMIN_AVISOS);
   };
 
@@ -50,6 +74,7 @@ export const AdminNuevoAviso = () => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         buttonText="Guardar Aviso"
+        errors={errors}
       />
     </section>
   );

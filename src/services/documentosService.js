@@ -11,6 +11,7 @@ export const guardarDocumentos = (documentos) =>
 
 export const crearDocumento = (nuevoDocumento) => ({
   id: crearId(),
+  createdAt: new Date().toISOString(),
   ...nuevoDocumento,
 });
 

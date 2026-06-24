@@ -6,6 +6,11 @@ import { useUsuarios } from "../../../context/usuarios/useUsuarios";
 import { useToast } from "../../../context/toast/useToast";
 import { ROLES } from "../../../constants/roles";
 import { ROUTES } from "../../../constants/routes";
+import {
+  hasValidationErrors,
+  normalizeFormValues,
+  validateUsuario,
+} from "../../../utils/validation";
 
 export const AdminNuevoUsuario = () => {
   const navigate = useNavigate();
@@ -23,22 +28,37 @@ export const AdminNuevoUsuario = () => {
     estado: "activo",
     password: "",
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormulario({
       ...formulario,
       [e.target.name]: e.target.value,
     });
+
+    if (errors[e.target.name]) {
+      setErrors({
+        ...errors,
+        [e.target.name]: "",
+      });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const datosNormalizados = normalizeFormValues(formulario);
+    const validationErrors = validateUsuario(datosNormalizados);
+
+    if (hasValidationErrors(validationErrors)) {
+      setErrors(validationErrors);
+      error("Revisa los campos marcados");
+      return;
+    }
+
     try {
-      agregarUsuario(formulario);
-
+      agregarUsuario(datosNormalizados);
       success("Usuario creado correctamente");
-
       navigate(ROUTES.ADMIN_USUARIOS);
     } catch (err) {
       error(err.message || "Error al crear usuario");
@@ -47,15 +67,14 @@ export const AdminNuevoUsuario = () => {
 
   return (
     <section className="space-y-6">
-      <h1 className="text-3xl font-bold">
-        Nuevo Usuario
-      </h1>
+      <h1 className="text-3xl font-bold">Nuevo Usuario</h1>
 
       <UsuarioForm
         formulario={formulario}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         buttonText="Guardar Usuario"
+        errors={errors}
       />
     </section>
   );

@@ -1,54 +1,64 @@
 import { useState } from "react";
 
-import {
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useAvisos } from "../../../context/avisos/useAvisos";
+import { useToast } from "../../../context/toast/useToast";
 import { AvisoForm } from "../../../components/avisos/AvisoForm";
 import { ROUTES } from "../../../constants/routes";
 import { mismoId } from "../../../utils/id";
+import {
+  hasValidationErrors,
+  normalizeFormValues,
+  validateAviso,
+} from "../../../utils/validation";
 
 export const AdminEditarAviso = () => {
   const { id } = useParams();
-
   const navigate = useNavigate();
 
-  const {
-    avisos,
-    editarAviso,
-  } = useAvisos();
+  const { avisos, editarAviso } = useAvisos();
+  const { success, error } = useToast();
 
-  const aviso = avisos.find(
-    (item) => mismoId(item.id, id)
+  const aviso = avisos.find((item) => mismoId(item.id, id));
+
+  const [formData, setFormData] = useState(
+    aviso || {
+      titulo: "",
+      fecha: "",
+      descripcion: "",
+    }
   );
-
-  const [formData, setFormData] =
-    useState(
-      aviso || {
-        titulo: "",
-        fecha: "",
-        descripcion: "",
-      }
-    );
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.value,
+      [e.target.name]: e.target.value,
     });
+
+    if (errors[e.target.name]) {
+      setErrors({
+        ...errors,
+        [e.target.name]: "",
+      });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    editarAviso(
-      id,
-      formData
-    );
+    const datosNormalizados = normalizeFormValues(formData);
+    const validationErrors = validateAviso(datosNormalizados);
 
+    if (hasValidationErrors(validationErrors)) {
+      setErrors(validationErrors);
+      error("Revisa los campos marcados");
+      return;
+    }
+
+    editarAviso(id, datosNormalizados);
+    success("Aviso actualizado correctamente");
     navigate(ROUTES.ADMIN_AVISOS);
   };
 
@@ -81,6 +91,7 @@ export const AdminEditarAviso = () => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         buttonText="Actualizar Aviso"
+        errors={errors}
       />
     </section>
   );

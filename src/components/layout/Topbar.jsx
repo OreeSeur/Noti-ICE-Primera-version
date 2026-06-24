@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -17,6 +17,13 @@ import { useEventos } from "../../context/eventos/useEventos";
 import { useDocumentos } from "../../context/documentos/useDocumentos";
 import { ROUTES } from "../../constants/routes";
 import { getRoleLabel } from "../../constants/roles";
+import {
+  buildNotificationItems,
+  getNotificationId,
+  getReadNotificationIds,
+  mergeReadNotificationIds,
+  saveReadNotificationIds,
+} from "../../utils/notifications";
 
 export const Topbar = ({
   setMobileOpen,
@@ -29,12 +36,11 @@ export const Topbar = ({
   const { documentos } = useDocumentos();
 
   const [search, setSearch] = useState("");
-
-  const [showNotifications, setShowNotifications] =
-    useState(false);
-
-  const [showUserMenu, setShowUserMenu] =
-    useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [readNotificationIds, setReadNotificationIds] = useState(() =>
+    getReadNotificationIds()
+  );
 
   const resultados = [
     ...avisos.map((item) => ({
@@ -58,10 +64,41 @@ export const Topbar = ({
       ruta: `/documentos/${item.id}`,
     })),
   ].filter((item) =>
-    item.titulo
-      .toLowerCase()
-      .includes(search.toLowerCase())
+    item.titulo.toLowerCase().includes(search.toLowerCase())
   );
+
+  const notificationItems = useMemo(
+    () => buildNotificationItems({ avisos, eventos, documentos }).slice(0, 10),
+    [avisos, eventos, documentos]
+  );
+
+  const unreadCount = notificationItems.filter(
+    (item) => !readNotificationIds.includes(getNotificationId(item))
+  ).length;
+
+  const handleToggleNotifications = () => {
+    setShowUserMenu(false);
+
+    setShowNotifications((prev) => {
+      const nextValue = !prev;
+
+      if (nextValue) {
+        const updatedIds = mergeReadNotificationIds(
+          readNotificationIds,
+          notificationItems
+        );
+
+        setReadNotificationIds(updatedIds);
+        saveReadNotificationIds(updatedIds);
+      }
+
+      return nextValue;
+    });
+  };
+
+  const closeNotifications = () => {
+    setShowNotifications(false);
+  };
 
   return (
     <header
@@ -80,19 +117,15 @@ export const Topbar = ({
         mb-8
       "
     >
-      {/* ========================= */}
-      {/* IZQUIERDA */}
-      {/* ========================= */}
-
       <div className="flex items-center gap-4 flex-1">
         <button
+          type="button"
           onClick={() => setMobileOpen(true)}
           className="lg:hidden"
         >
           <Menu size={24} />
         </button>
 
-        {/* Buscador */}
         <div className="relative w-full max-w-xs md:max-w-sm">
           <div
             className="
@@ -112,9 +145,7 @@ export const Topbar = ({
               type="text"
               placeholder="Buscar..."
               value={search}
-              onChange={(e) =>
-                setSearch(e.target.value)
-              }
+              onChange={(e) => setSearch(e.target.value)}
               className="
                 bg-transparent
                 outline-none
@@ -145,9 +176,7 @@ export const Topbar = ({
                   <Link
                     key={`${item.tipo}-${item.id}`}
                     to={item.ruta}
-                    onClick={() =>
-                      setSearch("")
-                    }
+                    onClick={() => setSearch("")}
                     className="
                       block
                       py-2
@@ -161,19 +190,12 @@ export const Topbar = ({
                       dark:hover:bg-slate-700
                     "
                   >
-                    <span className="font-semibold">
-                      [{item.tipo}]
-                    </span>{" "}
+                    <span className="font-semibold">[{item.tipo}]</span>{" "}
                     {item.titulo}
                   </Link>
                 ))
               ) : (
-                <p
-                  className="
-                    text-slate-500
-                    dark:text-slate-400
-                  "
-                >
+                <p className="text-slate-500 dark:text-slate-400">
                   Sin resultados
                 </p>
               )}
@@ -182,60 +204,45 @@ export const Topbar = ({
         </div>
       </div>
 
-      {/* ========================= */}
-      {/* DERECHA */}
-      {/* ========================= */}
-
       <div className="flex items-center gap-6">
-
-        {/* Dark Mode */}
         <button
-          onClick={() =>
-            setDarkMode(!darkMode)
-          }
-          className="
-            cursor-pointer
-            transition
-            hover:scale-110
-          "
+          type="button"
+          onClick={() => setDarkMode(!darkMode)}
+          className="cursor-pointer transition hover:scale-110"
         >
-          {darkMode ? (
-            <Sun size={22} />
-          ) : (
-            <Moon size={22} />
-          )}
+          {darkMode ? <Sun size={22} /> : <Moon size={22} />}
         </button>
 
-        {/* Notificaciones */}
         <div className="relative">
           <button
-            onClick={() =>
-              setShowNotifications(
-                !showNotifications
-              )
-            }
+            type="button"
+            onClick={handleToggleNotifications}
             className="relative cursor-pointer"
+            aria-label="Abrir notificaciones"
           >
             <Bell size={22} />
 
-            <span
-              className="
-                absolute
-                -top-2
-                -right-2
-                bg-red-500
-                text-white
-                text-xs
-                rounded-full
-                w-5
-                h-5
-                flex
-                items-center
-                justify-center
-              "
-            >
-              {avisos.length}
-            </span>
+            {unreadCount > 0 && (
+              <span
+                className="
+                  absolute
+                  -top-2
+                  -right-2
+                  bg-red-500
+                  text-white
+                  text-xs
+                  rounded-full
+                  min-w-5
+                  h-5
+                  px-1
+                  flex
+                  items-center
+                  justify-center
+                "
+              >
+                {unreadCount > 9 ? "9+" : unreadCount}
+              </span>
+            )}
           </button>
 
           {showNotifications && (
@@ -244,7 +251,9 @@ export const Topbar = ({
                 absolute
                 right-0
                 mt-3
-                w-72
+                w-80
+                max-h-96
+                overflow-y-auto
                 bg-white
                 dark:bg-slate-800
                 shadow-lg
@@ -253,46 +262,64 @@ export const Topbar = ({
                 z-50
               "
             >
-              <h3
-                className="
-                  font-bold
-                  mb-3
-                  text-slate-800
-                  dark:text-white
-                "
-              >
-                Notificaciones
-              </h3>
+              <div className="mb-3">
+                <h3 className="font-bold text-slate-800 dark:text-white">
+                  Notificaciones
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Avisos, eventos y documentos recientes
+                </p>
+              </div>
 
-              {avisos.map((aviso) => (
-                <Link
-                  key={aviso.id}
-                  to={`/avisos/${aviso.id}`}
-                  onClick={() =>
-                    setShowNotifications(false)
-                  }
-                  className="
-                    block
-                    py-2
-                    px-2
-                    border-b
-                    last:border-none
-                    rounded
-                    transition
-                    text-slate-800
-                    dark:text-slate-200
-                    hover:bg-slate-100
-                    dark:hover:bg-slate-700
-                  "
-                >
-                  {aviso.titulo}
-                </Link>
-              ))}
+              {notificationItems.length > 0 ? (
+                notificationItems.map((item) => (
+                  <Link
+                    key={getNotificationId(item)}
+                    to={item.ruta}
+                    onClick={closeNotifications}
+                    className="
+                      block
+                      py-2
+                      px-2
+                      border-b
+                      last:border-none
+                      rounded
+                      transition
+                      text-slate-800
+                      dark:text-slate-200
+                      hover:bg-slate-100
+                      dark:hover:bg-slate-700
+                    "
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-xs font-semibold text-[#6A0032] dark:text-pink-300">
+                        {item.etiqueta}
+                      </span>
+                      {item.fechaLabel && (
+                        <span className="text-[11px] text-slate-400">
+                          {item.fechaLabel}
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="font-medium line-clamp-1">{item.titulo}</p>
+
+                    {item.descripcion && (
+                      <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
+                        {item.descripcion}
+                      </p>
+                    )}
+                  </Link>
+                ))
+              ) : (
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Todavía no hay contenido reciente.
+                </p>
+              )}
             </div>
           )}
         </div>
 
-        {/* Usuario NO autenticado */}
         {!user && (
           <Link
             to={ROUTES.LOGIN}
@@ -312,42 +339,26 @@ export const Topbar = ({
           >
             <User size={18} />
 
-            <span>
-              Acceder
-            </span>
+            <span>Acceder</span>
           </Link>
         )}
 
-        {/* Usuario autenticado */}
         {user && (
           <div className="relative">
             <button
-              onClick={() =>
-                setShowUserMenu(
-                  !showUserMenu
-                )
-              }
-              className="
-                flex
-                items-center
-                gap-2
-                cursor-pointer
-              "
+              type="button"
+              onClick={() => {
+                setShowNotifications(false);
+                setShowUserMenu(!showUserMenu);
+              }}
+              className="flex items-center gap-2 cursor-pointer"
             >
               <User size={20} />
 
               <div className="text-left">
-                <p className="font-semibold">
-                  {user.nombre}
-                </p>
+                <p className="font-semibold">{user.nombre}</p>
 
-                <p
-                  className="
-                    text-xs
-                    text-slate-500
-                    dark:text-slate-400
-                  "
-                >
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   {getRoleLabel(user.rol)}
                 </p>
               </div>
@@ -370,9 +381,7 @@ export const Topbar = ({
               >
                 <Link
                   to={ROUTES.PERFIL}
-                  onClick={() =>
-                    setShowUserMenu(false)
-                  }
+                  onClick={() => setShowUserMenu(false)}
                   className="
                     block
                     px-3
@@ -387,9 +396,7 @@ export const Topbar = ({
                 {canAccessAdmin() && (
                   <Link
                     to={ROUTES.ADMIN}
-                    onClick={() =>
-                      setShowUserMenu(false)
-                    }
+                    onClick={() => setShowUserMenu(false)}
                     className="
                       block
                       px-3
@@ -404,6 +411,7 @@ export const Topbar = ({
                 )}
 
                 <button
+                  type="button"
                   onClick={logout}
                   className="
                     w-full

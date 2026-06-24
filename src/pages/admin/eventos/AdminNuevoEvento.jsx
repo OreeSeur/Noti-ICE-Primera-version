@@ -2,12 +2,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useEventos } from "../../../context/eventos/useEventos";
+import { useToast } from "../../../context/toast/useToast";
 import { EventoForm } from "../../../components/eventos/EventoForm";
 import { ROUTES } from "../../../constants/routes";
+import {
+  hasValidationErrors,
+  normalizeFormValues,
+  validateEvento,
+} from "../../../utils/validation";
 
 export const AdminNuevoEvento = () => {
   const navigate = useNavigate();
   const { agregarEvento } = useEventos();
+  const { success, error } = useToast();
 
   const [formulario, setFormulario] = useState({
     titulo: "",
@@ -16,26 +23,43 @@ export const AdminNuevoEvento = () => {
     categoria: "",
     descripcion: "",
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormulario({
       ...formulario,
       [e.target.name]: e.target.value,
     });
+
+    if (errors[e.target.name]) {
+      setErrors({
+        ...errors,
+        [e.target.name]: "",
+      });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    agregarEvento(formulario);
+    const datosNormalizados = normalizeFormValues(formulario);
+    const validationErrors = validateEvento(datosNormalizados);
 
+    if (hasValidationErrors(validationErrors)) {
+      setErrors(validationErrors);
+      error("Revisa los campos marcados");
+      return;
+    }
+
+    agregarEvento(datosNormalizados);
+    success("Evento creado correctamente");
     navigate(ROUTES.ADMIN_EVENTOS);
   };
 
   return (
     <section className="space-y-6">
       <header>
-        <h1 className="text-3xl font-bold text-slate-800">
+        <h1 className="text-3xl font-bold text-slate-800 dark:text-white">
           Nuevo Evento
         </h1>
       </header>
@@ -45,6 +69,7 @@ export const AdminNuevoEvento = () => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         buttonText="Guardar Evento"
+        errors={errors}
       />
     </section>
   );

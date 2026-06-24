@@ -10,6 +10,7 @@ export const guardarAvisos = (avisos) => guardarAvisosStorage(avisos);
 
 export const crearAviso = (nuevoAviso) => ({
   id: crearId(),
+  createdAt: new Date().toISOString(),
   ...nuevoAviso,
 });
 
