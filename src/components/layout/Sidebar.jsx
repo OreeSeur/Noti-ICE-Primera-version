@@ -110,22 +110,27 @@ export const Sidebar = ({
 
           lg:translate-x-0
           fixed
-          lg:relative
+          lg:sticky
           top-0
           left-0
           z-50
+          lg:z-30
+          shrink-0
+          self-start
 
           ${
             collapsed
-              ? "lg:w-24 w-72"
-              : "w-72 max-w-[86vw] lg:w-64"
+              ? "w-72 lg:w-24"
+              : "w-72 max-w-[86vw] lg:w-64 lg:max-w-none"
           }
 
           bg-[#6f1d46]
           text-white
-          h-dvh
-          min-h-screen
+          h-[100dvh]
+          lg:h-screen
           overflow-y-auto
+          overflow-x-hidden
+          scrollbar-hidden
 
           transition-all
           duration-300
