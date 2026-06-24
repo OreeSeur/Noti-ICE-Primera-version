@@ -17,7 +17,7 @@ export const UsuarioForm = ({
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 space-y-4"
+      className="w-full bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 sm:p-6 space-y-4"
     >
       <div>
         <label className="block mb-2 font-medium">Nombre</label>
@@ -129,7 +129,7 @@ export const UsuarioForm = ({
       <div className="flex gap-4">
         <button
           type="submit"
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+          className="w-full rounded-lg bg-blue-600 px-6 py-3 text-white hover:bg-blue-700 sm:w-auto"
         >
           {buttonText}
         </button>

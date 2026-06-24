@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 
+import { AdminMobileCard } from "../../../components/common/AdminMobileCard";
 import { AdminTableWrapper } from "../../../components/common/AdminTableWrapper";
 import { AudienceSummary } from "../../../components/common/AudienceSummary";
 import { CrudActions } from "../../../components/common/CrudActions";
@@ -64,7 +65,35 @@ export const AdminEventos = () => {
         />
       </div>
 
-      <AdminTableWrapper>
+      <div className="space-y-4 lg:hidden">
+        {eventosFiltrados.length === 0 ? (
+          <EmptyState
+            title="No se encontraron eventos"
+            message="Prueba con otra búsqueda o registra un nuevo evento."
+          />
+        ) : (
+          eventosFiltrados.map((evento) => (
+            <AdminMobileCard
+              key={evento.id}
+              title={evento.titulo || "Evento sin título"}
+              subtitle={`${evento.fecha || "Sin fecha"}${evento.lugar ? ` · ${evento.lugar}` : ""}`}
+              description={evento.descripcion}
+              badgeLabel={evento.categoria || "Evento"}
+              badgeVariant="info"
+              item={evento}
+              editTo={buildRoute(ROUTES.ADMIN_EVENTOS_EDITAR, { id: evento.id })}
+              detailTo={buildRoute(ROUTES.EVENTO_DETALLE, { id: evento.id })}
+              onDelete={() => abrirModal(evento)}
+              meta={[
+                { label: "Fecha", value: evento.fecha || "Sin fecha" },
+                { label: "Lugar", value: evento.lugar || "Sin lugar" },
+              ]}
+            />
+          ))
+        )}
+      </div>
+
+      <AdminTableWrapper className="hidden lg:block">
         <table className="w-full min-w-[900px]">
           <thead>
             <tr className="bg-slate-100 dark:bg-slate-700">

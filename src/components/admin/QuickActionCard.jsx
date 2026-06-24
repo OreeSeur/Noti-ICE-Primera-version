@@ -18,7 +18,8 @@ export const QuickActionCard = ({
         border
         border-slate-100
         dark:border-slate-700
-        p-5
+        p-4
+        sm:p-5
         transition
         hover:-translate-y-1
         hover:shadow-lg
@@ -39,7 +40,7 @@ export const QuickActionCard = ({
           <Icon size={22} />
         </div>
 
-        <div>
+        <div className="min-w-0">
           <h3 className="font-bold text-slate-800 dark:text-white">
             {title}
           </h3>

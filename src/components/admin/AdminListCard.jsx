@@ -16,7 +16,8 @@ export const AdminListCard = ({
         dark:bg-slate-800
         rounded-2xl
         shadow-md
-        p-6
+        p-4
+        sm:p-6
         border
         border-slate-100
         dark:border-slate-700
@@ -25,7 +26,7 @@ export const AdminListCard = ({
     >
       <div className="mb-5 flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-slate-800 dark:text-white">
+          <h2 className="text-lg font-bold text-slate-800 dark:text-white sm:text-xl">
             {title}
           </h2>
 
@@ -64,7 +65,8 @@ export const AdminListCard = ({
             border-dashed
             border-slate-300
             dark:border-slate-600
-            p-6
+            p-4
+        sm:p-6
             text-center
             text-sm
             text-slate-500
@@ -90,8 +92,8 @@ export const AdminListCard = ({
                 "
               >
                 <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h3 className="font-semibold text-slate-800 dark:text-white">
+                  <div className="min-w-0">
+                    <h3 className="line-clamp-2 font-semibold text-slate-800 dark:text-white">
                       {item.title}
                     </h3>
 

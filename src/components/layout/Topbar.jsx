@@ -110,15 +110,19 @@ export const Topbar = ({
         dark:text-white
         rounded-xl
         shadow-md
-        p-4
+        p-3
+        sm:p-4
         flex
+        flex-wrap
         justify-between
         items-center
-        gap-4
-        mb-8
+        gap-3
+        sm:gap-4
+        mb-6
+        md:mb-8
       "
     >
-      <div className="flex items-center gap-4 flex-1">
+      <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
         <button
           type="button"
           onClick={() => setMobileOpen(true)}
@@ -127,7 +131,7 @@ export const Topbar = ({
           <Menu size={24} />
         </button>
 
-        <div className="relative w-full max-w-xs md:max-w-sm">
+        <div className="relative w-full max-w-none md:max-w-sm">
           <div
             className="
               flex
@@ -135,8 +139,9 @@ export const Topbar = ({
               gap-2
               bg-slate-100
               dark:bg-slate-700
-              px-4
+              px-3
               py-2
+              sm:px-4
               rounded-lg
             "
           >
@@ -151,6 +156,9 @@ export const Topbar = ({
                 bg-transparent
                 outline-none
                 w-full
+                min-w-0
+                text-sm
+                sm:text-base
                 text-slate-800
                 dark:text-white
               "
@@ -170,6 +178,8 @@ export const Topbar = ({
                 rounded-lg
                 p-3
                 z-50
+                max-h-80
+                overflow-y-auto
               "
             >
               {resultados.length > 0 ? (
@@ -205,7 +215,7 @@ export const Topbar = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex shrink-0 items-center gap-2 sm:gap-4 lg:gap-6">
         <button
           type="button"
           onClick={() => setDarkMode(!darkMode)}
@@ -249,11 +259,19 @@ export const Topbar = ({
           {showNotifications && (
             <div
               className="
-                absolute
-                right-0
-                mt-3
-                w-80
-                max-h-96
+                fixed
+                left-3
+                right-3
+                top-20
+                mt-0
+                max-h-[70vh]
+                sm:absolute
+                sm:left-auto
+                sm:right-0
+                sm:top-auto
+                sm:mt-3
+                sm:w-80
+                sm:max-h-96
                 overflow-y-auto
                 bg-white
                 dark:bg-slate-800
@@ -348,14 +366,14 @@ export const Topbar = ({
           <Link
             to={ROUTES.LOGIN}
             className="
-              hidden
-              md:flex
+              flex
               items-center
               gap-2
               bg-[#6A0032]
               text-white
-              px-4
+              px-3
               py-2
+              sm:px-4
               rounded-lg
               hover:opacity-90
               transition
@@ -363,7 +381,7 @@ export const Topbar = ({
           >
             <User size={18} />
 
-            <span>Acceder</span>
+            <span className="hidden sm:inline">Acceder</span>
           </Link>
         )}
 
@@ -375,12 +393,12 @@ export const Topbar = ({
                 setShowNotifications(false);
                 setShowUserMenu(!showUserMenu);
               }}
-              className="flex items-center gap-2 cursor-pointer"
+              className="flex min-w-0 items-center gap-2 cursor-pointer"
             >
               <User size={20} />
 
-              <div className="text-left">
-                <p className="font-semibold">{user.nombre}</p>
+              <div className="hidden min-w-0 text-left sm:block">
+                <p className="max-w-32 truncate font-semibold lg:max-w-44">{user.nombre}</p>
 
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   {getRoleLabel(user.rol)}
@@ -391,10 +409,17 @@ export const Topbar = ({
             {showUserMenu && (
               <div
                 className="
-                  absolute
-                  right-0
-                  mt-3
-                  w-56
+                  fixed
+                  left-3
+                  right-3
+                  top-20
+                  mt-0
+                  sm:absolute
+                  sm:left-auto
+                  sm:right-0
+                  sm:top-auto
+                  sm:mt-3
+                  sm:w-56
                   bg-white
                   dark:bg-slate-800
                   rounded-lg

@@ -97,14 +97,17 @@ export const CalendarGrid = () => {
         dark:bg-slate-800
         rounded-xl
         shadow-md
-        p-6
+        p-3
+        sm:p-4
+        md:p-6
       "
     >
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h2
             className="
-              text-2xl
+              text-xl
+              sm:text-2xl
               font-bold
               capitalize
               text-slate-800
@@ -118,12 +121,12 @@ export const CalendarGrid = () => {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
           <button
             type="button"
             onClick={goToPreviousMonth}
             disabled={!canGoBack}
-            className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:hover:bg-slate-700"
+            className="rounded-lg border border-slate-200 px-2 py-2 text-xs font-medium transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:hover:bg-slate-700 sm:px-3 sm:text-sm"
           >
             <span className="flex items-center gap-1">
               <ChevronLeft size={16} /> Anterior
@@ -133,7 +136,7 @@ export const CalendarGrid = () => {
           <button
             type="button"
             onClick={goToCurrentMonth}
-            className="rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium transition hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600"
+            className="rounded-lg bg-slate-100 px-2 py-2 text-xs font-medium transition hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 sm:px-3 sm:text-sm"
           >
             Mes actual
           </button>
@@ -142,7 +145,7 @@ export const CalendarGrid = () => {
             type="button"
             onClick={goToNextMonth}
             disabled={!canGoForward}
-            className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:hover:bg-slate-700"
+            className="rounded-lg border border-slate-200 px-2 py-2 text-xs font-medium transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:hover:bg-slate-700 sm:px-3 sm:text-sm"
           >
             <span className="flex items-center gap-1">
               Siguiente <ChevronRight size={16} />
@@ -155,18 +158,21 @@ export const CalendarGrid = () => {
         className="
           grid
           grid-cols-7
-          gap-2
+          gap-1
+          sm:gap-2
         "
       >
         {WEEK_DAYS.map((dia) => (
           <div
             key={dia}
             className="
-              font-semibold
+              py-2
               text-center
+              text-[11px]
+              font-semibold
               text-slate-500
               dark:text-slate-400
-              py-2
+              sm:text-sm
             "
           >
             {dia}
@@ -185,11 +191,14 @@ export const CalendarGrid = () => {
             <div
               key={cell.id}
               className={`
-                min-h-20
+                min-h-14
                 rounded-lg
                 border
-                p-2
-                text-sm
+                p-1.5
+                text-xs
+                sm:min-h-20
+                sm:p-2
+                sm:text-sm
                 transition
                 ${
                   hasEvents
@@ -201,19 +210,19 @@ export const CalendarGrid = () => {
               <div className="flex items-center justify-between gap-2">
                 <span className="font-semibold">{cell.day}</span>
                 {hasEvents && (
-                  <span className="rounded-full bg-[#6A0032] px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-pink-300 dark:text-slate-900">
+                  <span className="rounded-full bg-[#6A0032] px-1.5 py-0.5 text-[10px] font-semibold text-white dark:bg-pink-300 dark:text-slate-900 sm:px-2">
                     {eventosDelDia.length}
                   </span>
                 )}
               </div>
 
               {hasEvents && (
-                <div className="mt-2 space-y-1">
+                <div className="mt-1 space-y-1 sm:mt-2">
                   {eventosDelDia.slice(0, 2).map((evento) => (
                     <Link
                       key={evento.id}
                       to={`/eventos/${evento.id}`}
-                      className="block truncate rounded bg-white/70 px-1.5 py-1 text-[11px] font-medium hover:underline dark:bg-slate-900/40"
+                      className="hidden truncate rounded bg-white/70 px-1.5 py-1 text-[11px] font-medium hover:underline dark:bg-slate-900/40 sm:block"
                       title={evento.titulo}
                     >
                       {evento.titulo}
@@ -221,7 +230,7 @@ export const CalendarGrid = () => {
                   ))}
 
                   {eventosDelDia.length > 2 && (
-                    <p className="text-[11px] font-medium">
+                    <p className="text-[10px] font-medium sm:text-[11px]">
                       +{eventosDelDia.length - 2} más
                     </p>
                   )}

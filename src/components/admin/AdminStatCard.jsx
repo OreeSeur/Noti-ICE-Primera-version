@@ -15,7 +15,8 @@ export const AdminStatCard = ({
         dark:bg-slate-800
         rounded-2xl
         shadow-md
-        p-6
+        p-4
+        sm:p-6
         border
         border-slate-100
         dark:border-slate-700
@@ -31,7 +32,7 @@ export const AdminStatCard = ({
             {title}
           </p>
 
-          <p className="mt-2 text-4xl font-bold text-slate-800 dark:text-white">
+          <p className="mt-2 text-3xl font-bold text-slate-800 dark:text-white sm:text-4xl">
             {value}
           </p>
 

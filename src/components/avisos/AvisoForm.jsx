@@ -18,8 +18,10 @@ export const AvisoForm = ({
         dark:bg-slate-800
         rounded-xl
         shadow-md
-        p-6
+        p-4
+        sm:p-6
         max-w-3xl
+        w-full
       "
     >
       <div className="mb-5">
@@ -95,8 +97,10 @@ export const AvisoForm = ({
         className="
           bg-[#6A0032]
           text-white
+          w-full
           px-6
           py-3
+          sm:w-auto
           rounded-lg
           hover:opacity-90
           transition

@@ -20,7 +20,7 @@ const toggleValue = (currentValues, value) => {
 };
 
 const CheckboxGroup = ({ title, description, values, field, items, onChange }) => (
-  <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+  <div className="rounded-xl border border-slate-200 p-3 dark:border-slate-700 sm:p-4">
     <div className="mb-3">
       <h4 className="font-semibold text-slate-800 dark:text-white">{title}</h4>
       {description && (
@@ -51,7 +51,7 @@ export const AudienceFields = ({ audiencia, onChange }) => {
   const normalizedAudience = normalizeAudience(audiencia);
 
   return (
-    <section className="rounded-2xl border border-[#6A0032]/20 bg-[#6A0032]/5 p-5 dark:border-pink-300/20 dark:bg-pink-300/5">
+    <section className="rounded-2xl border border-[#6A0032]/20 bg-[#6A0032]/5 p-4 dark:border-pink-300/20 dark:bg-pink-300/5 sm:p-5">
       <div className="mb-5 flex items-start gap-3">
         <span className="rounded-xl bg-white p-2 text-[#6A0032] shadow-sm dark:bg-slate-800 dark:text-pink-300">
           <Target size={22} />

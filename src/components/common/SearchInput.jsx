@@ -9,7 +9,7 @@ export const SearchInput = ({
   const handleClear = () => onChange("");
 
   return (
-    <div className={`relative w-full md:max-w-md ${className}`}>
+    <div className={`relative w-full ${className}`}>
       <Search
         size={18}
         className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"

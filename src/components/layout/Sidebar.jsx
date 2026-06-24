@@ -117,18 +117,21 @@ export const Sidebar = ({
 
           ${
             collapsed
-              ? "w-24"
-              : "w-64"
+              ? "lg:w-24 w-72"
+              : "w-72 max-w-[86vw] lg:w-64"
           }
 
           bg-[#6f1d46]
           text-white
+          h-dvh
           min-h-screen
+          overflow-y-auto
 
           transition-all
           duration-300
 
-          p-6
+          p-4
+          sm:p-6
         `}
       >
         {/* Botones */}
@@ -160,14 +163,15 @@ export const Sidebar = ({
           <img
             src={ipnLogo}
             alt="IPN"
-            className="w-20 mb-4"
+            className="mb-4 w-16 sm:w-20"
           />
 
           {!collapsed && (
             <>
               <h1
                 className="
-                  text-3xl
+                  text-2xl
+                  sm:text-3xl
                   font-bold
                   text-center
                 "
@@ -204,7 +208,8 @@ export const Sidebar = ({
                   flex
                   items-center
                   gap-3
-                  p-4
+                  p-3
+                  sm:p-4
                   rounded-xl
                   mb-3
                   transition-all

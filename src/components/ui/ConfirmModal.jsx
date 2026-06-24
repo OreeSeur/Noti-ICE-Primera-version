@@ -11,14 +11,14 @@ export const ConfirmModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl dark:bg-slate-800">
+      <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-xl bg-white p-5 shadow-xl dark:bg-slate-800 sm:p-6">
         <h2 className="mb-3 text-xl font-bold text-slate-800 dark:text-white">
           {title}
         </h2>
 
         <p className="mb-6 text-slate-600 dark:text-slate-300">{message}</p>
 
-        <div className="flex justify-end gap-3">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <button
             type="button"
             onClick={onCancel}

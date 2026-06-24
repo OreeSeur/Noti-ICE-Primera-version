@@ -52,8 +52,11 @@ export const Layout = ({ children }) => {
 
       <main
         className="
+          min-w-0
           flex-1
-          p-4
+          overflow-x-hidden
+          p-3
+          sm:p-4
           md:p-8
         "
       >

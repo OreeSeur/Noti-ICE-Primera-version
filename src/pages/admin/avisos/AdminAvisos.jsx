@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 
+import { AdminMobileCard } from "../../../components/common/AdminMobileCard";
 import { AdminTableWrapper } from "../../../components/common/AdminTableWrapper";
 import { AudienceSummary } from "../../../components/common/AudienceSummary";
 import { CrudActions } from "../../../components/common/CrudActions";
@@ -63,7 +64,31 @@ export const AdminAvisos = () => {
         />
       </div>
 
-      <AdminTableWrapper>
+      <div className="space-y-4 lg:hidden">
+        {avisosFiltrados.length === 0 ? (
+          <EmptyState
+            title="No se encontraron avisos"
+            message="Prueba con otra búsqueda o registra un nuevo aviso."
+          />
+        ) : (
+          avisosFiltrados.map((aviso) => (
+            <AdminMobileCard
+              key={aviso.id}
+              title={aviso.titulo || "Aviso sin título"}
+              subtitle={aviso.fecha || "Sin fecha"}
+              description={aviso.descripcion}
+              badgeLabel="Aviso"
+              badgeVariant="primary"
+              item={aviso}
+              editTo={buildRoute(ROUTES.ADMIN_AVISOS_EDITAR, { id: aviso.id })}
+              detailTo={buildRoute(ROUTES.AVISO_DETALLE, { id: aviso.id })}
+              onDelete={() => abrirModal(aviso)}
+            />
+          ))
+        )}
+      </div>
+
+      <AdminTableWrapper className="hidden lg:block">
         <table className="w-full min-w-[720px]">
           <thead>
             <tr className="bg-slate-100 dark:bg-slate-700">

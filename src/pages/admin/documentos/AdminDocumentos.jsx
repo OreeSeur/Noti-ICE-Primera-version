@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 
+import { AdminMobileCard } from "../../../components/common/AdminMobileCard";
 import { AdminTableWrapper } from "../../../components/common/AdminTableWrapper";
 import { AudienceSummary } from "../../../components/common/AudienceSummary";
 import { CrudActions } from "../../../components/common/CrudActions";
@@ -73,7 +74,39 @@ export const AdminDocumentos = () => {
         />
       </div>
 
-      <AdminTableWrapper>
+      <div className="space-y-4 lg:hidden">
+        {documentosFiltrados.length === 0 ? (
+          <EmptyState
+            title="No se encontraron documentos"
+            message="Prueba con otra búsqueda o registra un nuevo documento."
+          />
+        ) : (
+          documentosFiltrados.map((documento) => (
+            <AdminMobileCard
+              key={documento.id}
+              title={getDocumentTitle(documento)}
+              subtitle={documento.fecha || "Sin fecha"}
+              description={documento.descripcion || documento.archivoNombre}
+              badgeLabel={documento.tipo || "Documento"}
+              badgeVariant="primary"
+              icon={getDocumentIcon(documento.tipo)}
+              item={documento}
+              editTo={buildRoute(ROUTES.ADMIN_DOCUMENTOS_EDITAR, { id: documento.id })}
+              detailTo={buildRoute(ROUTES.DOCUMENTO_DETALLE, { id: documento.id })}
+              onDelete={() => abrirModal(documento)}
+              meta={[
+                { label: "Archivo", value: documento.archivoNombre || "Sin archivo" },
+                {
+                  label: "Tamaño",
+                  value: documento.archivoTamaño ? formatFileSize(documento.archivoTamaño) : "No registrado",
+                },
+              ]}
+            />
+          ))
+        )}
+      </div>
+
+      <AdminTableWrapper className="hidden lg:block">
         <table className="w-full min-w-[780px]">
           <thead>
             <tr className="bg-slate-100 dark:bg-slate-700">

@@ -10,7 +10,7 @@ export const PageHeader = ({
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
-        <h1 className="text-3xl font-bold text-slate-800 dark:text-white">
+        <h1 className="text-2xl font-bold text-slate-800 dark:text-white sm:text-3xl">
           {title}
         </h1>
 
@@ -24,7 +24,7 @@ export const PageHeader = ({
       {actionTo && actionLabel && (
         <Link
           to={actionTo}
-          className="flex w-fit items-center gap-2 rounded-lg bg-[#6A0032] px-5 py-3 text-white transition hover:opacity-90"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#6A0032] px-5 py-3 text-white transition hover:opacity-90 sm:w-fit"
         >
           {ActionIcon && <ActionIcon size={18} />}
           {actionLabel}
