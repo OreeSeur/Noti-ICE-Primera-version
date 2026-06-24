@@ -11,12 +11,17 @@ import {
   normalizeFormValues,
   validateDocumento,
 } from "../../../utils/validation";
+import { inferDocumentTypeFromFile } from "../../../utils/documentTypes";
 
 const documentoVacio = {
   titulo: "",
   tipo: "",
   fecha: "",
   descripcion: "",
+  archivoNombre: "",
+  archivoTipo: "",
+  archivoTamaño: "",
+  url: "",
 };
 
 export const AdminEditarDocumento = () => {
@@ -36,15 +41,40 @@ export const AdminEditarDocumento = () => {
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
+    const { name, value, files, type } = e.target;
+
+    if (type === "file") {
+      const file = files?.[0];
+
+      if (!file) return;
+
+      setFormulario({
+        ...formulario,
+        tipo: formulario.tipo || inferDocumentTypeFromFile(file.name),
+        archivoNombre: file.name,
+        archivoTipo: file.type,
+        archivoTamaño: file.size,
+      });
+
+      if (errors.tipo) {
+        setErrors({
+          ...errors,
+          tipo: "",
+        });
+      }
+
+      return;
+    }
+
     setFormulario({
       ...formulario,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
 
-    if (errors[e.target.name]) {
+    if (errors[name]) {
       setErrors({
         ...errors,
-        [e.target.name]: "",
+        [name]: "",
       });
     }
   };

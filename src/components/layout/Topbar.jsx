@@ -17,6 +17,7 @@ import { useEventos } from "../../context/eventos/useEventos";
 import { useDocumentos } from "../../context/documentos/useDocumentos";
 import { ROUTES } from "../../constants/routes";
 import { getRoleLabel } from "../../constants/roles";
+import { getDocumentTitle } from "../../utils/documentTypes";
 import {
   buildNotificationItems,
   getNotificationId,
@@ -59,7 +60,7 @@ export const Topbar = ({
 
     ...documentos.map((item) => ({
       id: item.id,
-      titulo: item.titulo ?? item.nombre ?? "",
+      titulo: getDocumentTitle(item),
       tipo: "Documento",
       ruta: `/documentos/${item.id}`,
     })),
@@ -68,7 +69,7 @@ export const Topbar = ({
   );
 
   const notificationItems = useMemo(
-    () => buildNotificationItems({ avisos, eventos, documentos }).slice(0, 10),
+    () => buildNotificationItems({ avisos, eventos, documentos }).slice(0, 15),
     [avisos, eventos, documentos]
   );
 

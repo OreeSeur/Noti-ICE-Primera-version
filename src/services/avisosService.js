@@ -9,9 +9,9 @@ export const obtenerAvisos = () => obtenerAvisosStorage();
 export const guardarAvisos = (avisos) => guardarAvisosStorage(avisos);
 
 export const crearAviso = (nuevoAviso) => ({
+  ...nuevoAviso,
   id: crearId(),
   createdAt: new Date().toISOString(),
-  ...nuevoAviso,
 });
 
 export const agregarAvisoLista = (avisos, nuevoAviso) => [
@@ -25,6 +25,7 @@ export const editarAvisoLista = (avisos, id, datosActualizados) =>
       ? {
           ...aviso,
           ...datosActualizados,
+          updatedAt: new Date().toISOString(),
         }
       : aviso
   );

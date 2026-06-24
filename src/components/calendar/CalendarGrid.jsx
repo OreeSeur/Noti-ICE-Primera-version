@@ -1,17 +1,94 @@
+import { useMemo, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
+
 import { useEventos } from "../../context/eventos/useEventos";
+import {
+  addMonths,
+  formatDateLabel,
+  formatMonthYear,
+  getMonthDifference,
+  getTodayMonth,
+  isSameMonth,
+  parseDateValue,
+} from "../../utils/dates";
+
+const WEEK_DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
+const MONTHS_BACK_LIMIT = -2;
+const MONTHS_FORWARD_LIMIT = 12;
+
+const getDaysInMonth = (date) =>
+  new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
+const getMondayBasedStartIndex = (date) => {
+  const sundayBasedIndex = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+  return sundayBasedIndex === 0 ? 6 : sundayBasedIndex - 1;
+};
 
 export const CalendarGrid = () => {
   const { eventos } = useEventos();
-  const diasMes = 31;
+  const currentMonth = getTodayMonth();
+  const [visibleMonth, setVisibleMonth] = useState(currentMonth);
 
-  const obtenerDiaEvento = (fecha) => {
-    return parseInt(fecha.split(" ")[0]);
+  const monthOffset = getMonthDifference(currentMonth, visibleMonth);
+  const canGoBack = monthOffset > MONTHS_BACK_LIMIT;
+  const canGoForward = monthOffset < MONTHS_FORWARD_LIMIT;
+
+  const eventosConFecha = useMemo(
+    () =>
+      eventos
+        .map((evento) => ({
+          ...evento,
+          fechaCalendario: parseDateValue(evento.fecha),
+        }))
+        .filter((evento) => Boolean(evento.fechaCalendario)),
+    [eventos]
+  );
+
+  const eventosDelMes = useMemo(
+    () =>
+      eventosConFecha
+        .filter((evento) => isSameMonth(evento.fechaCalendario, visibleMonth))
+        .sort((a, b) => a.fechaCalendario - b.fechaCalendario),
+    [eventosConFecha, visibleMonth]
+  );
+
+  const eventosPorDia = useMemo(() => {
+    const groupedEvents = new Map();
+
+    eventosDelMes.forEach((evento) => {
+      const day = evento.fechaCalendario.getDate();
+      const previousEvents = groupedEvents.get(day) || [];
+      groupedEvents.set(day, [...previousEvents, evento]);
+    });
+
+    return groupedEvents;
+  }, [eventosDelMes]);
+
+  const daysInMonth = getDaysInMonth(visibleMonth);
+  const startIndex = getMondayBasedStartIndex(visibleMonth);
+  const calendarCells = [
+    ...Array.from({ length: startIndex }, (_, index) => ({ type: "empty", id: `empty-${index}` })),
+    ...Array.from({ length: daysInMonth }, (_, index) => ({
+      type: "day",
+      day: index + 1,
+      id: `day-${index + 1}`,
+    })),
+  ];
+
+  const goToPreviousMonth = () => {
+    if (!canGoBack) return;
+    setVisibleMonth((prev) => addMonths(prev, -1));
   };
 
-  const diasConEventos = eventos.map((evento) => ({
-    dia: obtenerDiaEvento(evento.fecha),
-    titulo: evento.titulo,
-  }));
+  const goToNextMonth = () => {
+    if (!canGoForward) return;
+    setVisibleMonth((prev) => addMonths(prev, 1));
+  };
+
+  const goToCurrentMonth = () => {
+    setVisibleMonth(currentMonth);
+  };
 
   return (
     <div
@@ -23,17 +100,56 @@ export const CalendarGrid = () => {
         p-6
       "
     >
-      <h2
-        className="
-          text-2xl
-          font-bold
-          mb-6
-          text-slate-800
-          dark:text-white
-        "
-      >
-        Junio 2026
-      </h2>
+      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2
+            className="
+              text-2xl
+              font-bold
+              capitalize
+              text-slate-800
+              dark:text-white
+            "
+          >
+            {formatMonthYear(visibleMonth)}
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Puedes revisar dos meses hacia atrás y hasta doce meses hacia adelante.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={goToPreviousMonth}
+            disabled={!canGoBack}
+            className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:hover:bg-slate-700"
+          >
+            <span className="flex items-center gap-1">
+              <ChevronLeft size={16} /> Anterior
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={goToCurrentMonth}
+            className="rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium transition hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600"
+          >
+            Mes actual
+          </button>
+
+          <button
+            type="button"
+            onClick={goToNextMonth}
+            disabled={!canGoForward}
+            className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:hover:bg-slate-700"
+          >
+            <span className="flex items-center gap-1">
+              Siguiente <ChevronRight size={16} />
+            </span>
+          </button>
+        </div>
+      </div>
 
       <div
         className="
@@ -42,15 +158,7 @@ export const CalendarGrid = () => {
           gap-2
         "
       >
-        {[
-          "Lun",
-          "Mar",
-          "Mié",
-          "Jue",
-          "Vie",
-          "Sáb",
-          "Dom",
-        ].map((dia) => (
+        {WEEK_DAYS.map((dia) => (
           <div
             key={dia}
             className="
@@ -65,83 +173,102 @@ export const CalendarGrid = () => {
           </div>
         ))}
 
-        {Array.from({ length: diasMes }, (_, i) => {
-          const numeroDia = i + 1;
+        {calendarCells.map((cell) => {
+          if (cell.type === "empty") {
+            return <div key={cell.id} className="min-h-20 rounded-lg" />;
+          }
 
-          const evento = diasConEventos.find(
-            (e) => e.dia === numeroDia
-          );
+          const eventosDelDia = eventosPorDia.get(cell.day) || [];
+          const hasEvents = eventosDelDia.length > 0;
 
           return (
             <div
-              key={numeroDia}
+              key={cell.id}
               className={`
-                h-16
+                min-h-20
                 rounded-lg
                 border
-                flex
-                flex-col
-                justify-center
-                items-center
+                p-2
                 text-sm
                 transition
-
                 ${
-                  evento
-                    ? "bg-[#6A0032] text-white border-[#6A0032]"
-                    : "border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300"
+                  hasEvents
+                    ? "border-[#6A0032] bg-[#6A0032]/10 text-[#6A0032] dark:border-pink-300 dark:bg-pink-300/10 dark:text-pink-200"
+                    : "border-slate-200 text-slate-700 dark:border-slate-700 dark:text-slate-300"
                 }
               `}
             >
-              <span className="font-semibold">
-                {numeroDia}
-              </span>
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-semibold">{cell.day}</span>
+                {hasEvents && (
+                  <span className="rounded-full bg-[#6A0032] px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-pink-300 dark:text-slate-900">
+                    {eventosDelDia.length}
+                  </span>
+                )}
+              </div>
 
-              {evento && (
-                <span
-                  className="
-                    text-[10px]
-                    text-center
-                    px-1
-                  "
-                >
-                  📌
-                </span>
+              {hasEvents && (
+                <div className="mt-2 space-y-1">
+                  {eventosDelDia.slice(0, 2).map((evento) => (
+                    <Link
+                      key={evento.id}
+                      to={`/eventos/${evento.id}`}
+                      className="block truncate rounded bg-white/70 px-1.5 py-1 text-[11px] font-medium hover:underline dark:bg-slate-900/40"
+                      title={evento.titulo}
+                    >
+                      {evento.titulo}
+                    </Link>
+                  ))}
+
+                  {eventosDelDia.length > 2 && (
+                    <p className="text-[11px] font-medium">
+                      +{eventosDelDia.length - 2} más
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           );
         })}
       </div>
 
-      <div className="mt-6 space-y-2">
-        {eventos.map((evento) => (
-          <div
-            key={evento.id}
-            className="
-              flex
-              gap-3
-              text-sm
-            "
-          >
-            <span
-              className="
-                text-[#6A0032]
-                font-bold
-              "
-            >
-              {evento.fecha}
-            </span>
+      <div className="mt-6 space-y-3">
+        <h3 className="font-semibold text-slate-800 dark:text-white">
+          Eventos de este mes
+        </h3>
 
-            <span
-              className="
-                text-slate-700
-                dark:text-slate-300
-              "
+        {eventosDelMes.length > 0 ? (
+          eventosDelMes.map((evento) => (
+            <Link
+              key={evento.id}
+              to={`/eventos/${evento.id}`}
+              className="flex flex-col gap-1 rounded-lg border border-slate-200 p-3 text-sm transition hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-700 md:flex-row md:items-center md:gap-3"
             >
-              {evento.titulo}
-            </span>
-          </div>
-        ))}
+              <span
+                className="
+                  text-[#6A0032]
+                  font-bold
+                  dark:text-pink-300
+                "
+              >
+                {formatDateLabel(evento.fecha)}
+              </span>
+
+              <span
+                className="
+                  text-slate-700
+                  dark:text-slate-300
+                "
+              >
+                {evento.titulo}
+              </span>
+            </Link>
+          ))
+        ) : (
+          <p className="rounded-lg bg-slate-100 p-4 text-sm text-slate-500 dark:bg-slate-700 dark:text-slate-300">
+            No hay eventos registrados para este mes.
+          </p>
+        )}
       </div>
     </div>
   );

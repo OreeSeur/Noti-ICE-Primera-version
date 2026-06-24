@@ -10,9 +10,9 @@ export const guardarDocumentos = (documentos) =>
   guardarDocumentosStorage(documentos);
 
 export const crearDocumento = (nuevoDocumento) => ({
+  ...nuevoDocumento,
   id: crearId(),
   createdAt: new Date().toISOString(),
-  ...nuevoDocumento,
 });
 
 export const agregarDocumentoLista = (documentos, nuevoDocumento) => [
@@ -26,6 +26,7 @@ export const editarDocumentoLista = (documentos, id, datosActualizados) =>
       ? {
           ...documento,
           ...datosActualizados,
+          updatedAt: new Date().toISOString(),
         }
       : documento
   );

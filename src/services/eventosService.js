@@ -9,9 +9,9 @@ export const obtenerEventos = () => obtenerEventosStorage();
 export const guardarEventos = (eventos) => guardarEventosStorage(eventos);
 
 export const crearEvento = (nuevoEvento) => ({
+  ...nuevoEvento,
   id: crearId(),
   createdAt: new Date().toISOString(),
-  ...nuevoEvento,
 });
 
 export const agregarEventoLista = (eventos, nuevoEvento) => [
@@ -25,6 +25,7 @@ export const editarEventoLista = (eventos, id, datosActualizados) =>
       ? {
           ...evento,
           ...datosActualizados,
+          updatedAt: new Date().toISOString(),
         }
       : evento
   );

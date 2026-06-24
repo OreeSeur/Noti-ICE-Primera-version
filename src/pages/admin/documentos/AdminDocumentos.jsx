@@ -11,9 +11,11 @@ import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 import { ROUTES, buildRoute } from "../../../constants/routes";
 import { useDocumentos } from "../../../context/documentos/useDocumentos";
 import { matchesSearch } from "../../../utils/search";
-
-const obtenerTituloDocumento = (documento) =>
-  documento.titulo || documento.nombre || "Documento sin título";
+import {
+  formatFileSize,
+  getDocumentIcon,
+  getDocumentTitle,
+} from "../../../utils/documentTypes";
 
 export const AdminDocumentos = () => {
   const { documentos, eliminarDocumento } = useDocumentos();
@@ -27,7 +29,7 @@ export const AdminDocumentos = () => {
       documentos.filter((documento) =>
         matchesSearch(
           documento,
-          ["titulo", "nombre", "tipo", "fecha", "categoria"],
+          ["titulo", "nombre", "tipo", "fecha", "categoria", "archivoNombre"],
           search
         )
       ),
@@ -94,7 +96,22 @@ export const AdminDocumentos = () => {
                   className="border-b border-slate-200 dark:border-slate-700"
                 >
                   <td className="p-4 font-medium text-slate-800 dark:text-white">
-                    {obtenerTituloDocumento(documento)}
+                    <div className="flex items-start gap-3">
+                      <span className="text-2xl" aria-hidden="true">
+                        {getDocumentIcon(documento.tipo)}
+                      </span>
+                      <div>
+                        <p>{getDocumentTitle(documento)}</p>
+                        {documento.archivoNombre && (
+                          <p className="mt-1 text-xs font-normal text-slate-500 dark:text-slate-400">
+                            {documento.archivoNombre}
+                            {documento.archivoTamaño
+                              ? ` • ${formatFileSize(documento.archivoTamaño)}`
+                              : ""}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </td>
                   <td className="p-4">
                     <StatusBadge label={documento.tipo || "Documento"} variant="primary" />
@@ -122,7 +139,7 @@ export const AdminDocumentos = () => {
         title="Eliminar Documento"
         message={`¿Deseas eliminar "${
           documentoSeleccionado
-            ? obtenerTituloDocumento(documentoSeleccionado)
+            ? getDocumentTitle(documentoSeleccionado)
             : "este documento"
         }"? Esta acción no se puede deshacer.`}
         confirmLabel="Eliminar documento"

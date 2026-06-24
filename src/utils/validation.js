@@ -5,6 +5,15 @@ export const isEmpty = (value) => trimValue(value).length === 0;
 export const isValidEmail = (value) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimValue(value));
 
+export const isValidUrl = (value) => {
+  try {
+    const url = new URL(trimValue(value));
+    return ["http:", "https:"].includes(url.protocol);
+  } catch {
+    return false;
+  }
+};
+
 export const createValidator = (rules) => (values) => {
   const errors = {};
 
@@ -24,6 +33,11 @@ export const createValidator = (rules) => (values) => {
 
     if (!isEmpty(value) && rule.email && !isValidEmail(value)) {
       errors[rule.field] = rule.emailMessage || "Ingresa un correo válido";
+      return;
+    }
+
+    if (!isEmpty(value) && rule.url && !isValidUrl(value)) {
+      errors[rule.field] = rule.urlMessage || "Ingresa un enlace válido";
       return;
     }
 
@@ -135,6 +149,11 @@ export const documentoRules = [
     minLength: 10,
     requiredMessage: "La descripción es obligatoria",
     minLengthMessage: "La descripción debe tener al menos 10 caracteres",
+  },
+  {
+    field: "url",
+    url: true,
+    urlMessage: "Ingresa un enlace válido que empiece con http:// o https://",
   },
 ];
 
