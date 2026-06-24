@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 
+import { AudienceSummary } from "../../components/common/AudienceSummary";
 import { useDocumentos } from "../../context/documentos/useDocumentos";
 import { mismoId } from "../../utils/id";
 import {
@@ -106,6 +107,10 @@ export const DocumentoDetalle = () => {
               Fecha: {documento.fecha || "Sin fecha"}
             </p>
           </div>
+        </div>
+
+        <div className="mt-5">
+          <AudienceSummary item={documento} />
         </div>
 
         {documento.archivoNombre && (

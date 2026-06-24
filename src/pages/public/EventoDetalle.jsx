@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 
+import { AudienceSummary } from "../../components/common/AudienceSummary";
 import { useEventos } from "../../context/eventos/useEventos";
 import { mismoId } from "../../utils/id";
 
@@ -92,6 +93,10 @@ export const EventoDetalle = () => {
         >
           📍 {evento.lugar}
         </p>
+
+        <div className="mt-5">
+          <AudienceSummary item={evento} />
+        </div>
 
         <p
           className="

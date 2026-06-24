@@ -1,4 +1,5 @@
 import { crearId, mismoId } from "../utils/id";
+import { normalizeAudience } from "../utils/audience";
 import {
   obtenerDocumentosStorage,
   guardarDocumentosStorage,
@@ -6,11 +7,17 @@ import {
 
 export const obtenerDocumentos = () => obtenerDocumentosStorage();
 
+
+const normalizeContent = (content) => ({
+  ...content,
+  audiencia: normalizeAudience(content.audiencia),
+});
+
 export const guardarDocumentos = (documentos) =>
   guardarDocumentosStorage(documentos);
 
 export const crearDocumento = (nuevoDocumento) => ({
-  ...nuevoDocumento,
+  ...normalizeContent(nuevoDocumento),
   id: crearId(),
   createdAt: new Date().toISOString(),
 });
@@ -25,7 +32,7 @@ export const editarDocumentoLista = (documentos, id, datosActualizados) =>
     mismoId(documento.id, id)
       ? {
           ...documento,
-          ...datosActualizados,
+          ...normalizeContent(datosActualizados),
           updatedAt: new Date().toISOString(),
         }
       : documento

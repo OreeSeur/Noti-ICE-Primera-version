@@ -1,3 +1,4 @@
+import { AudienceFields } from "../common/AudienceFields";
 import { FormError } from "../common/FormError";
 
 export const AvisoForm = ({
@@ -6,6 +7,7 @@ export const AvisoForm = ({
   handleSubmit,
   buttonText,
   errors = {},
+  handleAudienceChange,
 }) => {
   return (
     <form
@@ -82,6 +84,11 @@ export const AvisoForm = ({
         />
         <FormError message={errors.descripcion} />
       </div>
+
+      <AudienceFields
+        audiencia={formData.audiencia}
+        onChange={handleAudienceChange}
+      />
 
       <button
         type="submit"

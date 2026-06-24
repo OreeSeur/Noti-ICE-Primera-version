@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 
 import { AdminTableWrapper } from "../../../components/common/AdminTableWrapper";
+import { AudienceSummary } from "../../../components/common/AudienceSummary";
 import { CrudActions } from "../../../components/common/CrudActions";
 import { EmptyState } from "../../../components/common/EmptyState";
 import { PageHeader } from "../../../components/common/PageHeader";
@@ -10,6 +11,7 @@ import { StatusBadge } from "../../../components/common/StatusBadge";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 import { ROUTES, buildRoute } from "../../../constants/routes";
 import { useDocumentos } from "../../../context/documentos/useDocumentos";
+import { buildAudienceSearchText } from "../../../utils/audience";
 import { matchesSearch } from "../../../utils/search";
 import {
   formatFileSize,
@@ -29,7 +31,7 @@ export const AdminDocumentos = () => {
       documentos.filter((documento) =>
         matchesSearch(
           documento,
-          ["titulo", "nombre", "tipo", "fecha", "categoria", "archivoNombre"],
+          ["titulo", "nombre", "tipo", "fecha", "categoria", "archivoNombre", buildAudienceSearchText],
           search
         )
       ),
@@ -78,6 +80,7 @@ export const AdminDocumentos = () => {
               <th className="p-4 text-left">Título</th>
               <th className="p-4 text-left">Tipo</th>
               <th className="p-4 text-left">Fecha</th>
+              <th className="p-4 text-left">Destinatarios</th>
               <th className="p-4 text-center">Acciones</th>
             </tr>
           </thead>
@@ -85,7 +88,7 @@ export const AdminDocumentos = () => {
           <tbody>
             {documentosFiltrados.length === 0 ? (
               <EmptyState
-                colSpan={4}
+                colSpan={5}
                 title="No se encontraron documentos"
                 message="Prueba con otra búsqueda o registra un nuevo documento."
               />
@@ -118,6 +121,9 @@ export const AdminDocumentos = () => {
                   </td>
                   <td className="p-4 text-slate-600 dark:text-slate-300">
                     {documento.fecha || "Sin fecha"}
+                  </td>
+                  <td className="p-4">
+                    <AudienceSummary item={documento} compact />
                   </td>
                   <td className="p-4">
                     <CrudActions

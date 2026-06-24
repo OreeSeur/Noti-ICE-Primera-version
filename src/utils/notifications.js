@@ -1,5 +1,6 @@
 import { formatDateLabel, getDateTimestamp } from "./dates";
 import { getDocumentTitle } from "./documentTypes";
+import { canReceiveItem, getAudienceSummary, getItemAudience, getPriorityVariant } from "./audience";
 
 const READ_NOTIFICATIONS_KEY = "notiIce_read_notifications";
 
@@ -20,8 +21,8 @@ export const saveReadNotificationIds = (ids) => {
   localStorage.setItem(READ_NOTIFICATIONS_KEY, JSON.stringify(ids));
 };
 
-export const buildNotificationItems = ({ avisos = [], eventos = [], documentos = [] }) => {
-  const avisoItems = avisos.map((aviso) => {
+export const buildNotificationItems = ({ avisos = [], eventos = [], documentos = [], user = null }) => {
+  const avisoItems = avisos.filter((aviso) => canReceiveItem(aviso, user)).map((aviso) => {
     const fechaNotificacion = getNotificationDate(aviso);
 
     return {
@@ -34,10 +35,12 @@ export const buildNotificationItems = ({ avisos = [], eventos = [], documentos =
       fechaLabel: formatDateLabel(fechaNotificacion),
       ruta: `/avisos/${aviso.id}`,
       orden: getDateTimestamp(fechaNotificacion),
+      audiencia: getAudienceSummary(getItemAudience(aviso)),
+      prioridadVariant: getPriorityVariant(getItemAudience(aviso).prioridad),
     };
   });
 
-  const eventoItems = eventos.map((evento) => {
+  const eventoItems = eventos.filter((evento) => canReceiveItem(evento, user)).map((evento) => {
     const fechaNotificacion = getNotificationDate(evento);
 
     return {
@@ -50,10 +53,12 @@ export const buildNotificationItems = ({ avisos = [], eventos = [], documentos =
       fechaLabel: formatDateLabel(fechaNotificacion),
       ruta: `/eventos/${evento.id}`,
       orden: getDateTimestamp(fechaNotificacion),
+      audiencia: getAudienceSummary(getItemAudience(evento)),
+      prioridadVariant: getPriorityVariant(getItemAudience(evento).prioridad),
     };
   });
 
-  const documentoItems = documentos.map((documento) => {
+  const documentoItems = documentos.filter((documento) => canReceiveItem(documento, user)).map((documento) => {
     const fechaNotificacion = getNotificationDate(documento);
 
     return {
@@ -66,6 +71,8 @@ export const buildNotificationItems = ({ avisos = [], eventos = [], documentos =
       fechaLabel: formatDateLabel(fechaNotificacion),
       ruta: `/documentos/${documento.id}`,
       orden: getDateTimestamp(fechaNotificacion),
+      audiencia: getAudienceSummary(getItemAudience(documento)),
+      prioridadVariant: getPriorityVariant(getItemAudience(documento).prioridad),
     };
   });
 

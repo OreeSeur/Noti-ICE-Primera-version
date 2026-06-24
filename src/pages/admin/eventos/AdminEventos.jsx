@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 
 import { AdminTableWrapper } from "../../../components/common/AdminTableWrapper";
+import { AudienceSummary } from "../../../components/common/AudienceSummary";
 import { CrudActions } from "../../../components/common/CrudActions";
 import { EmptyState } from "../../../components/common/EmptyState";
 import { PageHeader } from "../../../components/common/PageHeader";
@@ -10,6 +11,7 @@ import { StatusBadge } from "../../../components/common/StatusBadge";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 import { ROUTES, buildRoute } from "../../../constants/routes";
 import { useEventos } from "../../../context/eventos/useEventos";
+import { buildAudienceSearchText } from "../../../utils/audience";
 import { matchesSearch } from "../../../utils/search";
 
 export const AdminEventos = () => {
@@ -22,7 +24,7 @@ export const AdminEventos = () => {
   const eventosFiltrados = useMemo(
     () =>
       eventos.filter((evento) =>
-        matchesSearch(evento, ["titulo", "fecha", "lugar", "categoria"], search)
+        matchesSearch(evento, ["titulo", "fecha", "lugar", "categoria", buildAudienceSearchText], search)
       ),
     [eventos, search]
   );
@@ -70,6 +72,7 @@ export const AdminEventos = () => {
               <th className="p-4 text-left">Fecha</th>
               <th className="p-4 text-left">Lugar</th>
               <th className="p-4 text-left">Categoría</th>
+              <th className="p-4 text-left">Destinatarios</th>
               <th className="p-4 text-center">Acciones</th>
             </tr>
           </thead>
@@ -77,7 +80,7 @@ export const AdminEventos = () => {
           <tbody>
             {eventosFiltrados.length === 0 ? (
               <EmptyState
-                colSpan={5}
+                colSpan={6}
                 title="No se encontraron eventos"
                 message="Prueba con otra búsqueda o registra un nuevo evento."
               />
@@ -98,6 +101,9 @@ export const AdminEventos = () => {
                   </td>
                   <td className="p-4">
                     <StatusBadge label={evento.categoria || "Evento"} variant="info" />
+                  </td>
+                  <td className="p-4">
+                    <AudienceSummary item={evento} compact />
                   </td>
                   <td className="p-4">
                     <CrudActions

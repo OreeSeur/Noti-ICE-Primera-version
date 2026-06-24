@@ -11,6 +11,7 @@ import {
   normalizeFormValues,
   validateDocumento,
 } from "../../../utils/validation";
+import { normalizeAudience } from "../../../utils/audience";
 import { inferDocumentTypeFromFile } from "../../../utils/documentTypes";
 
 const documentoVacio = {
@@ -22,6 +23,7 @@ const documentoVacio = {
   archivoTipo: "",
   archivoTamaño: "",
   url: "",
+  audiencia: normalizeAudience(),
 };
 
 export const AdminEditarDocumento = () => {
@@ -79,6 +81,20 @@ export const AdminEditarDocumento = () => {
     }
   };
 
+  const handleAudienceChange = (field, value) => {
+    setFormulario((prev) => {
+      const audienciaActual = normalizeAudience(prev.audiencia);
+
+      return {
+        ...prev,
+        audiencia: {
+          ...audienciaActual,
+          [field]: value,
+        },
+      };
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -120,6 +136,7 @@ export const AdminEditarDocumento = () => {
         handleSubmit={handleSubmit}
         buttonText="Actualizar Documento"
         errors={errors}
+        handleAudienceChange={handleAudienceChange}
       />
     </section>
   );

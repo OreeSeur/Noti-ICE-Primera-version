@@ -1,4 +1,5 @@
 import { crearId, mismoId } from "../utils/id";
+import { normalizeAudience } from "../utils/audience";
 import {
   obtenerAvisosStorage,
   guardarAvisosStorage,
@@ -6,10 +7,16 @@ import {
 
 export const obtenerAvisos = () => obtenerAvisosStorage();
 
+
+const normalizeContent = (content) => ({
+  ...content,
+  audiencia: normalizeAudience(content.audiencia),
+});
+
 export const guardarAvisos = (avisos) => guardarAvisosStorage(avisos);
 
 export const crearAviso = (nuevoAviso) => ({
-  ...nuevoAviso,
+  ...normalizeContent(nuevoAviso),
   id: crearId(),
   createdAt: new Date().toISOString(),
 });
@@ -24,7 +31,7 @@ export const editarAvisoLista = (avisos, id, datosActualizados) =>
     mismoId(aviso.id, id)
       ? {
           ...aviso,
-          ...datosActualizados,
+          ...normalizeContent(datosActualizados),
           updatedAt: new Date().toISOString(),
         }
       : aviso

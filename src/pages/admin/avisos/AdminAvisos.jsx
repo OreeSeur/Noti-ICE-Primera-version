@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 
 import { AdminTableWrapper } from "../../../components/common/AdminTableWrapper";
+import { AudienceSummary } from "../../../components/common/AudienceSummary";
 import { CrudActions } from "../../../components/common/CrudActions";
 import { EmptyState } from "../../../components/common/EmptyState";
 import { PageHeader } from "../../../components/common/PageHeader";
@@ -9,6 +10,7 @@ import { SearchInput } from "../../../components/common/SearchInput";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
 import { ROUTES, buildRoute } from "../../../constants/routes";
 import { useAvisos } from "../../../context/avisos/useAvisos";
+import { buildAudienceSearchText } from "../../../utils/audience";
 import { matchesSearch } from "../../../utils/search";
 
 export const AdminAvisos = () => {
@@ -21,7 +23,7 @@ export const AdminAvisos = () => {
   const avisosFiltrados = useMemo(
     () =>
       avisos.filter((aviso) =>
-        matchesSearch(aviso, ["titulo", "fecha", "categoria"], search)
+        matchesSearch(aviso, ["titulo", "fecha", "categoria", buildAudienceSearchText], search)
       ),
     [avisos, search]
   );
@@ -67,6 +69,7 @@ export const AdminAvisos = () => {
             <tr className="bg-slate-100 dark:bg-slate-700">
               <th className="p-4 text-left">Título</th>
               <th className="p-4 text-left">Fecha</th>
+              <th className="p-4 text-left">Destinatarios</th>
               <th className="p-4 text-center">Acciones</th>
             </tr>
           </thead>
@@ -74,7 +77,7 @@ export const AdminAvisos = () => {
           <tbody>
             {avisosFiltrados.length === 0 ? (
               <EmptyState
-                colSpan={3}
+                colSpan={4}
                 title="No se encontraron avisos"
                 message="Prueba con otra búsqueda o registra un nuevo aviso."
               />
@@ -89,6 +92,9 @@ export const AdminAvisos = () => {
                   </td>
                   <td className="p-4 text-slate-600 dark:text-slate-300">
                     {aviso.fecha || "Sin fecha"}
+                  </td>
+                  <td className="p-4">
+                    <AudienceSummary item={aviso} compact />
                   </td>
                   <td className="p-4">
                     <CrudActions

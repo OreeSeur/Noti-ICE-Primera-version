@@ -10,6 +10,7 @@ import {
   normalizeFormValues,
   validateEvento,
 } from "../../../utils/validation";
+import { normalizeAudience } from "../../../utils/audience";
 
 export const AdminNuevoEvento = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ export const AdminNuevoEvento = () => {
     lugar: "",
     categoria: "",
     descripcion: "",
+    audiencia: normalizeAudience(),
   });
   const [errors, setErrors] = useState({});
 
@@ -37,6 +39,20 @@ export const AdminNuevoEvento = () => {
         [e.target.name]: "",
       });
     }
+  };
+
+  const handleAudienceChange = (field, value) => {
+    setFormulario((prev) => {
+      const audienciaActual = normalizeAudience(prev.audiencia);
+
+      return {
+        ...prev,
+        audiencia: {
+          ...audienciaActual,
+          [field]: value,
+        },
+      };
+    });
   };
 
   const handleSubmit = (e) => {
@@ -70,6 +86,7 @@ export const AdminNuevoEvento = () => {
         handleSubmit={handleSubmit}
         buttonText="Guardar Evento"
         errors={errors}
+        handleAudienceChange={handleAudienceChange}
       />
     </section>
   );

@@ -1,4 +1,5 @@
 import { crearId, mismoId } from "../utils/id";
+import { normalizeAudience } from "../utils/audience";
 import {
   obtenerEventosStorage,
   guardarEventosStorage,
@@ -6,10 +7,16 @@ import {
 
 export const obtenerEventos = () => obtenerEventosStorage();
 
+
+const normalizeContent = (content) => ({
+  ...content,
+  audiencia: normalizeAudience(content.audiencia),
+});
+
 export const guardarEventos = (eventos) => guardarEventosStorage(eventos);
 
 export const crearEvento = (nuevoEvento) => ({
-  ...nuevoEvento,
+  ...normalizeContent(nuevoEvento),
   id: crearId(),
   createdAt: new Date().toISOString(),
 });
@@ -24,7 +31,7 @@ export const editarEventoLista = (eventos, id, datosActualizados) =>
     mismoId(evento.id, id)
       ? {
           ...evento,
-          ...datosActualizados,
+          ...normalizeContent(datosActualizados),
           updatedAt: new Date().toISOString(),
         }
       : evento

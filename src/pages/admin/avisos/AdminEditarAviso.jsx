@@ -12,6 +12,7 @@ import {
   normalizeFormValues,
   validateAviso,
 } from "../../../utils/validation";
+import { normalizeAudience } from "../../../utils/audience";
 
 export const AdminEditarAviso = () => {
   const { id } = useParams();
@@ -27,6 +28,7 @@ export const AdminEditarAviso = () => {
       titulo: "",
       fecha: "",
       descripcion: "",
+      audiencia: normalizeAudience(),
     }
   );
   const [errors, setErrors] = useState({});
@@ -43,6 +45,20 @@ export const AdminEditarAviso = () => {
         [e.target.name]: "",
       });
     }
+  };
+
+  const handleAudienceChange = (field, value) => {
+    setFormData((prev) => {
+      const audienciaActual = normalizeAudience(prev.audiencia);
+
+      return {
+        ...prev,
+        audiencia: {
+          ...audienciaActual,
+          [field]: value,
+        },
+      };
+    });
   };
 
   const handleSubmit = (e) => {
@@ -92,6 +108,7 @@ export const AdminEditarAviso = () => {
         handleSubmit={handleSubmit}
         buttonText="Actualizar Aviso"
         errors={errors}
+        handleAudienceChange={handleAudienceChange}
       />
     </section>
   );

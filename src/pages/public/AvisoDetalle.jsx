@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 
+import { AudienceSummary } from "../../components/common/AudienceSummary";
 import { useAvisos } from "../../context/avisos/useAvisos";
 import { mismoId } from "../../utils/id";
 
@@ -83,6 +84,10 @@ export const AvisoDetalle = () => {
         >
           {aviso.fecha}
         </p>
+
+        <div className="mt-5">
+          <AudienceSummary item={aviso} />
+        </div>
 
         <p
           className="

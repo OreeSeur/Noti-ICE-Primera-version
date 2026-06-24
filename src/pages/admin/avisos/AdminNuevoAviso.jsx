@@ -10,6 +10,7 @@ import {
   normalizeFormValues,
   validateAviso,
 } from "../../../utils/validation";
+import { normalizeAudience } from "../../../utils/audience";
 
 export const AdminNuevoAviso = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ export const AdminNuevoAviso = () => {
     titulo: "",
     fecha: "",
     descripcion: "",
+    audiencia: normalizeAudience(),
   });
   const [errors, setErrors] = useState({});
 
@@ -36,6 +38,20 @@ export const AdminNuevoAviso = () => {
         [e.target.name]: "",
       });
     }
+  };
+
+  const handleAudienceChange = (field, value) => {
+    setFormData((prev) => {
+      const audienciaActual = normalizeAudience(prev.audiencia);
+
+      return {
+        ...prev,
+        audiencia: {
+          ...audienciaActual,
+          [field]: value,
+        },
+      };
+    });
   };
 
   const handleSubmit = (e) => {
@@ -75,6 +91,7 @@ export const AdminNuevoAviso = () => {
         handleSubmit={handleSubmit}
         buttonText="Guardar Aviso"
         errors={errors}
+        handleAudienceChange={handleAudienceChange}
       />
     </section>
   );

@@ -18,6 +18,7 @@ import { useDocumentos } from "../../context/documentos/useDocumentos";
 import { ROUTES } from "../../constants/routes";
 import { getRoleLabel } from "../../constants/roles";
 import { getDocumentTitle } from "../../utils/documentTypes";
+import { canReceiveItem } from "../../utils/audience";
 import {
   buildNotificationItems,
   getNotificationId,
@@ -44,21 +45,21 @@ export const Topbar = ({
   );
 
   const resultados = [
-    ...avisos.map((item) => ({
+    ...avisos.filter((item) => canReceiveItem(item, user)).map((item) => ({
       id: item.id,
       titulo: item.titulo ?? "",
       tipo: "Aviso",
       ruta: `/avisos/${item.id}`,
     })),
 
-    ...eventos.map((item) => ({
+    ...eventos.filter((item) => canReceiveItem(item, user)).map((item) => ({
       id: item.id,
       titulo: item.titulo ?? "",
       tipo: "Evento",
       ruta: `/eventos/${item.id}`,
     })),
 
-    ...documentos.map((item) => ({
+    ...documentos.filter((item) => canReceiveItem(item, user)).map((item) => ({
       id: item.id,
       titulo: getDocumentTitle(item),
       tipo: "Documento",
@@ -69,8 +70,8 @@ export const Topbar = ({
   );
 
   const notificationItems = useMemo(
-    () => buildNotificationItems({ avisos, eventos, documentos }).slice(0, 15),
-    [avisos, eventos, documentos]
+    () => buildNotificationItems({ avisos, eventos, documentos, user }).slice(0, 15),
+    [avisos, eventos, documentos, user]
   );
 
   const unreadCount = notificationItems.filter(
@@ -268,7 +269,7 @@ export const Topbar = ({
                   Notificaciones
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Avisos, eventos y documentos recientes
+                  Contenido reciente dirigido a tu perfil
                 </p>
               </div>
 
@@ -293,9 +294,16 @@ export const Topbar = ({
                     "
                   >
                     <div className="flex items-center justify-between gap-3">
-                      <span className="text-xs font-semibold text-[#6A0032] dark:text-pink-300">
-                        {item.etiqueta}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-semibold text-[#6A0032] dark:text-pink-300">
+                          {item.etiqueta}
+                        </span>
+                        {item.audiencia?.prioridad && item.audiencia.prioridad !== "Normal" && (
+                          <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-semibold text-red-700 dark:bg-red-900/40 dark:text-red-200">
+                            {item.audiencia.prioridad}
+                          </span>
+                        )}
+                      </div>
                       {item.fechaLabel && (
                         <span className="text-[11px] text-slate-400">
                           {item.fechaLabel}
@@ -308,6 +316,12 @@ export const Topbar = ({
                     {item.descripcion && (
                       <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
                         {item.descripcion}
+                      </p>
+                    )}
+
+                    {item.audiencia?.categorias && (
+                      <p className="mt-1 text-[11px] text-slate-400 line-clamp-1">
+                        {item.audiencia.categorias}
                       </p>
                     )}
                   </Link>

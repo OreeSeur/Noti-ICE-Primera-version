@@ -1,5 +1,6 @@
 import { SUBSCRIPTION_TOPICS, normalizeSubscriptions } from "../constants/subscriptions";
 import { getDocumentTitle } from "./documentTypes";
+import { canReceiveItem, itemMatchesTargetCategory } from "./audience";
 
 const normalizeText = (value = "") =>
   String(value)
@@ -44,7 +45,11 @@ export const isRelevantForUser = (item, type, user) => {
   if (type === "evento" && !subscriptions.notifyEventos) return false;
   if (type === "documento" && !subscriptions.notifyDocumentos) return false;
 
-  return subscriptions.topics.some((topic) => matchesTopic(item, type, topic));
+  if (!canReceiveItem(item, user)) return false;
+
+  return subscriptions.topics.some((topic) =>
+    itemMatchesTargetCategory(item, topic) || matchesTopic(item, type, topic)
+  );
 };
 
 const buildRecommendation = (item, type, label, path) => ({

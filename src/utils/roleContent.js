@@ -1,6 +1,7 @@
 import { buildRoute, ROUTES } from "../constants/routes";
 import { getRoleContentKeywords, getExperienceRole } from "../constants/roleExperience";
 import { getDocumentTitle } from "./documentTypes";
+import { canReceiveItem } from "./audience";
 
 const normalizeText = (value = "") =>
   String(value)
@@ -60,13 +61,15 @@ export const getRoleBasedContent = ({
     ...documentos.map((item) => ({ item, type: "documento" })),
   ];
 
+  const audienceItems = allItems.filter(({ item }) => canReceiveItem(item, user));
+
   const matchedItems = keywords.length
-    ? allItems.filter(({ item, type }) => {
+    ? audienceItems.filter(({ item, type }) => {
         const text = getItemText(item, type);
 
         return keywords.some((keyword) => text.includes(keyword));
       })
-    : allItems;
+    : audienceItems;
 
   return matchedItems
     .map(({ item, type }) => buildRoleItem(item, type))

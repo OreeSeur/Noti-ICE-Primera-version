@@ -1,4 +1,5 @@
 import { DOCUMENT_ACCEPT, DOCUMENT_TYPES, formatFileSize } from "../../utils/documentTypes";
+import { AudienceFields } from "../common/AudienceFields";
 import { FormError } from "../common/FormError";
 
 export const DocumentoForm = ({
@@ -7,6 +8,7 @@ export const DocumentoForm = ({
   handleSubmit,
   buttonText,
   errors = {},
+  handleAudienceChange,
 }) => {
   const inputClass = (field) =>
     `w-full border rounded-lg px-4 py-2 bg-transparent ${
@@ -119,6 +121,11 @@ export const DocumentoForm = ({
         />
         <FormError message={errors.descripcion} />
       </div>
+
+      <AudienceFields
+        audiencia={formulario.audiencia}
+        onChange={handleAudienceChange}
+      />
 
       <div className="flex gap-4">
         <button
