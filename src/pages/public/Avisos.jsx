@@ -3,16 +3,19 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { InfoCard } from "../../components/cards/InfoCard";
+import { AcademicTargetSummary } from "../../components/common/AcademicTargetSummary";
 import { EmptyState } from "../../components/common/EmptyState";
 import { PageHeader } from "../../components/common/PageHeader";
 import { SearchInput } from "../../components/common/SearchInput";
 import { StatusBadge } from "../../components/common/StatusBadge";
 import { useAvisos } from "../../context/avisos/useAvisos";
 import {
+  buildAudienceSearchText,
   getItemAudience,
   getPriorityLabel,
   getPriorityVariant,
 } from "../../utils/audience";
+import { buildAcademicTargetSearchText } from "../../utils/academicTarget";
 import { matchesSearch } from "../../utils/search";
 
 export const Avisos = () => {
@@ -24,7 +27,14 @@ export const Avisos = () => {
       avisos.filter((aviso) =>
         matchesSearch(
           aviso,
-          ["titulo", "descripcion", "fecha", (item) => getPriorityLabel(getItemAudience(item).prioridad)],
+          [
+            "titulo",
+            "descripcion",
+            "fecha",
+            (item) => getPriorityLabel(getItemAudience(item).prioridad),
+            buildAudienceSearchText,
+            buildAcademicTargetSearchText,
+          ],
           busqueda
         )
       ),
@@ -63,6 +73,7 @@ export const Avisos = () => {
                   title={aviso.titulo}
                   subtitle={aviso.fecha || "Sin fecha"}
                   description={aviso.descripcion}
+                  metadata={<AcademicTargetSummary item={aviso} compact />}
                   badge={
                     <StatusBadge
                       label={getPriorityLabel(audiencia.prioridad)}

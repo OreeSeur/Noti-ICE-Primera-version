@@ -1,6 +1,7 @@
 import { ArrowLeft, CalendarDays, MapPin } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
+import { AcademicTargetSummary } from "../../components/common/AcademicTargetSummary";
 import { AudienceSummary } from "../../components/common/AudienceSummary";
 import { EmptyState } from "../../components/common/EmptyState";
 import { StatusBadge } from "../../components/common/StatusBadge";
@@ -85,11 +86,20 @@ export const EventoDetalle = () => {
             </p>
           </div>
 
-          <aside className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-700/60">
-            <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-slate-500 dark:text-slate-300">
-              Dirigido a
-            </h2>
-            <AudienceSummary item={evento} />
+          <aside className="space-y-5 rounded-2xl bg-slate-50 p-5 dark:bg-slate-700/60">
+            <div>
+              <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-slate-500 dark:text-slate-300">
+                Datos académicos
+              </h2>
+              <AcademicTargetSummary item={evento} />
+            </div>
+
+            <div>
+              <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-slate-500 dark:text-slate-300">
+                Dirigido a
+              </h2>
+              <AudienceSummary item={evento} />
+            </div>
           </aside>
         </div>
       </article>

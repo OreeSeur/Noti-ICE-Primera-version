@@ -7,6 +7,7 @@ import {
   getPriorityLabel,
   getPriorityVariant,
 } from "./audience";
+import { buildAcademicTargetSearchText, getAcademicTargetSummary } from "./academicTarget";
 
 const READ_NOTIFICATIONS_KEY = "notiIce_read_notifications";
 
@@ -71,6 +72,8 @@ const buildBaseItem = ({ item, tipo, etiqueta, titulo, descripcion, ruta }) => {
   const fechaNotificacion = getNotificationDate(item);
   const audiencia = getItemAudience(item);
 
+  const academicTarget = item.academicTarget || null;
+
   return {
     id: item.id,
     titulo,
@@ -85,6 +88,9 @@ const buildBaseItem = ({ item, tipo, etiqueta, titulo, descripcion, ruta }) => {
     prioridad: audiencia.prioridad,
     prioridadLabel: getPriorityLabel(audiencia.prioridad),
     prioridadVariant: getPriorityVariant(audiencia.prioridad),
+    academicTarget,
+    academicSummary: academicTarget ? getAcademicTargetSummary(academicTarget) : null,
+    academicSearchText: academicTarget ? buildAcademicTargetSearchText(academicTarget) : "",
   };
 };
 

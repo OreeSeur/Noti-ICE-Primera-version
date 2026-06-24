@@ -2,6 +2,7 @@ import { FileText } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { AcademicTargetSummary } from "../../components/common/AcademicTargetSummary";
 import { EmptyState } from "../../components/common/EmptyState";
 import { PageHeader } from "../../components/common/PageHeader";
 import { SearchInput } from "../../components/common/SearchInput";
@@ -12,6 +13,8 @@ import {
   getDocumentIcon,
   getDocumentTitle,
 } from "../../utils/documentTypes";
+import { buildAudienceSearchText } from "../../utils/audience";
+import { buildAcademicTargetSearchText } from "../../utils/academicTarget";
 import { matchesSearch } from "../../utils/search";
 
 export const Documentos = () => {
@@ -29,6 +32,8 @@ export const Documentos = () => {
             "tipo",
             "fecha",
             "archivoNombre",
+            buildAudienceSearchText,
+            buildAcademicTargetSearchText,
           ],
           busqueda
         )
@@ -101,6 +106,8 @@ export const Documentos = () => {
                         : ""}
                     </p>
                   )}
+
+                  <AcademicTargetSummary item={documento} compact />
 
                   <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4 text-sm dark:border-slate-700">
                     <span className="font-semibold text-[#6A0032] dark:text-pink-100">

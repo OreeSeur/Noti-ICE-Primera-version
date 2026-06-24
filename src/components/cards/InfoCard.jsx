@@ -6,6 +6,7 @@ export const InfoCard = ({
   icon,
   actionLabel = "Ver detalle",
   className = "",
+  metadata = null,
 }) => {
   return (
     <article
@@ -45,6 +46,8 @@ export const InfoCard = ({
           {description}
         </p>
       )}
+
+      {metadata && <div>{metadata}</div>}
 
       <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4 text-sm dark:border-slate-700">
         <span className="font-semibold text-[#6A0032] dark:text-pink-100">

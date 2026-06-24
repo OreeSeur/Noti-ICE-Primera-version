@@ -102,7 +102,7 @@ export const Notificaciones = () => {
       const matchesQuery =
         !query ||
         normalizeSearchText(
-          `${item.titulo} ${item.descripcion} ${item.etiqueta} ${item.audiencia?.roles} ${item.audiencia?.categorias}`
+          `${item.titulo} ${item.descripcion} ${item.etiqueta} ${item.audiencia?.roles} ${item.audiencia?.categorias} ${item.academicSearchText || ""}`
         ).includes(query);
 
       return matchesType && matchesStatus && matchesPriority && matchesQuery;
@@ -306,9 +306,20 @@ export const Notificaciones = () => {
 
                       <div className="mt-3 grid gap-1 text-sm text-slate-500 dark:text-slate-400 md:grid-cols-2">
                         <span>Fecha: {notification.fechaLabel || "Sin fecha"}</span>
-                        <span>Roles: {notification.audiencia?.roles}</span>
-                        <span>Carreras/áreas: {notification.audiencia?.carreras}</span>
-                        <span>Categorías: {notification.audiencia?.categorias}</span>
+                        {notification.academicSummary ? (
+                          <>
+                            <span>Materia: {notification.academicSummary.materia}</span>
+                            <span>Grupo: {notification.academicSummary.grupo}</span>
+                            <span>Profesor: {notification.academicSummary.profesor}</span>
+                            <span>Periodo: {notification.academicSummary.periodo}</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Roles: {notification.audiencia?.roles}</span>
+                            <span>Carreras/áreas: {notification.audiencia?.carreras}</span>
+                            <span>Categorías: {notification.audiencia?.categorias}</span>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>

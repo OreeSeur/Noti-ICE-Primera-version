@@ -3,16 +3,19 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { InfoCard } from "../../components/cards/InfoCard";
+import { AcademicTargetSummary } from "../../components/common/AcademicTargetSummary";
 import { EmptyState } from "../../components/common/EmptyState";
 import { PageHeader } from "../../components/common/PageHeader";
 import { SearchInput } from "../../components/common/SearchInput";
 import { StatusBadge } from "../../components/common/StatusBadge";
 import { useEventos } from "../../context/eventos/useEventos";
 import {
+  buildAudienceSearchText,
   getItemAudience,
   getPriorityLabel,
   getPriorityVariant,
 } from "../../utils/audience";
+import { buildAcademicTargetSearchText } from "../../utils/academicTarget";
 import { matchesSearch } from "../../utils/search";
 
 export const Eventos = () => {
@@ -39,6 +42,8 @@ export const Eventos = () => {
               "lugar",
               "categoria",
               (item) => getPriorityLabel(getItemAudience(item).prioridad),
+              buildAudienceSearchText,
+              buildAcademicTargetSearchText,
             ],
             busqueda
           )
@@ -97,6 +102,7 @@ export const Eventos = () => {
                   title={evento.titulo}
                   subtitle={`${evento.fecha || "Sin fecha"} • ${evento.lugar || "Lugar por confirmar"}`}
                   description={evento.descripcion}
+                  metadata={<AcademicTargetSummary item={evento} compact />}
                   badge={
                     <StatusBadge
                       label={evento.categoria || getPriorityLabel(audiencia.prioridad)}

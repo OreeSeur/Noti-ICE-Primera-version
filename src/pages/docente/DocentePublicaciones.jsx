@@ -5,8 +5,11 @@ import {
   Calendar,
   FileText,
   Megaphone,
+  Pencil,
   Send,
+  Trash2,
   Users,
+  X,
 } from "lucide-react";
 
 import { EmptyState } from "../../components/common/EmptyState";
@@ -87,14 +90,15 @@ const Field = ({ label, error, children }) => (
   </label>
 );
 
-const TypeButton = ({ type, active, onClick }) => {
+const TypeButton = ({ type, active, onClick, disabled = false }) => {
   const Icon = type.icon;
 
   return (
     <button
       type="button"
       onClick={() => onClick(type.value)}
-      className={`rounded-2xl border p-4 text-left transition ${
+      disabled={disabled}
+      className={`rounded-2xl border p-4 text-left transition disabled:cursor-not-allowed disabled:opacity-60 ${
         active
           ? "border-[#6A0032] bg-[#6A0032] text-white shadow-md"
           : "border-slate-200 bg-white text-slate-700 hover:border-[#6A0032]/50 hover:bg-[#6A0032]/5 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
@@ -129,6 +133,28 @@ const getPublicationRoute = (item, tipo) => {
   return buildRoute(ROUTES.DOCUMENTO_DETALLE, { id: item.id });
 };
 
+const getPublicationAssignmentId = (item, asignaciones = []) => {
+  if (item.asignacionId || item.academicTarget?.asignacionId) {
+    return String(item.asignacionId || item.academicTarget.asignacionId);
+  }
+
+  const target = item.academicTarget || {};
+  const match = asignaciones.find(
+    (asignacion) =>
+      String(asignacion.materiaId) === String(target.materiaId) &&
+      String(asignacion.grupoId) === String(target.grupoId) &&
+      String(asignacion.plan) === String(target.plan) &&
+      String(asignacion.periodo) === String(target.periodo)
+  );
+
+  return match ? String(match.id) : "";
+};
+
+const getPublicationCategory = (item) =>
+  item.categoria || item.audiencia?.categorias?.find((categoria) => categoria !== "todos") || "academico";
+
+const getPublicationPriority = (item) => item.audiencia?.prioridad || item.prioridad || "normal";
+
 const buildAcademicContent = ({ form, asignacion, user }) => {
   const audiencia = {
     roles: [ROLES.ALUMNO],
@@ -139,6 +165,7 @@ const buildAcademicContent = ({ form, asignacion, user }) => {
   };
 
   const academicTarget = {
+    asignacionId: asignacion.id,
     plan: asignacion.plan,
     periodo: asignacion.periodo,
     profesorId: user.id,
@@ -157,6 +184,7 @@ const buildAcademicContent = ({ form, asignacion, user }) => {
     descripcion: form.descripcion,
     categoria: form.categoria,
     audiencia,
+    asignacionId: asignacion.id,
     academicTarget,
     origen: "docente",
     profesorId: user.id,
@@ -224,13 +252,14 @@ export const DocentePublicaciones = () => {
   const { user } = useAuth();
   const { materias, grupos, asignaciones } = useAcademico();
   const { usuarios } = useUsuarios();
-  const { avisos, agregarAviso } = useAvisos();
-  const { eventos, agregarEvento } = useEventos();
-  const { documentos, agregarDocumento } = useDocumentos();
+  const { avisos, agregarAviso, editarAviso, eliminarAviso } = useAvisos();
+  const { eventos, agregarEvento, editarEvento, eliminarEvento } = useEventos();
+  const { documentos, agregarDocumento, editarDocumento, eliminarDocumento } = useDocumentos();
   const { success, error } = useToast();
 
   const [form, setForm] = useState(createInitialForm);
   const [errors, setErrors] = useState({});
+  const [editingPublication, setEditingPublication] = useState(null);
 
   const role = normalizeRole(user?.rol);
   const canPublish = role === ROLES.DOCENTE || role === ROLES.ADMIN || role === ROLES.SUPERADMIN;
@@ -262,6 +291,8 @@ export const DocentePublicaciones = () => {
   };
 
   const handleTypeChange = (tipoPublicacion) => {
+    if (editingPublication) return;
+
     setForm((prev) => ({
       ...prev,
       tipoPublicacion,
@@ -295,7 +326,20 @@ export const DocentePublicaciones = () => {
       return;
     }
 
-    if (form.tipoPublicacion === "evento") {
+    if (editingPublication) {
+      if (editingPublication.tipo === "evento") {
+        editarEvento(editingPublication.id, contenido);
+        success("Evento actualizado para tus alumnos");
+      } else if (editingPublication.tipo === "documento") {
+        editarDocumento(editingPublication.id, contenido);
+        success("Documento actualizado para tus alumnos");
+      } else {
+        editarAviso(editingPublication.id, contenido);
+        success("Aviso actualizado para tus alumnos");
+      }
+
+      setEditingPublication(null);
+    } else if (form.tipoPublicacion === "evento") {
       agregarEvento(contenido);
       success("Evento publicado para tu grupo");
     } else if (form.tipoPublicacion === "documento") {
@@ -314,6 +358,56 @@ export const DocentePublicaciones = () => {
       prioridad: form.prioridad,
     });
     setErrors({});
+  };
+
+  const handleEditPublication = (item) => {
+    const tipo = item.tipoPublicacion;
+    const asignacionId = getPublicationAssignmentId(item, misAsignaciones);
+
+    setEditingPublication({ id: item.id, tipo });
+    setForm({
+      tipoPublicacion: tipo,
+      asignacionId,
+      titulo: getPublicationTitle(item, tipo),
+      fecha: item.fecha || new Date().toISOString().slice(0, 10),
+      descripcion: item.descripcion || "",
+      lugar: tipo === "evento" ? item.lugar || "" : "",
+      categoria: getPublicationCategory(item),
+      prioridad: getPublicationPriority(item),
+      tipoDocumento: tipo === "documento" ? item.tipo || "PDF" : "PDF",
+      url: tipo === "documento" ? item.url || "" : "",
+    });
+    setErrors({});
+  };
+
+  const handleCancelEdit = () => {
+    setEditingPublication(null);
+    setErrors({});
+    setForm(createInitialForm());
+  };
+
+  const handleDeletePublication = (item) => {
+    const title = getPublicationTitle(item, item.tipoPublicacion);
+    const confirmed = window.confirm(
+      `¿Seguro que deseas eliminar "${title}"? Los alumnos dejarán de ver esta publicación.`
+    );
+
+    if (!confirmed) return;
+
+    if (item.tipoPublicacion === "evento") {
+      eliminarEvento(item.id);
+      success("Evento eliminado para tus alumnos");
+    } else if (item.tipoPublicacion === "documento") {
+      eliminarDocumento(item.id);
+      success("Documento eliminado para tus alumnos");
+    } else {
+      eliminarAviso(item.id);
+      success("Aviso eliminado para tus alumnos");
+    }
+
+    if (String(editingPublication?.id) === String(item.id)) {
+      handleCancelEdit();
+    }
   };
 
   if (!canPublish) {
@@ -342,10 +436,10 @@ export const DocentePublicaciones = () => {
         <form onSubmit={handleSubmit} noValidate className={`${cardClass} space-y-6`}>
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#6A0032] dark:text-pink-200">
-              Nueva publicación
+              {editingPublication ? "Editando publicación" : "Nueva publicación"}
             </p>
             <h2 className="mt-1 text-xl font-bold text-slate-800 dark:text-white">
-              Publicar para una materia y grupo
+              {editingPublication ? "Actualizar publicación docente" : "Publicar para una materia y grupo"}
             </h2>
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               El destinatario se toma automáticamente de tu asignación académica: plan, materia, grupo y periodo.
@@ -368,6 +462,7 @@ export const DocentePublicaciones = () => {
                     type={type}
                     active={form.tipoPublicacion === type.value}
                     onClick={handleTypeChange}
+                    disabled={Boolean(editingPublication)}
                   />
                 ))}
               </div>
@@ -516,13 +611,26 @@ export const DocentePublicaciones = () => {
                 />
               </Field>
 
-              <button
-                type="submit"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90 sm:w-auto"
-              >
-                <Send size={18} />
-                Publicar para el grupo
-              </button>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <button
+                  type="submit"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90 sm:w-auto"
+                >
+                  <Send size={18} />
+                  {editingPublication ? "Guardar cambios" : "Publicar para el grupo"}
+                </button>
+
+                {editingPublication && (
+                  <button
+                    type="button"
+                    onClick={handleCancelEdit}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-5 py-3 font-semibold text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-700 sm:w-auto"
+                  >
+                    <X size={18} />
+                    Cancelar edición
+                  </button>
+                )}
+              </div>
             </>
           )}
         </form>
@@ -576,12 +684,36 @@ export const DocentePublicaciones = () => {
                         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                           {item.academicTarget?.materiaNombre || "Materia no especificada"}
                         </p>
-                        <Link
-                          to={getPublicationRoute(item, tipo)}
-                          className="mt-3 inline-flex text-sm font-semibold text-[#6A0032] hover:underline dark:text-pink-200"
-                        >
-                          Ver publicación
-                        </Link>
+                        {item.academicTarget?.profesorNombre && (
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                            Profesor: {item.academicTarget.profesorNombre}
+                          </p>
+                        )}
+
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          <Link
+                            to={getPublicationRoute(item, tipo)}
+                            className="inline-flex items-center justify-center rounded-lg bg-[#6A0032] px-3 py-2 text-xs font-semibold text-white transition hover:opacity-90"
+                          >
+                            Ver
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => handleEditPublication(item)}
+                            className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-700"
+                          >
+                            <Pencil size={14} />
+                            Editar
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeletePublication(item)}
+                            className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50 dark:border-red-900/60 dark:text-red-200 dark:hover:bg-red-900/30"
+                          >
+                            <Trash2 size={14} />
+                            Eliminar
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </article>

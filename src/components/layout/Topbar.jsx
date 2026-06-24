@@ -346,11 +346,15 @@ export const Topbar = ({
                       </p>
                     )}
 
-                    {item.audiencia?.categorias && (
+                    {item.academicSummary ? (
+                      <p className="mt-1 text-[11px] font-medium text-[#6A0032] line-clamp-1 dark:text-pink-200">
+                        {item.academicSummary.materia} · {item.academicSummary.grupo} · {item.academicSummary.profesor}
+                      </p>
+                    ) : item.audiencia?.categorias ? (
                       <p className="mt-1 text-[11px] text-slate-400 line-clamp-1">
                         {item.audiencia.categorias}
                       </p>
-                    )}
+                    ) : null}
                   </Link>
                 ))
               ) : (
