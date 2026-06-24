@@ -212,7 +212,7 @@ export const Sidebar = ({
               <NavLink
                 key={item.label}
                 to={item.path}
-                end={item.path === ROUTES.HOME}
+                end={item.path === ROUTES.HOME || item.path === ROUTES.ADMIN}
                 onClick={closeSidebar}
                 className={({ isActive }) =>
                   `
