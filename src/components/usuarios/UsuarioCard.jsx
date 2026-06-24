@@ -1,111 +1,81 @@
 import { Link } from "react-router-dom";
+import { Pencil, Trash2 } from "lucide-react";
+
 import { buildRoute, ROUTES } from "../../constants/routes";
-
-import {
-Pencil,
-Trash2,
-} from "lucide-react";
 import { getRoleLabel, normalizeRole, ROLES } from "../../constants/roles";
+import { StatusBadge } from "../common/StatusBadge";
 
-export const UsuarioCard = ({
-usuario,
-onDelete,
-}) => {
-return (
-<article className=" bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 " >
-<div className="space-y-2">
-<h3 className="font-bold text-lg text-slate-800 dark:text-white">
-{usuario.nombre}
-</h3>
+const obtenerVarianteRol = (rol) => {
+  const rolNormalizado = normalizeRole(rol);
 
-    <p className="text-slate-600 dark:text-slate-300 break-all">
-      {usuario.correo ||
-        usuario.email ||
-        "Sin correo"}
-    </p>
+  if (rolNormalizado === ROLES.ADMIN || rolNormalizado === ROLES.SUPERADMIN) {
+    return "success";
+  }
 
-    <p>
-      <span className="font-medium">
-        Boleta:
-      </span>{" "}
-      {usuario.boleta || "-"}
-    </p>
+  if (rolNormalizado === ROLES.PERSONAL) {
+    return "warning";
+  }
 
-    <p>
-      <span className="font-medium">
-        Carrera:
-      </span>{" "}
-      {usuario.carrera || "-"}
-    </p>
+  if (rolNormalizado === ROLES.DOCENTE) {
+    return "primary";
+  }
 
-    <p>
-      <span className="font-medium">
-        Semestre:
-      </span>{" "}
-      {usuario.semestre || "-"}
-    </p>
+  return "info";
+};
 
-    <div>
-      <span
-        className={`px-3 py-1 rounded-full text-sm font-medium ${
-          normalizeRole(usuario.rol) === ROLES.ADMIN ||
-          normalizeRole(usuario.rol) === ROLES.SUPERADMIN
-            ? "bg-green-100 text-green-700"
-            : normalizeRole(usuario.rol) === ROLES.PERSONAL
-            ? "bg-yellow-100 text-yellow-700"
-            : "bg-blue-100 text-blue-700"
-        }`}
-      >
-        {getRoleLabel(usuario.rol)}
-      </span>
-    </div>
-  </div>
+export const UsuarioCard = ({ usuario, onDelete }) => {
+  return (
+    <article className="rounded-xl bg-white p-4 shadow-md dark:bg-slate-800">
+      <div className="space-y-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white">
+            {usuario.nombre || "Usuario sin nombre"}
+          </h3>
 
-  <div className="flex gap-3 mt-4">
-    <Link
-      to={buildRoute(ROUTES.ADMIN_USUARIOS_EDITAR, { id: usuario.id })}
-      className="
-        flex-1
-        flex
-        justify-center
-        items-center
-        gap-2
-        bg-blue-100
-        text-blue-700
-        py-2
-        rounded-lg
-        hover:bg-blue-200
-        transition
-      "
-    >
-      <Pencil size={18} />
-      Editar
-    </Link>
+          <StatusBadge
+            label={getRoleLabel(usuario.rol)}
+            variant={obtenerVarianteRol(usuario.rol)}
+          />
+        </div>
 
-    <button
-      onClick={() =>
-        onDelete(usuario)
-      }
-      className="
-        flex-1
-        flex
-        justify-center
-        items-center
-        gap-2
-        bg-red-100
-        text-red-700
-        py-2
-        rounded-lg
-        hover:bg-red-200
-        transition
-        cursor-pointer
-      "
-    >
-      <Trash2 size={18} />
-      Eliminar
-    </button>
-  </div>
-</article>
+        <p className="break-all text-slate-600 dark:text-slate-300">
+          {usuario.correo || usuario.email || "Sin correo"}
+        </p>
 
-);
+        <p className="text-slate-600 dark:text-slate-300">
+          <span className="font-medium text-slate-800 dark:text-white">Boleta:</span>{" "}
+          {usuario.boleta || "-"}
+        </p>
+
+        <p className="text-slate-600 dark:text-slate-300">
+          <span className="font-medium text-slate-800 dark:text-white">Carrera:</span>{" "}
+          {usuario.carrera || "-"}
+        </p>
+
+        <p className="text-slate-600 dark:text-slate-300">
+          <span className="font-medium text-slate-800 dark:text-white">Semestre:</span>{" "}
+          {usuario.semestre || "-"}
+        </p>
+      </div>
+
+      <div className="mt-4 flex gap-3">
+        <Link
+          to={buildRoute(ROUTES.ADMIN_USUARIOS_EDITAR, { id: usuario.id })}
+          className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-blue-100 py-2 text-blue-700 transition hover:bg-blue-200"
+        >
+          <Pencil size={18} />
+          Editar
+        </Link>
+
+        <button
+          type="button"
+          onClick={() => onDelete(usuario)}
+          className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-red-100 py-2 text-red-700 transition hover:bg-red-200"
+        >
+          <Trash2 size={18} />
+          Eliminar
+        </button>
+      </div>
+    </article>
+  );
 };

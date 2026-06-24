@@ -1,43 +1,33 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { Plus } from "lucide-react";
 
-import {
-  Pencil,
-  Trash2,
-  Plus,
-} from "lucide-react";
-
-import { useAvisos } from "../../../context/avisos/useAvisos";
+import { AdminTableWrapper } from "../../../components/common/AdminTableWrapper";
+import { CrudActions } from "../../../components/common/CrudActions";
+import { EmptyState } from "../../../components/common/EmptyState";
+import { PageHeader } from "../../../components/common/PageHeader";
+import { SearchInput } from "../../../components/common/SearchInput";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
-import { ROUTES } from "../../../constants/routes";
+import { ROUTES, buildRoute } from "../../../constants/routes";
+import { useAvisos } from "../../../context/avisos/useAvisos";
+import { matchesSearch } from "../../../utils/search";
 
 export const AdminAvisos = () => {
-  const {
-    avisos,
-    eliminarAviso,
-  } = useAvisos();
+  const { avisos, eliminarAviso } = useAvisos();
 
-  const [search, setSearch] =
-    useState("");
+  const [search, setSearch] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [avisoSeleccionado, setAvisoSeleccionado] = useState(null);
 
-  const [modalOpen, setModalOpen] =
-    useState(false);
+  const avisosFiltrados = useMemo(
+    () =>
+      avisos.filter((aviso) =>
+        matchesSearch(aviso, ["titulo", "fecha", "categoria"], search)
+      ),
+    [avisos, search]
+  );
 
-  const [avisoSeleccionado,
-    setAvisoSeleccionado] =
-    useState(null);
-
-  const avisosFiltrados =
-    avisos.filter((aviso) =>
-      aviso.titulo
-        .toLowerCase()
-        .includes(
-          search.toLowerCase()
-        )
-    );
-
-  const abrirModal = (id) => {
-    setAvisoSeleccionado(id);
+  const abrirModal = (aviso) => {
+    setAvisoSeleccionado(aviso);
     setModalOpen(true);
   };
 
@@ -46,207 +36,83 @@ export const AdminAvisos = () => {
     setAvisoSeleccionado(null);
   };
 
-  const confirmarEliminacion =
-    () => {
-      eliminarAviso(
-        avisoSeleccionado
-      );
+  const confirmarEliminacion = () => {
+    if (!avisoSeleccionado) return;
 
-      cerrarModal();
-    };
+    eliminarAviso(avisoSeleccionado.id);
+    cerrarModal();
+  };
 
   return (
-    <section>
-      <div
-        className="
-          flex
-          flex-col
-          md:flex-row
-          md:items-center
-          md:justify-between
-          gap-4
-          mb-8
-        "
-      >
-        <div>
-          <h1
-            className="
-              text-3xl
-              font-bold
-              text-slate-800
-              dark:text-white
-            "
-          >
-            Administración de Avisos
-          </h1>
+    <section className="space-y-6">
+      <PageHeader
+        title="Administración de Avisos"
+        description="Gestiona los avisos publicados en el portal."
+        actionLabel="Nuevo Aviso"
+        actionTo={ROUTES.ADMIN_AVISOS_NUEVO}
+        actionIcon={Plus}
+      />
 
-          <p
-            className="
-              text-slate-500
-              dark:text-slate-400
-              mt-2
-            "
-          >
-            Gestiona los avisos publicados
-          </p>
-        </div>
-
-        <Link
-          to={ROUTES.ADMIN_AVISOS_NUEVO}
-          className="
-            flex
-            items-center
-            gap-2
-            bg-[#6A0032]
-            text-white
-            px-5
-            py-3
-            rounded-lg
-            hover:opacity-90
-            transition
-            w-fit
-          "
-        >
-          <Plus size={18} />
-          Nuevo Aviso
-        </Link>
-      </div>
-
-      <div className="mb-6">
-        <input
-          type="text"
-          placeholder="Buscar aviso..."
+      <div className="rounded-xl bg-white p-4 shadow-md dark:bg-slate-800">
+        <SearchInput
           value={search}
-          onChange={(e) =>
-            setSearch(
-              e.target.value
-            )
-          }
-          className="
-            w-full
-            md:w-80
-            px-4
-            py-3
-            border
-            border-slate-300
-            rounded-lg
-            bg-white
-            focus:outline-none
-            focus:ring-2
-            focus:ring-[#6A0032]
-            dark:bg-slate-700
-            dark:border-slate-600
-            dark:text-white
-          "
+          onChange={setSearch}
+          placeholder="Buscar por título, fecha o categoría..."
         />
       </div>
 
-      <div
-        className="
-          bg-white
-          dark:bg-slate-800
-          rounded-xl
-          shadow-md
-          overflow-hidden
-        "
-      >
-        <table className="w-full">
+      <AdminTableWrapper>
+        <table className="w-full min-w-[720px]">
           <thead>
-            <tr
-              className="
-                bg-slate-100
-                dark:bg-slate-700
-              "
-            >
-              <th className="text-left p-4">
-                Título
-              </th>
-
-              <th className="text-left p-4">
-                Fecha
-              </th>
-
-              <th className="text-center p-4">
-                Acciones
-              </th>
+            <tr className="bg-slate-100 dark:bg-slate-700">
+              <th className="p-4 text-left">Título</th>
+              <th className="p-4 text-left">Fecha</th>
+              <th className="p-4 text-center">Acciones</th>
             </tr>
           </thead>
 
           <tbody>
-            {avisosFiltrados.map(
-              (aviso) => (
+            {avisosFiltrados.length === 0 ? (
+              <EmptyState
+                colSpan={3}
+                title="No se encontraron avisos"
+                message="Prueba con otra búsqueda o registra un nuevo aviso."
+              />
+            ) : (
+              avisosFiltrados.map((aviso) => (
                 <tr
                   key={aviso.id}
-                  className="
-                    border-b
-                    border-slate-200
-                    dark:border-slate-700
-                  "
+                  className="border-b border-slate-200 dark:border-slate-700"
                 >
-                  <td className="p-4">
-                    {aviso.titulo}
+                  <td className="p-4 font-medium text-slate-800 dark:text-white">
+                    {aviso.titulo || "Aviso sin título"}
                   </td>
-
-                  <td className="p-4">
-                    {aviso.fecha}
+                  <td className="p-4 text-slate-600 dark:text-slate-300">
+                    {aviso.fecha || "Sin fecha"}
                   </td>
-
                   <td className="p-4">
-                    <div
-                      className="
-                        flex
-                        justify-center
-                        gap-3
-                      "
-                    >
-                      <Link
-                        to={`/admin/avisos/editar/${aviso.id}`}
-                        className="
-                          p-2
-                          rounded-lg
-                          bg-blue-100
-                          text-blue-700
-                          hover:bg-blue-200
-                          transition
-                        "
-                      >
-                        <Pencil size={18} />
-                      </Link>
-
-                      <button
-                        onClick={() =>
-                          abrirModal(
-                            aviso.id
-                          )
-                        }
-                        className="
-                          p-2
-                          rounded-lg
-                          bg-red-100
-                          text-red-700
-                          hover:bg-red-200
-                          transition
-                          cursor-pointer
-                        "
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
+                    <CrudActions
+                      editTo={buildRoute(ROUTES.ADMIN_AVISOS_EDITAR, {
+                        id: aviso.id,
+                      })}
+                      onDelete={() => abrirModal(aviso)}
+                    />
                   </td>
                 </tr>
-              )
+              ))
             )}
           </tbody>
         </table>
-      </div>
+      </AdminTableWrapper>
 
       <ConfirmModal
         isOpen={modalOpen}
         title="Eliminar Aviso"
-        message="¿Deseas eliminar este aviso? Esta acción no se puede deshacer."
-        onConfirm={
-          confirmarEliminacion
-        }
+        message={`¿Deseas eliminar "${
+          avisoSeleccionado?.titulo || "este aviso"
+        }"? Esta acción no se puede deshacer.`}
+        confirmLabel="Eliminar aviso"
+        onConfirm={confirmarEliminacion}
         onCancel={cerrarModal}
       />
     </section>

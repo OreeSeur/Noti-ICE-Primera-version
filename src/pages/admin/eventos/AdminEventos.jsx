@@ -1,43 +1,34 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { Plus } from "lucide-react";
 
-import {
-  Pencil,
-  Trash2,
-  Plus,
-} from "lucide-react";
-
-import { useEventos } from "../../../context/eventos/useEventos";
+import { AdminTableWrapper } from "../../../components/common/AdminTableWrapper";
+import { CrudActions } from "../../../components/common/CrudActions";
+import { EmptyState } from "../../../components/common/EmptyState";
+import { PageHeader } from "../../../components/common/PageHeader";
+import { SearchInput } from "../../../components/common/SearchInput";
+import { StatusBadge } from "../../../components/common/StatusBadge";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
-import { ROUTES } from "../../../constants/routes";
+import { ROUTES, buildRoute } from "../../../constants/routes";
+import { useEventos } from "../../../context/eventos/useEventos";
+import { matchesSearch } from "../../../utils/search";
 
 export const AdminEventos = () => {
-  const {
-    eventos,
-    eliminarEvento,
-  } = useEventos();
+  const { eventos, eliminarEvento } = useEventos();
 
-  const [search, setSearch] =
-    useState("");
+  const [search, setSearch] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [eventoSeleccionado, setEventoSeleccionado] = useState(null);
 
-  const [modalOpen, setModalOpen] =
-    useState(false);
+  const eventosFiltrados = useMemo(
+    () =>
+      eventos.filter((evento) =>
+        matchesSearch(evento, ["titulo", "fecha", "lugar", "categoria"], search)
+      ),
+    [eventos, search]
+  );
 
-  const [eventoSeleccionado,
-    setEventoSeleccionado] =
-    useState(null);
-
-  const eventosFiltrados =
-    eventos.filter((evento) =>
-      evento.titulo
-        .toLowerCase()
-        .includes(
-          search.toLowerCase()
-        )
-    );
-
-  const abrirModal = (id) => {
-    setEventoSeleccionado(id);
+  const abrirModal = (evento) => {
+    setEventoSeleccionado(evento);
     setModalOpen(true);
   };
 
@@ -46,223 +37,91 @@ export const AdminEventos = () => {
     setEventoSeleccionado(null);
   };
 
-  const confirmarEliminacion =
-    () => {
-      eliminarEvento(
-        eventoSeleccionado
-      );
+  const confirmarEliminacion = () => {
+    if (!eventoSeleccionado) return;
 
-      cerrarModal();
-    };
+    eliminarEvento(eventoSeleccionado.id);
+    cerrarModal();
+  };
 
   return (
-    <section>
-      <div
-        className="
-          flex
-          flex-col
-          md:flex-row
-          md:items-center
-          md:justify-between
-          gap-4
-          mb-8
-        "
-      >
-        <div>
-          <h1
-            className="
-              text-3xl
-              font-bold
-              text-slate-800
-              dark:text-white
-            "
-          >
-            Administración de Eventos
-          </h1>
+    <section className="space-y-6">
+      <PageHeader
+        title="Administración de Eventos"
+        description="Gestiona eventos, actividades y fechas importantes."
+        actionLabel="Nuevo Evento"
+        actionTo={ROUTES.ADMIN_EVENTOS_NUEVO}
+        actionIcon={Plus}
+      />
 
-          <p
-            className="
-              text-slate-500
-              dark:text-slate-400
-              mt-2
-            "
-          >
-            Gestiona los eventos publicados
-          </p>
-        </div>
-
-        <Link
-          to={ROUTES.ADMIN_EVENTOS_NUEVO}
-          className="
-            flex
-            items-center
-            gap-2
-            bg-[#6A0032]
-            text-white
-            px-5
-            py-3
-            rounded-lg
-            hover:opacity-90
-            transition
-            w-fit
-          "
-        >
-          <Plus size={18} />
-          Nuevo Evento
-        </Link>
-      </div>
-
-      <div className="mb-6">
-        <input
-          type="text"
-          placeholder="Buscar evento..."
+      <div className="rounded-xl bg-white p-4 shadow-md dark:bg-slate-800">
+        <SearchInput
           value={search}
-          onChange={(e) =>
-            setSearch(
-              e.target.value
-            )
-          }
-          className="
-            bg-white
-            w-full
-            md:w-80
-            px-4
-            py-3
-            border
-            border-slate-300
-            rounded-lg
-            focus:outline-none
-            focus:ring-2
-            focus:ring-[#6A0032]
-            dark:bg-slate-700
-            dark:border-slate-600
-            dark:text-white
-          "
+          onChange={setSearch}
+          placeholder="Buscar por título, fecha, lugar o categoría..."
         />
       </div>
 
-      <div
-        className="
-          bg-white
-          dark:bg-slate-800
-          rounded-xl
-          shadow-md
-          overflow-hidden
-        "
-      >
-        <table className="w-full">
+      <AdminTableWrapper>
+        <table className="w-full min-w-[900px]">
           <thead>
-            <tr
-              className="
-                bg-slate-100
-                dark:bg-slate-700
-              "
-            >
-              <th className="p-4 text-left">
-                Título
-              </th>
-
-              <th className="p-4 text-left">
-                Fecha
-              </th>
-
-              <th className="p-4 text-left">
-                Lugar
-              </th>
-
-              <th className="p-4 text-left">
-                Categoría
-              </th>
-
-              <th className="p-4 text-center">
-                Acciones
-              </th>
+            <tr className="bg-slate-100 dark:bg-slate-700">
+              <th className="p-4 text-left">Título</th>
+              <th className="p-4 text-left">Fecha</th>
+              <th className="p-4 text-left">Lugar</th>
+              <th className="p-4 text-left">Categoría</th>
+              <th className="p-4 text-center">Acciones</th>
             </tr>
           </thead>
 
           <tbody>
-            {eventosFiltrados.map(
-              (evento) => (
+            {eventosFiltrados.length === 0 ? (
+              <EmptyState
+                colSpan={5}
+                title="No se encontraron eventos"
+                message="Prueba con otra búsqueda o registra un nuevo evento."
+              />
+            ) : (
+              eventosFiltrados.map((evento) => (
                 <tr
                   key={evento.id}
-                  className="
-                    border-b
-                    border-slate-200
-                    dark:border-slate-700
-                  "
+                  className="border-b border-slate-200 dark:border-slate-700"
                 >
-                  <td className="p-4">
-                    {evento.titulo}
+                  <td className="p-4 font-medium text-slate-800 dark:text-white">
+                    {evento.titulo || "Evento sin título"}
                   </td>
-
-                  <td className="p-4">
-                    {evento.fecha}
+                  <td className="p-4 text-slate-600 dark:text-slate-300">
+                    {evento.fecha || "Sin fecha"}
                   </td>
-
-                  <td className="p-4">
-                    {evento.lugar}
+                  <td className="p-4 text-slate-600 dark:text-slate-300">
+                    {evento.lugar || "Sin lugar"}
                   </td>
-
                   <td className="p-4">
-                    {evento.categoria}
+                    <StatusBadge label={evento.categoria || "Evento"} variant="info" />
                   </td>
-
                   <td className="p-4">
-                    <div
-                      className="
-                        flex
-                        justify-center
-                        gap-3
-                      "
-                    >
-                      <Link
-                        to={`/admin/eventos/editar/${evento.id}`}
-                        className="
-                          p-2
-                          rounded-lg
-                          bg-blue-100
-                          text-blue-700
-                          hover:bg-blue-200
-                          transition
-                        "
-                      >
-                        <Pencil size={18} />
-                      </Link>
-
-                      <button
-                        onClick={() =>
-                          abrirModal(
-                            evento.id
-                          )
-                        }
-                        className="
-                          p-2
-                          rounded-lg
-                          bg-red-100
-                          text-red-700
-                          hover:bg-red-200
-                          transition
-                          cursor-pointer
-                        "
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
+                    <CrudActions
+                      editTo={buildRoute(ROUTES.ADMIN_EVENTOS_EDITAR, {
+                        id: evento.id,
+                      })}
+                      onDelete={() => abrirModal(evento)}
+                    />
                   </td>
                 </tr>
-              )
+              ))
             )}
           </tbody>
         </table>
-      </div>
+      </AdminTableWrapper>
 
       <ConfirmModal
         isOpen={modalOpen}
         title="Eliminar Evento"
-        message="¿Deseas eliminar este evento? Esta acción no se puede deshacer."
-        onConfirm={
-          confirmarEliminacion
-        }
+        message={`¿Deseas eliminar "${
+          eventoSeleccionado?.titulo || "este evento"
+        }"? Esta acción no se puede deshacer.`}
+        confirmLabel="Eliminar evento"
+        onConfirm={confirmarEliminacion}
         onCancel={cerrarModal}
       />
     </section>

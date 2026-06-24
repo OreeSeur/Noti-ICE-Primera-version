@@ -1,69 +1,36 @@
+import { SearchInput } from "../common/SearchInput";
 import { ROLE_OPTIONS } from "../../constants/roles";
 
 export const UsuariosFilters = ({
-busqueda,
-setBusqueda,
-filtroRol,
-setFiltroRol,
+  busqueda,
+  setBusqueda,
+  filtroRol,
+  setFiltroRol,
 }) => {
-return ( <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 mb-6"> <div className="flex flex-col md:flex-row gap-4">
-<input
-type="text"
-placeholder="Buscar usuario..."
-value={busqueda}
-onChange={(e) =>
-setBusqueda(e.target.value)
-}
-className="
-flex-1
-border
-border-slate-300
-dark:border-slate-600
-rounded-lg
-px-4
-py-3
-bg-white
-dark:bg-slate-700
-dark:text-white
-outline-none
-focus:ring-2
-focus:ring-[#6A0032]
-"
-/>
+  return (
+    <div className="rounded-xl bg-white p-4 shadow-md dark:bg-slate-800">
+      <div className="flex flex-col gap-4 md:flex-row">
+        <SearchInput
+          value={busqueda}
+          onChange={setBusqueda}
+          placeholder="Buscar por nombre, correo, boleta o carrera..."
+          className="md:flex-1 md:max-w-none"
+        />
 
-
-    <select
-      value={filtroRol}
-      onChange={(e) =>
-        setFiltroRol(e.target.value)
-      }
-      className="
-        border
-        border-slate-300
-        dark:border-slate-600
-        rounded-lg
-        px-4
-        py-3
-        bg-white
-        dark:bg-slate-700
-        dark:text-white
-      "
-    >
-      <option value="todos">
-        Todos
-      </option>
-
-      {ROLE_OPTIONS.map((rol) => (
-        <option
-          key={rol.value}
-          value={rol.value}
+        <select
+          value={filtroRol}
+          onChange={(event) => setFiltroRol(event.target.value)}
+          className="rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-800 outline-none transition focus:ring-2 focus:ring-[#6A0032] dark:border-slate-600 dark:bg-slate-700 dark:text-white"
         >
-          {rol.label}
-        </option>
-      ))}
-    </select>
-  </div>
-</div>
+          <option value="todos">Todos los roles</option>
 
-);
+          {ROLE_OPTIONS.map((rol) => (
+            <option key={rol.value} value={rol.value}>
+              {rol.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
 };

@@ -1,178 +1,102 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 
-import { useUsuarios } from "../../../context/usuarios/useUsuarios";
+import { EmptyState } from "../../../components/common/EmptyState";
+import { PageHeader } from "../../../components/common/PageHeader";
 import { ConfirmModal } from "../../../components/ui/ConfirmModal";
-
-import { UsuariosFilters } from "../../../components/usuarios/UsuariosFilters";
 import { UsuarioCard } from "../../../components/usuarios/UsuarioCard";
+import { UsuariosFilters } from "../../../components/usuarios/UsuariosFilters";
 import { UsuariosTable } from "../../../components/usuarios/UsuariosTable";
 import { normalizeRole } from "../../../constants/roles";
 import { ROUTES } from "../../../constants/routes";
+import { useUsuarios } from "../../../context/usuarios/useUsuarios";
+import { matchesSearch } from "../../../utils/search";
 
 export const AdminUsuarios = () => {
-const { usuarios, eliminarUsuario } =
-useUsuarios();
+  const { usuarios, eliminarUsuario } = useUsuarios();
 
-const [busqueda, setBusqueda] =
-useState("");
+  const [busqueda, setBusqueda] = useState("");
+  const [filtroRol, setFiltroRol] = useState("todos");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
 
-const [filtroRol, setFiltroRol] =
-useState("todos");
+  const usuariosFiltrados = useMemo(
+    () =>
+      usuarios.filter((usuario) => {
+        const coincideBusqueda = matchesSearch(
+          usuario,
+          ["nombre", "correo", "email", "boleta", "carrera", "semestre"],
+          busqueda
+        );
 
-const [modalOpen, setModalOpen] =
-useState(false);
+        const coincideRol =
+          filtroRol === "todos" ||
+          normalizeRole(usuario.rol) === normalizeRole(filtroRol);
 
-const [
-usuarioSeleccionado,
-setUsuarioSeleccionado,
-] = useState(null);
+        return coincideBusqueda && coincideRol;
+      }),
+    [usuarios, busqueda, filtroRol]
+  );
 
-const usuariosFiltrados =
-usuarios.filter((usuario) => {
-const coincideBusqueda =
-usuario.nombre
-.toLowerCase()
-.includes(
-busqueda.toLowerCase()
-) ||
-(usuario.correo || "")
-.toLowerCase()
-.includes(
-busqueda.toLowerCase()
-) ||
-(usuario.boleta || "")
-.toLowerCase()
-.includes(
-busqueda.toLowerCase()
-);
+  const abrirModal = (usuario) => {
+    setUsuarioSeleccionado(usuario);
+    setModalOpen(true);
+  };
 
-  const coincideRol =
-    filtroRol === "todos"
-      ? true
-      : normalizeRole(usuario.rol) ===
-        normalizeRole(filtroRol);
+  const cerrarModal = () => {
+    setModalOpen(false);
+    setUsuarioSeleccionado(null);
+  };
+
+  const confirmarEliminacion = () => {
+    if (!usuarioSeleccionado) return;
+
+    eliminarUsuario(usuarioSeleccionado.id);
+    cerrarModal();
+  };
 
   return (
-    coincideBusqueda &&
-    coincideRol
-  );
-});
+    <section className="space-y-6">
+      <PageHeader
+        title="Administración de Usuarios"
+        description="Gestiona los usuarios registrados y sus roles de acceso."
+        actionLabel="Nuevo Usuario"
+        actionTo={ROUTES.ADMIN_USUARIOS_NUEVO}
+        actionIcon={Plus}
+      />
 
-const abrirModal = (
-usuario
-) => {
-setUsuarioSeleccionado(
-usuario
-);
-setModalOpen(true);
-};
+      <UsuariosFilters
+        busqueda={busqueda}
+        setBusqueda={setBusqueda}
+        filtroRol={filtroRol}
+        setFiltroRol={setFiltroRol}
+      />
 
-const cerrarModal = () => {
-setModalOpen(false);
-setUsuarioSeleccionado(
-null
-);
-};
-
-const confirmarEliminacion =
-() => {
-if (
-!usuarioSeleccionado
-)
-return;
-
-  eliminarUsuario(
-    usuarioSeleccionado.id
-  );
-
-  cerrarModal();
-};
-
-return (
-<section>
-{/* Encabezado */}
-<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-<div>
-<h1 className="text-3xl font-bold text-slate-800 dark:text-white">
-Administración de Usuarios
-</h1>
-
-      <p className="text-slate-500 dark:text-slate-400 mt-2">
-        Gestiona los usuarios
-        registrados
-      </p>
-    </div>
-
-    <Link
-      to={ROUTES.ADMIN_USUARIOS_NUEVO}
-      className="flex items-center gap-2 bg-[#6A0032] text-white px-5 py-3 rounded-lg hover:opacity-90 transition w-fit"
-    >
-      <Plus size={18} />
-      Nuevo Usuario
-    </Link>
-  </div>
-
-  <UsuariosFilters
-    busqueda={busqueda}
-    setBusqueda={
-      setBusqueda
-    }
-    filtroRol={filtroRol}
-    setFiltroRol={
-      setFiltroRol
-    }
-  />
-
-  {/* Vista móvil */}
-  <div className="lg:hidden space-y-4">
-    {usuariosFiltrados.length ===
-    0 ? (
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 text-center text-slate-500">
-        No se encontraron
-        usuarios.
-      </div>
-    ) : (
-      usuariosFiltrados.map(
-        (usuario) => (
-          <UsuarioCard
-            key={
-              usuario.id
-            }
-            usuario={
-              usuario
-            }
-            onDelete={
-              abrirModal
-            }
+      <div className="space-y-4 lg:hidden">
+        {usuariosFiltrados.length === 0 ? (
+          <EmptyState
+            title="No se encontraron usuarios"
+            message="Prueba con otra búsqueda, cambia el filtro de rol o registra un nuevo usuario."
           />
-        )
-      )
-    )}
-  </div>
+        ) : (
+          usuariosFiltrados.map((usuario) => (
+            <UsuarioCard key={usuario.id} usuario={usuario} onDelete={abrirModal} />
+          ))
+        )}
+      </div>
 
-  {/* Vista escritorio */}
-  <UsuariosTable
-    usuarios={
-      usuariosFiltrados
-    }
-    onDelete={
-      abrirModal
-    }
-  />
+      <UsuariosTable usuarios={usuariosFiltrados} onDelete={abrirModal} />
 
-  <ConfirmModal
-    isOpen={modalOpen}
-    title="Eliminar Usuario"
-    message={`¿Deseas eliminar a ${usuarioSeleccionado?.nombre}? Esta acción no se puede deshacer.`}
-    onConfirm={
-      confirmarEliminacion
-    }
-    onCancel={cerrarModal}
-  />
-</section>
-
-);
+      <ConfirmModal
+        isOpen={modalOpen}
+        title="Eliminar Usuario"
+        message={`¿Deseas eliminar a ${
+          usuarioSeleccionado?.nombre || "este usuario"
+        }? Esta acción no se puede deshacer.`}
+        confirmLabel="Eliminar usuario"
+        onConfirm={confirmarEliminacion}
+        onCancel={cerrarModal}
+      />
+    </section>
+  );
 };
