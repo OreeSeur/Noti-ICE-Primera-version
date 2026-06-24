@@ -4,6 +4,7 @@ import { ProfileInfoForm } from "../../components/profile/ProfileInfoForm";
 import { ProfileSummaryCard } from "../../components/profile/ProfileSummaryCard";
 import { SubscriptionPreferences } from "../../components/profile/SubscriptionPreferences";
 import { PersonalizedRecommendations } from "../../components/profile/PersonalizedRecommendations";
+import { AcademicProfileSection } from "../../components/profile/AcademicProfileSection";
 import { useAuth } from "../../context/auth/useAuth";
 import { useToast } from "../../context/toast/useToast";
 import { useAvisos } from "../../context/avisos/useAvisos";
@@ -117,6 +118,16 @@ export const Perfil = () => {
     }));
   };
 
+  const handleAcademicProfileSave = (datosActualizados) => {
+    updateUserProfile(datosActualizados);
+
+    setFormData((prev) => ({
+      ...prev,
+      carrera: datosActualizados.carrera ?? prev.carrera,
+      semestre: datosActualizados.semestre ?? prev.semestre,
+    }));
+  };
+
   const handleSubmitSubscriptions = (e) => {
     e.preventDefault();
 
@@ -148,6 +159,11 @@ export const Perfil = () => {
             errors={errors}
             onChange={handleInfoChange}
             onSubmit={handleSubmitInfo}
+          />
+
+          <AcademicProfileSection
+            user={user}
+            onSaveAcademicProfile={handleAcademicProfileSave}
           />
 
           <SubscriptionPreferences

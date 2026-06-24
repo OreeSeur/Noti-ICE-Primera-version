@@ -1,13 +1,20 @@
-import { BadgeCheck, BookOpen, GraduationCap, Mail, User } from "lucide-react";
+import { BadgeCheck, BookOpen, GraduationCap, Mail, School, User, Users } from "lucide-react";
+
+import { getPlanLabel } from "../../constants/academic";
 import { getRoleLabel } from "../../constants/roles";
+import { useAcademico } from "../../context/academico/useAcademico";
+import { getGrupoById, normalizeAcademicProfile } from "../../utils/academicProfile";
 
 export const ProfileSummaryCard = ({ usuario }) => {
+  const { grupos } = useAcademico();
   const inicial = usuario.nombre?.charAt(0)?.toUpperCase() || "U";
+  const academicProfile = normalizeAcademicProfile(usuario.academicProfile);
+  const grupo = getGrupoById(grupos, academicProfile.grupoId);
 
   return (
-    <article className="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-8">
+    <article className="rounded-2xl bg-white p-8 shadow-md dark:bg-slate-800">
       <div className="flex flex-col gap-8 md:flex-row md:items-center">
-        <div className="w-32 h-32 rounded-full bg-[#6A0032] flex items-center justify-center text-white text-5xl font-bold">
+        <div className="flex h-32 w-32 items-center justify-center rounded-full bg-[#6A0032] text-5xl font-bold text-white">
           {inicial || <User size={60} />}
         </div>
 
@@ -18,13 +25,13 @@ export const ProfileSummaryCard = ({ usuario }) => {
           <h2 className="mt-1 text-2xl font-bold text-slate-800 dark:text-white">
             {usuario.nombre || "Usuario sin nombre"}
           </h2>
-          <p className="mt-2 text-slate-500 dark:text-slate-400 break-all">
+          <p className="mt-2 break-all text-slate-500 dark:text-slate-400">
             {usuario.correo || "Sin correo registrado"}
           </p>
         </div>
       </div>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-6">
         <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-700/60">
           <div className="mb-2 flex items-center gap-2 font-semibold text-slate-700 dark:text-white">
             <BadgeCheck size={18} /> Boleta
@@ -54,9 +61,27 @@ export const ProfileSummaryCard = ({ usuario }) => {
 
         <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-700/60">
           <div className="mb-2 flex items-center gap-2 font-semibold text-slate-700 dark:text-white">
+            <School size={18} /> Plan
+          </div>
+          <p className="text-sm text-slate-500 dark:text-slate-300">
+            {usuario.academicProfile?.plan ? getPlanLabel(academicProfile.plan) : "No definido"}
+          </p>
+        </div>
+
+        <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-700/60">
+          <div className="mb-2 flex items-center gap-2 font-semibold text-slate-700 dark:text-white">
+            <Users size={18} /> Grupo
+          </div>
+          <p className="text-sm text-slate-500 dark:text-slate-300">
+            {grupo?.nombre || "No definido"}
+          </p>
+        </div>
+
+        <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-700/60">
+          <div className="mb-2 flex items-center gap-2 font-semibold text-slate-700 dark:text-white">
             <Mail size={18} /> Estado
           </div>
-          <p className="text-sm text-slate-500 dark:text-slate-300 capitalize">
+          <p className="text-sm capitalize text-slate-500 dark:text-slate-300">
             {usuario.estado || "Activo"}
           </p>
         </div>

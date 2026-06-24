@@ -44,7 +44,7 @@ export const ProfileInfoForm = ({ formData, errors = {}, onChange, onSubmit }) =
 
         <div>
           <label className="mb-2 block font-medium">Semestre</label>
-          <input type="number" min="1" max="12" name="semestre" value={formData.semestre ?? ""} onChange={onChange} className={inputClass("semestre")} />
+          <input name="semestre" value={formData.semestre ?? ""} onChange={onChange} className={inputClass("semestre")} placeholder="Ej. 6 o 6° Semestre" />
           <FormError message={errors.semestre} />
         </div>
       </div>

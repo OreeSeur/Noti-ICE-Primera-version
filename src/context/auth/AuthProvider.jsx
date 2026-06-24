@@ -11,6 +11,7 @@ import {
 import { existeCorreo } from "../../services/usuariosService";
 import { hasRole, canAccessAdmin } from "../../utils/permissions";
 import { normalizeSubscriptions } from "../../constants/subscriptions";
+import { normalizeAcademicProfile } from "../../utils/academicProfile";
 import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }) => {
@@ -23,6 +24,9 @@ export const AuthProvider = ({ children }) => {
       ? {
           ...storedUser,
           subscriptions: normalizeSubscriptions(storedUser.subscriptions),
+          academicProfile: storedUser.academicProfile
+            ? normalizeAcademicProfile(storedUser.academicProfile)
+            : null,
         }
       : null;
   });
@@ -40,6 +44,9 @@ export const AuthProvider = ({ children }) => {
       setUser({
         ...usuario,
         subscriptions: normalizeSubscriptions(usuario.subscriptions),
+        academicProfile: usuario.academicProfile
+          ? normalizeAcademicProfile(usuario.academicProfile)
+          : null,
       });
       return true;
     },
@@ -72,6 +79,9 @@ export const AuthProvider = ({ children }) => {
         subscriptions: normalizeSubscriptions(
           datosActualizados.subscriptions || user.subscriptions
         ),
+        academicProfile: datosActualizados.academicProfile
+          ? normalizeAcademicProfile(datosActualizados.academicProfile)
+          : user.academicProfile,
       };
 
       editarUsuario(user.id, usuarioActualizado);

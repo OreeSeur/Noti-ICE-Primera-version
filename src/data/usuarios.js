@@ -18,8 +18,14 @@ export const usuarios = [
     password: "123456",
     rol: ROLES.ALUMNO,
     boleta: "2023630000",
-    carrera: "Ingeniería en Computación",
-    semestre: "6° Semestre",
+    carrera: "Ingeniería en Comunicaciones y Electrónica",
+    semestre: "2° Semestre",
+    academicProfile: {
+      plan: "2024",
+      periodo: "2026-1",
+      grupoId: "grp-2cm1",
+      materiasIds: ["mat-2024-2-programacion-avanzada"],
+    },
   },
   {
     id: 3,
@@ -28,7 +34,7 @@ export const usuarios = [
     password: "123456",
     rol: ROLES.DOCENTE,
     boleta: "DOC-001",
-    carrera: "Ingeniería en Computación",
+    carrera: "Ingeniería en Comunicaciones y Electrónica",
     semestre: "N/A",
   },
   {

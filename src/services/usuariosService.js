@@ -1,6 +1,7 @@
 import { crearId, mismoId } from "../utils/id";
 import { ROLES } from "../constants/roles";
 import { DEFAULT_SUBSCRIPTIONS, normalizeSubscriptions } from "../constants/subscriptions";
+import { normalizeAcademicProfile } from "../utils/academicProfile";
 import {
   obtenerUsuariosStorage,
   guardarUsuariosStorage,
@@ -24,6 +25,7 @@ export const crearUsuario = (nuevoUsuario) => {
     estado: "activo",
     password: "",
     subscriptions: DEFAULT_SUBSCRIPTIONS,
+    academicProfile: null,
     ...nuevoUsuario,
   };
 
@@ -34,6 +36,9 @@ export const crearUsuario = (nuevoUsuario) => {
   delete usuario.email;
 
   usuario.subscriptions = normalizeSubscriptions(usuario.subscriptions);
+  usuario.academicProfile = usuario.academicProfile
+    ? normalizeAcademicProfile(usuario.academicProfile)
+    : null;
 
   return usuario;
 };
@@ -59,6 +64,9 @@ export const editarUsuarioLista = (usuarios, id, datosActualizados) =>
           subscriptions: datosActualizados.subscriptions
             ? normalizeSubscriptions(datosActualizados.subscriptions)
             : usuario.subscriptions,
+          academicProfile: datosActualizados.academicProfile
+            ? normalizeAcademicProfile(datosActualizados.academicProfile)
+            : usuario.academicProfile,
           updatedAt: new Date().toISOString(),
         }
       : usuario

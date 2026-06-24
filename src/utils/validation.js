@@ -42,7 +42,8 @@ export const createValidator = (rules) => (values) => {
     }
 
     if (!isEmpty(value) && rule.numberRange) {
-      const numericValue = Number(value);
+      const numericMatch = String(value).match(/\d+/);
+      const numericValue = numericMatch ? Number(numericMatch[0]) : Number(value);
       const { min, max } = rule.numberRange;
 
       if (Number.isNaN(numericValue) || numericValue < min || numericValue > max) {
