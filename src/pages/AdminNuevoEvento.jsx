@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useEventos } from "../context/EventosContext";
-import { EventoForm } from "../components/forms/EventoForm";
+import { EventoForm } from "../components/eventos/EventoForm";
 
 export const AdminNuevoEvento = () => {
   const navigate = useNavigate();
