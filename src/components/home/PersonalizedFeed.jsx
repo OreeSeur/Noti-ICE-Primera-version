@@ -6,6 +6,7 @@ import { useAvisos } from "../../context/avisos/useAvisos";
 import { useEventos } from "../../context/eventos/useEventos";
 import { useDocumentos } from "../../context/documentos/useDocumentos";
 import { getPersonalizedRecommendations } from "../../utils/recommendations";
+import { getRoleLabel } from "../../constants/roles";
 
 export const PersonalizedFeed = () => {
   const { user } = useAuth();
@@ -25,7 +26,7 @@ export const PersonalizedFeed = () => {
 
   if (recomendaciones.length === 0) {
     return (
-      <section className="rounded-2xl border border-dashed border-slate-300 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
+      <section className="mb-8 rounded-2xl border border-dashed border-slate-300 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
         <div className="flex items-start gap-3">
           <Sparkles className="text-[#6A0032]" size={24} />
           <div>
@@ -33,7 +34,7 @@ export const PersonalizedFeed = () => {
               Personaliza tu portal
             </h2>
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-              Configura tus preferencias en el perfil para recibir contenido recomendado según tus intereses.
+              Configura tus preferencias para que la vista de {getRoleLabel(user.rol).toLowerCase()} muestre contenido más relevante.
             </p>
             <Link to="/perfil" className="mt-4 inline-flex rounded-lg bg-[#6A0032] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90">
               Ir a mi perfil
@@ -45,7 +46,7 @@ export const PersonalizedFeed = () => {
   }
 
   return (
-    <section className="rounded-2xl bg-white p-6 shadow-md dark:bg-slate-800">
+    <section className="mb-8 rounded-2xl bg-white p-6 shadow-md dark:bg-slate-800">
       <div className="mb-5 flex items-center justify-between gap-4">
         <div>
           <h2 className="flex items-center gap-2 text-xl font-bold text-slate-800 dark:text-white">
@@ -53,7 +54,7 @@ export const PersonalizedFeed = () => {
             Para ti
           </h2>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Contenido recomendado según tus preferencias.
+            Recomendaciones combinando tu rol, tus temas y los tipos de contenido que activaste.
           </p>
         </div>
         <Link to="/perfil" className="text-sm font-semibold text-[#6A0032] dark:text-pink-300">

@@ -12,6 +12,7 @@ import {
   FileText,
   Trophy,
   ShieldCheck,
+  UserRound,
   Menu,
   X,
 } from "lucide-react";
@@ -22,7 +23,7 @@ export const Sidebar = ({
 }) => {
   const [collapsed, setCollapsed] = useState(false);
 
-  const { canAccessAdmin } = useAuth();
+  const { user, canAccessAdmin } = useAuth();
 
   const closeSidebar = () => {
     setMobileOpen(false);
@@ -55,6 +56,16 @@ export const Sidebar = ({
       label: "Eventos",
       path: ROUTES.EVENTOS,
     },
+
+    ...(user
+      ? [
+          {
+            icon: UserRound,
+            label: "Mi perfil",
+            path: ROUTES.PERFIL,
+          },
+        ]
+      : []),
 
     ...(canAccessAdmin()
       ? [

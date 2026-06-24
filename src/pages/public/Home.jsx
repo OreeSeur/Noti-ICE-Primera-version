@@ -9,6 +9,8 @@ import { RecentActivity } from "../../components/home/RecentActivity";
 import { RecentDocuments } from "../../components/home/RecentDocuments";
 import { WelcomeCard } from "../../components/home/WelcomeCard";
 import { PersonalizedFeed } from "../../components/home/PersonalizedFeed";
+import { RoleOverviewPanel } from "../../components/home/RoleOverviewPanel";
+import { RoleBasedContent } from "../../components/home/RoleBasedContent";
 import { useAvisos } from "../../context/avisos/useAvisos";
 import { useEventos } from "../../context/eventos/useEventos";
 import { useDocumentos } from "../../context/documentos/useDocumentos";
@@ -30,7 +32,9 @@ export const Home = () => {
 
       <HeroBanner />
       <WelcomeCard />
+      <RoleOverviewPanel />
       <PersonalizedFeed />
+      <RoleBasedContent />
       <QuickActions />
 
       {/* Tarjetas estadísticas */}

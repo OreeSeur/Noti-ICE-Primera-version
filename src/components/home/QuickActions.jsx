@@ -1,35 +1,11 @@
 import { Link } from "react-router-dom";
 
-import {
-  Megaphone,
-  Calendar,
-  FileText,
-  Trophy,
-} from "lucide-react";
+import { useAuth } from "../../context/auth/useAuth";
+import { getRoleQuickActions } from "../../constants/roleExperience";
 
 export const QuickActions = () => {
-  const actions = [
-    {
-      title: "Avisos",
-      icon: Megaphone,
-      path: "/avisos",
-    },
-    {
-      title: "Calendario",
-      icon: Calendar,
-      path: "/calendario",
-    },
-    {
-      title: "Documentos",
-      icon: FileText,
-      path: "/documentos",
-    },
-    {
-      title: "Eventos",
-      icon: Trophy,
-      path: "/eventos",
-    },
-  ];
+  const { user } = useAuth();
+  const actions = getRoleQuickActions(user);
 
   return (
     <section className="mb-8">
@@ -42,7 +18,7 @@ export const QuickActions = () => {
           dark:text-white
         "
       >
-        Accesos Rápidos
+        Accesos rápidos
       </h2>
 
       <div
@@ -74,6 +50,7 @@ export const QuickActions = () => {
                 hover:-translate-y-1
                 hover:shadow-lg
                 transition-all
+                text-center
               "
             >
               <Icon
@@ -87,15 +64,22 @@ export const QuickActions = () => {
                 "
               />
 
-              <span
-                className="
-                  font-semibold
-                  text-slate-800
-                  dark:text-white
-                "
-              >
-                {action.title}
-              </span>
+              <div>
+                <span
+                  className="
+                    block
+                    font-semibold
+                    text-slate-800
+                    dark:text-white
+                  "
+                >
+                  {action.title}
+                </span>
+
+                <span className="mt-1 block text-xs text-slate-500 dark:text-slate-400">
+                  {action.description}
+                </span>
+              </div>
             </Link>
           );
         })}

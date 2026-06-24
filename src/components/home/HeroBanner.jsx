@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 
+import { useAuth } from "../../context/auth/useAuth";
+import { getRoleHomeCopy } from "../../constants/roleExperience";
+
 export const HeroBanner = () => {
+  const { user } = useAuth();
+  const copy = getRoleHomeCopy(user);
+
   return (
     <section
       className="
@@ -11,18 +17,20 @@ export const HeroBanner = () => {
         mb-8
       "
     >
+      <span className="mb-3 inline-flex rounded-full bg-white/15 px-3 py-1 text-sm font-semibold text-white/90">
+        {copy.eyebrow}
+      </span>
+
       <h2 className="text-4xl font-bold mb-4">
-        Portal Académico ESIME
+        {copy.title}
       </h2>
 
       <p className="text-lg opacity-90 max-w-2xl">
-        Consulta avisos, eventos,
-        documentos académicos y fechas
-        importantes desde un solo lugar.
+        {copy.description}
       </p>
 
       <Link
-        to="/avisos"
+        to={copy.ctaPath}
         className="
           inline-block
           mt-6
@@ -36,7 +44,7 @@ export const HeroBanner = () => {
           transition
         "
       >
-        Ver Avisos
+        {copy.ctaLabel}
       </Link>
     </section>
   );
