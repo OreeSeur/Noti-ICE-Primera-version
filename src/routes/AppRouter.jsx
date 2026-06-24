@@ -18,6 +18,7 @@ import { Documentos } from "../pages/public/Documentos";
 import { DocumentoDetalle } from "../pages/public/DocumentoDetalle";
 
 import { Perfil } from "../pages/public/Perfil";
+import { Notificaciones } from "../pages/public/Notificaciones";
 
 /* Autenticación */
 import { Login } from "../pages/auth/Login";
@@ -142,6 +143,18 @@ return ( <Routes>
       <PrivateRoute>
         <Layout>
           <Perfil />
+        </Layout>
+      </PrivateRoute>
+    }
+  />
+
+  {/* Notificaciones */}
+  <Route
+    path={ROUTES.NOTIFICACIONES}
+    element={
+      <PrivateRoute>
+        <Layout>
+          <Notificaciones />
         </Layout>
       </PrivateRoute>
     }

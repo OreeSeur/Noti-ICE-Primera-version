@@ -23,7 +23,7 @@ import {
   buildNotificationItems,
   getNotificationId,
   getReadNotificationIds,
-  mergeReadNotificationIds,
+  markNotificationsAsRead,
   saveReadNotificationIds,
 } from "../../utils/notifications";
 
@@ -41,7 +41,7 @@ export const Topbar = ({
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [readNotificationIds, setReadNotificationIds] = useState(() =>
-    getReadNotificationIds()
+    getReadNotificationIds(user)
   );
 
   const resultados = [
@@ -73,7 +73,6 @@ export const Topbar = ({
     () => buildNotificationItems({ avisos, eventos, documentos, user }).slice(0, 15),
     [avisos, eventos, documentos, user]
   );
-
   const unreadCount = notificationItems.filter(
     (item) => !readNotificationIds.includes(getNotificationId(item))
   ).length;
@@ -85,13 +84,13 @@ export const Topbar = ({
       const nextValue = !prev;
 
       if (nextValue) {
-        const updatedIds = mergeReadNotificationIds(
+        const updatedIds = markNotificationsAsRead(
           readNotificationIds,
           notificationItems
         );
 
         setReadNotificationIds(updatedIds);
-        saveReadNotificationIds(updatedIds);
+        saveReadNotificationIds(updatedIds, user);
       }
 
       return nextValue;
@@ -264,13 +263,23 @@ export const Topbar = ({
                 z-50
               "
             >
-              <div className="mb-3">
-                <h3 className="font-bold text-slate-800 dark:text-white">
-                  Notificaciones
-                </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Contenido reciente dirigido a tu perfil
-                </p>
+              <div className="mb-3 flex items-start justify-between gap-3">
+                <div>
+                  <h3 className="font-bold text-slate-800 dark:text-white">
+                    Notificaciones
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Contenido reciente dirigido a tu perfil
+                  </p>
+                </div>
+
+                <Link
+                  to={ROUTES.NOTIFICACIONES}
+                  onClick={closeNotifications}
+                  className="text-xs font-semibold text-[#6A0032] hover:underline dark:text-pink-300"
+                >
+                  Ver todas
+                </Link>
               </div>
 
               {notificationItems.length > 0 ? (
@@ -298,9 +307,9 @@ export const Topbar = ({
                         <span className="text-xs font-semibold text-[#6A0032] dark:text-pink-300">
                           {item.etiqueta}
                         </span>
-                        {item.audiencia?.prioridad && item.audiencia.prioridad !== "Normal" && (
+                        {item.prioridad && item.prioridad !== "normal" && (
                           <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-semibold text-red-700 dark:bg-red-900/40 dark:text-red-200">
-                            {item.audiencia.prioridad}
+                            {item.prioridadLabel}
                           </span>
                         )}
                       </div>

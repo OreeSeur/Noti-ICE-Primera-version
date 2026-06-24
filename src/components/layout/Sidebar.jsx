@@ -13,6 +13,7 @@ import {
   Trophy,
   ShieldCheck,
   UserRound,
+  Bell,
   Menu,
   X,
 } from "lucide-react";
@@ -59,6 +60,11 @@ export const Sidebar = ({
 
     ...(user
       ? [
+          {
+            icon: Bell,
+            label: "Notificaciones",
+            path: ROUTES.NOTIFICACIONES,
+          },
           {
             icon: UserRound,
             label: "Mi perfil",

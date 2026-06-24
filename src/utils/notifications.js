@@ -1,86 +1,135 @@
 import { formatDateLabel, getDateTimestamp } from "./dates";
 import { getDocumentTitle } from "./documentTypes";
-import { canReceiveItem, getAudienceSummary, getItemAudience, getPriorityVariant } from "./audience";
+import {
+  canReceiveItem,
+  getAudienceSummary,
+  getItemAudience,
+  getPriorityLabel,
+  getPriorityVariant,
+} from "./audience";
 
 const READ_NOTIFICATIONS_KEY = "notiIce_read_notifications";
 
+const normalizeStorageSegment = (value = "") =>
+  String(value || "guest")
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]/g, "_");
+
+export const getNotificationUserKey = (user = null) =>
+  `${READ_NOTIFICATIONS_KEY}_${normalizeStorageSegment(user?.id || user?.correo || user?.nombre || "guest")}`;
+
 const getNotificationDate = (item) =>
-  item.createdAt || item.updatedAt || item.fecha || item.fechaPublicacion || "";
+  item.updatedAt || item.createdAt || item.fecha || item.fechaPublicacion || "";
 
 export const getNotificationId = (item) => `${item.tipo}-${item.id}`;
 
-export const getReadNotificationIds = () => {
+export const getReadNotificationIds = (user = null) => {
   try {
-    return JSON.parse(localStorage.getItem(READ_NOTIFICATIONS_KEY)) || [];
+    return JSON.parse(localStorage.getItem(getNotificationUserKey(user))) || [];
   } catch {
     return [];
   }
 };
 
-export const saveReadNotificationIds = (ids) => {
-  localStorage.setItem(READ_NOTIFICATIONS_KEY, JSON.stringify(ids));
+export const saveReadNotificationIds = (ids, user = null) => {
+  localStorage.setItem(getNotificationUserKey(user), JSON.stringify([...new Set(ids)]));
 };
 
-export const buildNotificationItems = ({ avisos = [], eventos = [], documentos = [], user = null }) => {
-  const avisoItems = avisos.filter((aviso) => canReceiveItem(aviso, user)).map((aviso) => {
-    const fechaNotificacion = getNotificationDate(aviso);
+export const isNotificationRead = (item, readIds = []) =>
+  readIds.includes(getNotificationId(item));
 
-    return {
-      id: aviso.id,
-      titulo: aviso.titulo ?? "Aviso sin título",
-      descripcion: aviso.descripcion ?? "",
+export const isNotificationUnread = (item, readIds = []) =>
+  !isNotificationRead(item, readIds);
+
+export const mergeReadNotificationIds = (currentIds, notificationItems) => [
+  ...new Set([...currentIds, ...notificationItems.map(getNotificationId)]),
+];
+
+export const markNotificationsAsRead = (currentIds, notificationItems) =>
+  mergeReadNotificationIds(currentIds, notificationItems);
+
+export const markNotificationAsRead = (currentIds, notificationItem) => [
+  ...new Set([...currentIds, getNotificationId(notificationItem)]),
+];
+
+export const markNotificationAsUnread = (currentIds, notificationItem) =>
+  currentIds.filter((id) => id !== getNotificationId(notificationItem));
+
+export const getNotificationStats = (notificationItems = [], readIds = []) => {
+  const unread = notificationItems.filter((item) => isNotificationUnread(item, readIds));
+
+  return {
+    total: notificationItems.length,
+    unread: unread.length,
+    read: notificationItems.length - unread.length,
+    urgent: notificationItems.filter((item) => item.prioridad === "urgente").length,
+    high: notificationItems.filter((item) => item.prioridad === "alta").length,
+  };
+};
+
+const buildBaseItem = ({ item, tipo, etiqueta, titulo, descripcion, ruta }) => {
+  const fechaNotificacion = getNotificationDate(item);
+  const audiencia = getItemAudience(item);
+
+  return {
+    id: item.id,
+    titulo,
+    descripcion,
+    tipo,
+    etiqueta,
+    fecha: fechaNotificacion,
+    fechaLabel: formatDateLabel(fechaNotificacion),
+    ruta,
+    orden: getDateTimestamp(fechaNotificacion),
+    audiencia: getAudienceSummary(audiencia),
+    prioridad: audiencia.prioridad,
+    prioridadLabel: getPriorityLabel(audiencia.prioridad),
+    prioridadVariant: getPriorityVariant(audiencia.prioridad),
+  };
+};
+
+export const buildNotificationItems = ({
+  avisos = [],
+  eventos = [],
+  documentos = [],
+  user = null,
+}) => {
+  const avisoItems = avisos.filter((aviso) => canReceiveItem(aviso, user)).map((aviso) =>
+    buildBaseItem({
+      item: aviso,
       tipo: "aviso",
       etiqueta: "Aviso",
-      fecha: fechaNotificacion,
-      fechaLabel: formatDateLabel(fechaNotificacion),
+      titulo: aviso.titulo ?? "Aviso sin título",
+      descripcion: aviso.descripcion ?? "",
       ruta: `/avisos/${aviso.id}`,
-      orden: getDateTimestamp(fechaNotificacion),
-      audiencia: getAudienceSummary(getItemAudience(aviso)),
-      prioridadVariant: getPriorityVariant(getItemAudience(aviso).prioridad),
-    };
-  });
+    })
+  );
 
-  const eventoItems = eventos.filter((evento) => canReceiveItem(evento, user)).map((evento) => {
-    const fechaNotificacion = getNotificationDate(evento);
-
-    return {
-      id: evento.id,
-      titulo: evento.titulo ?? "Evento sin título",
-      descripcion: evento.lugar ?? evento.descripcion ?? "",
+  const eventoItems = eventos.filter((evento) => canReceiveItem(evento, user)).map((evento) =>
+    buildBaseItem({
+      item: evento,
       tipo: "evento",
       etiqueta: "Evento",
-      fecha: fechaNotificacion,
-      fechaLabel: formatDateLabel(fechaNotificacion),
+      titulo: evento.titulo ?? "Evento sin título",
+      descripcion: evento.lugar ?? evento.descripcion ?? "",
       ruta: `/eventos/${evento.id}`,
-      orden: getDateTimestamp(fechaNotificacion),
-      audiencia: getAudienceSummary(getItemAudience(evento)),
-      prioridadVariant: getPriorityVariant(getItemAudience(evento).prioridad),
-    };
-  });
+    })
+  );
 
-  const documentoItems = documentos.filter((documento) => canReceiveItem(documento, user)).map((documento) => {
-    const fechaNotificacion = getNotificationDate(documento);
-
-    return {
-      id: documento.id,
-      titulo: getDocumentTitle(documento),
-      descripcion: documento.tipo ?? documento.descripcion ?? "",
-      tipo: "documento",
-      etiqueta: "Documento",
-      fecha: fechaNotificacion,
-      fechaLabel: formatDateLabel(fechaNotificacion),
-      ruta: `/documentos/${documento.id}`,
-      orden: getDateTimestamp(fechaNotificacion),
-      audiencia: getAudienceSummary(getItemAudience(documento)),
-      prioridadVariant: getPriorityVariant(getItemAudience(documento).prioridad),
-    };
-  });
+  const documentoItems = documentos
+    .filter((documento) => canReceiveItem(documento, user))
+    .map((documento) =>
+      buildBaseItem({
+        item: documento,
+        tipo: "documento",
+        etiqueta: "Documento",
+        titulo: getDocumentTitle(documento),
+        descripcion: documento.tipo ?? documento.descripcion ?? "",
+        ruta: `/documentos/${documento.id}`,
+      })
+    );
 
   return [...avisoItems, ...eventoItems, ...documentoItems]
     .filter((item) => item.id !== undefined && item.id !== null)
     .sort((a, b) => b.orden - a.orden);
 };
-
-export const mergeReadNotificationIds = (currentIds, notificationItems) => [
-  ...new Set([...currentIds, ...notificationItems.map(getNotificationId)]),
-];
