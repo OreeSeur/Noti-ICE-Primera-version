@@ -29,7 +29,7 @@ focus:ring-[#6A0032]
 "
 />
 
-```
+
     <select
       value={filtroRol}
       onChange={(e) =>
