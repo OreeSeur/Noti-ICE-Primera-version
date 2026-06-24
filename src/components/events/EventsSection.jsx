@@ -1,7 +1,9 @@
 import { EventCard } from "./EventCard";
-import { eventos } from "../../data/eventos";
+import { useEventos } from "../../context/EventosContext";
 
 export const EventsSection = () => {
+  const { eventos } = useEventos();
+
   return (
     <section className="mt-10">
       <h2

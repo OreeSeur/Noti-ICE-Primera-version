@@ -16,10 +16,6 @@ export const Perfil = () => {
     return null;
   }
   const usuario = user;
-  console.log(
-    "USUARIO PERFIL:",
-    JSON.stringify(usuario, null, 2)
-  );
 
   return (
     <section>

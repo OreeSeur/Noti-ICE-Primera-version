@@ -11,11 +11,10 @@ import {
   LogOut,
 } from "lucide-react";
 
-import { avisos } from "../../data/avisos";
-import { eventos } from "../../data/eventos";
-import { documentos } from "../../data/documentos";
-
 import { useAuth } from "../../context/AuthContext";
+import { useAvisos } from "../../context/AvisosContext";
+import { useEventos } from "../../context/EventosContext";
+import { useDocumentos } from "../../context/DocumentosContext";
 
 export const Topbar = ({
   setMobileOpen,
@@ -23,7 +22,9 @@ export const Topbar = ({
   setDarkMode,
 }) => {
   const { user, logout } = useAuth();
-console.log("USER TOPBAR:", user);
+  const { avisos } = useAvisos();
+  const { eventos } = useEventos();
+  const { documentos } = useDocumentos();
 
   const [search, setSearch] = useState("");
 
@@ -382,7 +383,7 @@ console.log("USER TOPBAR:", user);
                   "
                 >
                   Mi Perfil
-                                </Link>
+                </Link>
                 {user.rol === "admin" && (
                   <Link
                     to="/admin"

@@ -27,7 +27,6 @@ export const AdminEditarDocumento = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(formulario); // luego contexto
 
     navigate("/admin/documentos");
   };

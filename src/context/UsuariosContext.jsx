@@ -5,102 +5,47 @@ import {
   useState,
 } from "react";
 
-import { usuarios as usuariosIniciales } from "../data/usuarios";
+import {
+  obtenerUsuarios,
+  guardarUsuarios,
+  agregarUsuarioLista,
+  editarUsuarioLista,
+  eliminarUsuarioLista,
+  existeCorreo,
+} from "../services/usuariosService";
 
 const UsuariosContext = createContext();
 
-export const UsuariosProvider = ({
-  children,
-}) => {
-  const [usuarios, setUsuarios] =
-    useState(() => {
-      const guardados =
-        localStorage.getItem(
-          "usuarios"
-        );
-
-      return guardados
-        ? JSON.parse(guardados)
-        : usuariosIniciales;
-    });
+export const UsuariosProvider = ({ children }) => {
+  const [usuarios, setUsuarios] = useState(() => obtenerUsuarios());
 
   useEffect(() => {
-    localStorage.setItem(
-      "usuarios",
-      JSON.stringify(usuarios)
-    );
+    guardarUsuarios(usuarios);
   }, [usuarios]);
 
-  const agregarUsuario = (
-    nuevoUsuario
-  ) => {
-    const usuario = {
-      id: Date.now(),
-      nombre: "",
-      correo: "",
-      boleta: "",
-      carrera: "",
-      semestre: "",
-      rol: "usuario",
-      estado: "activo",
-      password: "",
-      ...nuevoUsuario,
-    };
+  const agregarUsuario = (nuevoUsuario) => {
+    const correo = nuevoUsuario.correo || nuevoUsuario.email;
 
-    // Compatibilidad temporal
+    if (existeCorreo(usuarios, correo)) {
+      throw new Error("Ya existe un usuario con ese correo");
+    }
+
+    setUsuarios((prev) => agregarUsuarioLista(prev, nuevoUsuario));
+  };
+
+  const eliminarUsuario = (id) => {
+    setUsuarios((prev) => eliminarUsuarioLista(prev, id));
+  };
+
+  const editarUsuario = (id, datosActualizados) => {
     if (
-      usuario.email &&
-      !usuario.correo
+      datosActualizados.correo &&
+      existeCorreo(usuarios, datosActualizados.correo, id)
     ) {
-      usuario.correo =
-        usuario.email;
+      throw new Error("Ya existe un usuario con ese correo");
     }
 
-    delete usuario.email;
-
-    const existe = usuarios.some(
-      (u) =>
-        u.correo?.toLowerCase() ===
-        usuario.correo?.toLowerCase()
-    );
-
-    if (existe) {
-      throw new Error(
-        "Ya existe un usuario con ese correo"
-      );
-    }
-
-    setUsuarios((prev) => [
-      usuario,
-      ...prev,
-    ]);
-  };
-
-  const eliminarUsuario = (
-    id
-  ) => {
-    setUsuarios((prev) =>
-      prev.filter(
-        (usuario) =>
-          usuario.id !== id
-      )
-    );
-  };
-
-  const editarUsuario = (
-    id,
-    datosActualizados
-  ) => {
-    setUsuarios((prev) =>
-      prev.map((usuario) =>
-        usuario.id === Number(id)
-          ? {
-              ...usuario,
-              ...datosActualizados,
-            }
-          : usuario
-      )
-    );
+    setUsuarios((prev) => editarUsuarioLista(prev, id, datosActualizados));
   };
 
   return (
@@ -117,5 +62,4 @@ export const UsuariosProvider = ({
   );
 };
 
-export const useUsuarios = () =>
-  useContext(UsuariosContext);
+export const useUsuarios = () => useContext(UsuariosContext);

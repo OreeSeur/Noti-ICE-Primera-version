@@ -1,7 +1,9 @@
 import { DashboardCard } from "../cards/DashboardCard";
-import { documentos } from "../../data/documentos";
+import { useDocumentos } from "../../context/DocumentosContext";
 
 export const RecentDocuments = () => {
+  const { documentos } = useDocumentos();
+
   const items = documentos
     .slice(0, 3)
     .map((documento) => ({

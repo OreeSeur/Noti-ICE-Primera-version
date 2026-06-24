@@ -1,67 +1,37 @@
 import {
   createContext,
   useContext,
-  useState,
   useEffect,
+  useState,
 } from "react";
 
-import { eventos as eventosIniciales } from "../data/eventos";
+import {
+  obtenerEventos,
+  guardarEventos,
+  agregarEventoLista,
+  editarEventoLista,
+  eliminarEventoLista,
+} from "../services/eventosService";
 
 const EventosContext = createContext();
 
-export const EventosProvider = ({
-  children,
-}) => {
-  const [eventos, setEventos] = useState(() => {
-    const guardados =
-      localStorage.getItem("eventos");
-
-    return guardados
-      ? JSON.parse(guardados)
-      : eventosIniciales;
-  });
+export const EventosProvider = ({ children }) => {
+  const [eventos, setEventos] = useState(() => obtenerEventos());
 
   useEffect(() => {
-    localStorage.setItem(
-      "eventos",
-      JSON.stringify(eventos)
-    );
+    guardarEventos(eventos);
   }, [eventos]);
 
   const agregarEvento = (nuevoEvento) => {
-    const evento = {
-      id: Date.now(),
-      ...nuevoEvento,
-    };
-
-    setEventos((prev) => [
-      evento,
-      ...prev,
-    ]);
+    setEventos((prev) => agregarEventoLista(prev, nuevoEvento));
   };
 
   const eliminarEvento = (id) => {
-    setEventos((prev) =>
-      prev.filter(
-        (evento) => evento.id !== id
-      )
-    );
+    setEventos((prev) => eliminarEventoLista(prev, id));
   };
 
-  const editarEvento = (
-    id,
-    datosActualizados
-  ) => {
-    setEventos((prev) =>
-      prev.map((evento) =>
-        evento.id === Number(id)
-          ? {
-              ...evento,
-              ...datosActualizados,
-            }
-          : evento
-      )
-    );
+  const editarEvento = (id, datosActualizados) => {
+    setEventos((prev) => editarEventoLista(prev, id, datosActualizados));
   };
 
   return (
@@ -78,5 +48,4 @@ export const EventosProvider = ({
   );
 };
 
-export const useEventos = () =>
-  useContext(EventosContext);
+export const useEventos = () => useContext(EventosContext);

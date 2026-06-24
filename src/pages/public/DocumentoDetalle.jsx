@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 
 import { useDocumentos } from "../../context/DocumentosContext";
+import { mismoId } from "../../utils/id";
 
 export const DocumentoDetalle = () => {
   const { id } = useParams();
@@ -14,7 +15,7 @@ export const DocumentoDetalle = () => {
   const documento =
     documentos.find(
       (item) =>
-        item.id === Number(id)
+        mismoId(item.id, id)
     );
 
   if (!documento) {

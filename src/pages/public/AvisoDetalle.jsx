@@ -1,12 +1,14 @@
 import { useParams, Link } from "react-router-dom";
 
-import { avisos } from "../../data/avisos";
+import { useAvisos } from "../../context/AvisosContext";
+import { mismoId } from "../../utils/id";
 
 export const AvisoDetalle = () => {
   const { id } = useParams();
+  const { avisos } = useAvisos();
 
   const aviso = avisos.find(
-    (item) => item.id === Number(id)
+    (item) => mismoId(item.id, id)
   );
 
   if (!aviso) {

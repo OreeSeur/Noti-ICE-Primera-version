@@ -1,6 +1,7 @@
-import { eventos } from "../../data/eventos";
+import { useEventos } from "../../context/EventosContext";
 
 export const CalendarGrid = () => {
+  const { eventos } = useEventos();
   const diasMes = 31;
 
   const obtenerDiaEvento = (fecha) => {

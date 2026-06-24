@@ -31,11 +31,6 @@ export const Layout = ({ children }) => {
         "dark"
       );
     }
-
-    console.log(
-      "HTML classes:",
-      document.documentElement.className
-    );
   }, [darkMode]);
 
   return (

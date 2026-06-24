@@ -1,8 +1,12 @@
-import { avisos } from "../../data/avisos";
-import { eventos } from "../../data/eventos";
-import { documentos } from "../../data/documentos";
+import { useAvisos } from "../../context/AvisosContext";
+import { useEventos } from "../../context/EventosContext";
+import { useDocumentos } from "../../context/DocumentosContext";
 
 export const WelcomeCard = () => {
+  const { avisos } = useAvisos();
+  const { eventos } = useEventos();
+  const { documentos } = useDocumentos();
+
   return (
     <section
       className="

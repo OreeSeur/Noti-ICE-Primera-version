@@ -3,18 +3,14 @@ import { StatCard } from "../../components/cards/StatCard";
 //import { NewsSection } from "../components/news/NewsSection";
 import { EventsSection } from "../../components/events/EventsSection";
 import { QuickActions } from "../../components/home/QuickActions";
-import { avisos } from "../../data/avisos";
-import { eventos } from "../../data/eventos";
-import { documentos } from "../../data/documentos";
-
 import { HeroBanner } from "../../components/home/HeroBanner";
-
 import { RecentActivity } from "../../components/home/RecentActivity";
 //import { UpcomingEvents } from "../components/home/UpcomingEvents";
-
 import { RecentDocuments } from "../../components/home/RecentDocuments";
-
 import { WelcomeCard } from "../../components/home/WelcomeCard";
+import { useAvisos } from "../../context/AvisosContext";
+import { useEventos } from "../../context/EventosContext";
+import { useDocumentos } from "../../context/DocumentosContext";
 
 import {
   Megaphone,
@@ -23,6 +19,10 @@ import {
 } from "lucide-react";
 
 export const Home = () => {
+  const { avisos } = useAvisos();
+  const { eventos } = useEventos();
+  const { documentos } = useDocumentos();
+
   return (
     <>
       <Header />

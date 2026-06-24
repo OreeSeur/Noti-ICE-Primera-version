@@ -3,7 +3,7 @@ export const usuarios = [
     id: 1,
     nombre: "Administrador",
     correo: "admin@esime.mx",
-    password: "123456",
+    password: "admin",
     rol: "admin",
     boleta: "ADMIN-001",
     carrera: "Administración del Portal",

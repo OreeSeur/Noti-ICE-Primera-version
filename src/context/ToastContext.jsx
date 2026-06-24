@@ -1,56 +1,62 @@
 import { createContext, useContext, useState } from "react";
+import { crearId } from "../utils/id";
 
 const ToastContext = createContext();
 
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
-  const addToast = ({ type = "success", message }) => {
-    const id = Date.now();
+  const showToast = (message, type = "success") => {
+    const id = crearId();
 
-    const newToast = {
-      id,
-      type,
-      message,
-    };
-
-    setToasts((prev) => [...prev, newToast]);
+    setToasts((prev) => [
+      ...prev,
+      {
+        id,
+        message,
+        type,
+      },
+    ]);
 
     setTimeout(() => {
       setToasts((prev) =>
-        prev.filter((t) => t.id !== id)
+        prev.filter((toast) => toast.id !== id)
       );
     }, 3000);
   };
 
-  const success = (msg) =>
-    addToast({ type: "success", message: msg });
-
-  const error = (msg) =>
-    addToast({ type: "error", message: msg });
-
-  const warning = (msg) =>
-    addToast({ type: "warning", message: msg });
+  const removeToast = (id) => {
+    setToasts((prev) =>
+      prev.filter((toast) => toast.id !== id)
+    );
+  };
 
   return (
     <ToastContext.Provider
-      value={{ success, error, warning }}
+      value={{
+        toasts,
+        showToast,
+        removeToast,
+      }}
     >
       {children}
 
-      {/* UI GLOBAL */}
-      <div className="fixed top-5 right-5 space-y-3 z-[9999]">
+      <div className="fixed top-5 right-5 z-[9999] space-y-3">
         {toasts.map((toast) => (
           <div
             key={toast.id}
             className={`
-              px-4 py-3 rounded-lg shadow-md text-white min-w-[220px]
+              px-4
+              py-3
+              rounded-lg
+              shadow-lg
+              text-white
+              font-medium
+              animate-pulse
               ${
-                toast.type === "success"
-                  ? "bg-green-600"
-                  : toast.type === "error"
+                toast.type === "error"
                   ? "bg-red-600"
-                  : "bg-yellow-500"
+                  : "bg-green-600"
               }
             `}
           >

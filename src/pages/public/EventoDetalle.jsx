@@ -1,12 +1,14 @@
 import { Link, useParams } from "react-router-dom";
 
-import { eventos } from "../../data/eventos";
+import { useEventos } from "../../context/EventosContext";
+import { mismoId } from "../../utils/id";
 
 export const EventoDetalle = () => {
   const { id } = useParams();
+  const { eventos } = useEventos();
 
   const evento = eventos.find(
-    (item) => item.id === Number(id)
+    (item) => mismoId(item.id, id)
   );
 
   if (!evento) {

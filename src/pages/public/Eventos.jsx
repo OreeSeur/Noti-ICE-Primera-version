@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { eventos } from "../../data/eventos";
 import { InfoCard } from "../../components/cards/InfoCard";
+import { useEventos } from "../../context/EventosContext";
 
 export const Eventos = () => {
+  const { eventos } = useEventos();
   const [categoria, setCategoria] =
     useState("Todos");
 

@@ -1,71 +1,37 @@
 import {
   createContext,
   useContext,
-  useState,
   useEffect,
+  useState,
 } from "react";
 
-import { avisos as avisosIniciales } from "../data/avisos";
+import {
+  obtenerAvisos,
+  guardarAvisos,
+  agregarAvisoLista,
+  editarAvisoLista,
+  eliminarAvisoLista,
+} from "../services/avisosService";
 
 const AvisosContext = createContext();
 
-export const AvisosProvider = ({
-  children,
-}) => {
-  const [avisos, setAvisos] =
-    useState(() => {
-      const guardados =
-        localStorage.getItem("avisos");
-
-      return guardados
-        ? JSON.parse(guardados)
-        : avisosIniciales;
-    });
+export const AvisosProvider = ({ children }) => {
+  const [avisos, setAvisos] = useState(() => obtenerAvisos());
 
   useEffect(() => {
-    localStorage.setItem(
-      "avisos",
-      JSON.stringify(avisos)
-    );
+    guardarAvisos(avisos);
   }, [avisos]);
 
-  const agregarAviso = (
-    nuevoAviso
-  ) => {
-    const aviso = {
-      id: Date.now(),
-      ...nuevoAviso,
-    };
-
-    setAvisos((prev) => [
-      aviso,
-      ...prev,
-    ]);
+  const agregarAviso = (nuevoAviso) => {
+    setAvisos((prev) => agregarAvisoLista(prev, nuevoAviso));
   };
 
   const eliminarAviso = (id) => {
-    setAvisos((prev) =>
-      prev.filter(
-        (aviso) =>
-          aviso.id !== id
-      )
-    );
+    setAvisos((prev) => eliminarAvisoLista(prev, id));
   };
 
-  const editarAviso = (
-    id,
-    datosActualizados
-  ) => {
-    setAvisos((prev) =>
-      prev.map((aviso) =>
-        aviso.id === Number(id)
-          ? {
-              ...aviso,
-              ...datosActualizados,
-            }
-          : aviso
-      )
-    );
+  const editarAviso = (id, datosActualizados) => {
+    setAvisos((prev) => editarAvisoLista(prev, id, datosActualizados));
   };
 
   return (
@@ -82,5 +48,4 @@ export const AvisosProvider = ({
   );
 };
 
-export const useAvisos = () =>
-  useContext(AvisosContext);
+export const useAvisos = () => useContext(AvisosContext);

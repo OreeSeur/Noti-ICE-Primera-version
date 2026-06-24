@@ -1,30 +1,33 @@
 import {
   createContext,
   useContext,
-  useState,
   useEffect,
+  useState,
 } from "react";
 
 import { useUsuarios } from "./UsuariosContext";
+import {
+  autenticarUsuario,
+  crearUsuarioRegistro,
+  obtenerSesion,
+  guardarSesion,
+  cerrarSesion,
+} from "../services/authService";
+import { existeCorreo } from "../services/usuariosService";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const { agregarUsuario, usuarios } = useUsuarios();
 
-  const [user, setUser] = useState(() => {
-    const guardado = localStorage.getItem("user");
-    return guardado ? JSON.parse(guardado) : null;
-  });
+  const [user, setUser] = useState(() => obtenerSesion());
 
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(user));
+    guardarSesion(user);
   }, [user]);
 
   const login = (correo, password) => {
-    const usuario = usuarios.find(
-      (u) => u.correo === correo && u.password === password
-    );
+    const usuario = autenticarUsuario(usuarios, correo, password);
 
     if (!usuario) return false;
 
@@ -32,33 +35,22 @@ export const AuthProvider = ({ children }) => {
     return true;
   };
 
-const register = (nuevoUsuario) => {
-  const existe = usuarios.find(
-    (u) => u.correo === nuevoUsuario.correo
-  );
+  const register = (nuevoUsuario) => {
+    if (existeCorreo(usuarios, nuevoUsuario.correo)) {
+      return false;
+    }
 
-  if (existe) return false;
+    const usuarioCreado = crearUsuarioRegistro(nuevoUsuario);
 
-  const usuarioCreado = {
-    id: Date.now(),
-    nombre: "",
-    correo: "",
-    rol: "usuario",
-    estado: "activo",
-    password: "",
-    ...nuevoUsuario,
+    agregarUsuario(usuarioCreado);
+    setUser(usuarioCreado);
+
+    return true;
   };
 
-  agregarUsuario(usuarioCreado);
-
-  // 🔥 AUTO LOGIN DESPUÉS DE REGISTRO
-  setUser(usuarioCreado);
-
-  return true;
-};
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("user");
+    cerrarSesion();
   };
 
   return (

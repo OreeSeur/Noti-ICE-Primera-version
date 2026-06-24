@@ -8,11 +8,6 @@ export const Avisos = () => {
   const { avisos } =
     useAvisos();
 
-  console.log(
-    "AVISOS PUBLICOS:",
-    avisos
-  );
-
   return (
     <section>
       <h1

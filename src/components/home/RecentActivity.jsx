@@ -1,7 +1,9 @@
 import { DashboardCard } from "../cards/DashboardCard";
-import { avisos } from "../../data/avisos";
+import { useAvisos } from "../../context/AvisosContext";
 
 export const RecentActivity = () => {
+  const { avisos } = useAvisos();
+
   const items = avisos.slice(0, 3).map((aviso) => ({
     title: aviso.titulo,
     subtitle: aviso.fecha,

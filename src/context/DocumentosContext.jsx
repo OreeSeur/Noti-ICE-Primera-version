@@ -1,83 +1,37 @@
 import {
   createContext,
   useContext,
-  useState,
   useEffect,
+  useState,
 } from "react";
 
 import {
-  documentos as documentosIniciales,
-} from "../data/documentos";
+  obtenerDocumentos,
+  guardarDocumentos,
+  agregarDocumentoLista,
+  editarDocumentoLista,
+  eliminarDocumentoLista,
+} from "../services/documentosService";
 
-const DocumentosContext =
-  createContext();
+const DocumentosContext = createContext();
 
-export const DocumentosProvider = ({
-  children,
-}) => {
-
-  const [documentos, setDocumentos] =
-    useState(() => {
-
-      const guardados =
-        localStorage.getItem(
-          "documentos"
-        );
-
-      return guardados
-        ? JSON.parse(guardados)
-        : documentosIniciales;
-    });
+export const DocumentosProvider = ({ children }) => {
+  const [documentos, setDocumentos] = useState(() => obtenerDocumentos());
 
   useEffect(() => {
-    localStorage.setItem(
-      "documentos",
-      JSON.stringify(documentos)
-    );
+    guardarDocumentos(documentos);
   }, [documentos]);
 
-  const agregarDocumento = (
-    nuevoDocumento
-  ) => {
-
-    const documento = {
-      id: Date.now(),
-      ...nuevoDocumento,
-    };
-
-    setDocumentos((prev) => [
-      documento,
-      ...prev,
-    ]);
+  const agregarDocumento = (nuevoDocumento) => {
+    setDocumentos((prev) => agregarDocumentoLista(prev, nuevoDocumento));
   };
 
-  const eliminarDocumento = (
-    id
-  ) => {
-
-    setDocumentos((prev) =>
-      prev.filter(
-        (documento) =>
-          documento.id !== id
-      )
-    );
+  const eliminarDocumento = (id) => {
+    setDocumentos((prev) => eliminarDocumentoLista(prev, id));
   };
 
-  const editarDocumento = (
-    id,
-    datosActualizados
-  ) => {
-
-    setDocumentos((prev) =>
-      prev.map((documento) =>
-        documento.id === Number(id)
-          ? {
-              ...documento,
-              ...datosActualizados,
-            }
-          : documento
-      )
-    );
+  const editarDocumento = (id, datosActualizados) => {
+    setDocumentos((prev) => editarDocumentoLista(prev, id, datosActualizados));
   };
 
   return (
@@ -94,7 +48,4 @@ export const DocumentosProvider = ({
   );
 };
 
-export const useDocumentos =
-  () => useContext(
-    DocumentosContext
-  );
+export const useDocumentos = () => useContext(DocumentosContext);
