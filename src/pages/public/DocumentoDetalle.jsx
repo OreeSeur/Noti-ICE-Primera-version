@@ -1,13 +1,16 @@
+import { ArrowLeft, ExternalLink, FileText } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
 import { AudienceSummary } from "../../components/common/AudienceSummary";
+import { EmptyState } from "../../components/common/EmptyState";
+import { StatusBadge } from "../../components/common/StatusBadge";
 import { useDocumentos } from "../../context/documentos/useDocumentos";
-import { mismoId } from "../../utils/id";
 import {
   formatFileSize,
   getDocumentIcon,
   getDocumentTitle,
 } from "../../utils/documentTypes";
+import { mismoId } from "../../utils/id";
 
 export const DocumentoDetalle = () => {
   const { id } = useParams();
@@ -18,27 +21,18 @@ export const DocumentoDetalle = () => {
 
   if (!documento) {
     return (
-      <section>
-        <h1
-          className="
-            text-3xl
-            font-bold
-            text-slate-800
-            dark:text-white
-          "
-        >
-          Documento no encontrado
-        </h1>
+      <section className="space-y-6">
+        <EmptyState
+          icon={FileText}
+          title="Documento no encontrado"
+          message="El documento pudo haber sido eliminado o la dirección no es correcta."
+        />
 
         <Link
           to="/documentos"
-          className="
-            text-[#6A0032]
-            font-semibold
-            mt-4
-            inline-block
-          "
+          className="inline-flex items-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90"
         >
+          <ArrowLeft size={18} />
           Volver a Documentos
         </Link>
       </section>
@@ -49,119 +43,77 @@ export const DocumentoDetalle = () => {
   const icono = getDocumentIcon(documento.tipo);
 
   return (
-    <section>
+    <section className="space-y-6">
       <Link
         to="/documentos"
-        className="
-          text-[#6A0032]
-          font-semibold
-          mb-6
-          inline-block
-        "
+        className="inline-flex items-center gap-2 font-semibold text-[#6A0032] transition hover:gap-3 dark:text-pink-100"
       >
-        ← Volver a Documentos
+        <ArrowLeft size={18} />
+        Volver a Documentos
       </Link>
 
-      <article
-        className="
-          bg-white
-          dark:bg-slate-800
-          p-8
-          rounded-xl
-          shadow-md
-        "
-      >
-        <div className="flex items-start gap-4">
-          <span className="text-5xl" aria-hidden="true">
-            {icono}
-          </span>
-
-          <div>
-            <h1
-              className="
-                text-3xl
-                font-bold
-                text-slate-800
-                dark:text-white
-              "
-            >
-              {titulo}
-            </h1>
-
-            <p
-              className="
-                text-slate-500
-                dark:text-slate-400
-                mt-3
-              "
-            >
-              Tipo: {documento.tipo || "Documento"}
-            </p>
-
-            <p
-              className="
-                text-slate-500
-                dark:text-slate-400
-              "
-            >
-              Fecha: {documento.fecha || "Sin fecha"}
-            </p>
+      <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <div className="bg-gradient-to-br from-[#6A0032] via-[#7B1743] to-[#C9A227] p-6 text-white sm:p-8">
+          <div className="mb-5 flex flex-wrap items-center gap-3">
+            <span className="flex size-14 items-center justify-center rounded-2xl bg-white/15 text-4xl" aria-hidden="true">
+              {icono}
+            </span>
+            <StatusBadge label={documento.tipo || "Documento"} variant="primary" className="bg-white/15 text-white" />
           </div>
-        </div>
 
-        <div className="mt-5">
-          <AudienceSummary item={documento} />
-        </div>
-
-        {documento.archivoNombre && (
-          <div className="mt-6 rounded-xl bg-slate-100 p-4 dark:bg-slate-700">
-            <p className="font-semibold text-slate-800 dark:text-white">
-              Archivo registrado
-            </p>
-            <p className="text-sm text-slate-600 dark:text-slate-300">
-              {documento.archivoNombre}
-              {documento.archivoTamaño
-                ? ` • ${formatFileSize(documento.archivoTamaño)}`
-                : ""}
-            </p>
-          </div>
-        )}
-
-        <p
-          className="
-            mt-6
-            leading-relaxed
-            text-slate-700
-            dark:text-slate-300
-          "
-        >
-          {documento.descripcion}
-        </p>
-
-        {documento.url ? (
-          <a
-            href={documento.url}
-            target="_blank"
-            rel="noreferrer"
-            className="
-              mt-8
-              inline-block
-              bg-[#6A0032]
-              text-white
-              px-6
-              py-3
-              rounded-lg
-              hover:opacity-90
-              transition
-            "
-          >
-            Abrir documento
-          </a>
-        ) : (
-          <p className="mt-8 rounded-lg bg-amber-50 p-4 text-sm text-amber-700 dark:bg-amber-900/30 dark:text-amber-200">
-            Este documento ya tiene sus datos registrados. La descarga del archivo se conectará cuando exista almacenamiento en backend.
+          <h1 className="text-3xl font-bold sm:text-4xl">{titulo}</h1>
+          <p className="mt-3 text-sm text-white/80 sm:text-base">
+            {documento.fecha || "Sin fecha"}
           </p>
-        )}
+        </div>
+
+        <div className="grid gap-6 p-6 lg:grid-cols-[1fr_320px] sm:p-8">
+          <div>
+            <h2 className="mb-3 text-lg font-bold text-slate-800 dark:text-white">
+              Descripción
+            </h2>
+            <p className="leading-relaxed text-slate-700 dark:text-slate-300">
+              {documento.descripcion}
+            </p>
+
+            {documento.archivoNombre && (
+              <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-700/60">
+                <p className="font-semibold text-slate-800 dark:text-white">
+                  Archivo registrado
+                </p>
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                  {documento.archivoNombre}
+                  {documento.archivoTamaño
+                    ? ` • ${formatFileSize(documento.archivoTamaño)}`
+                    : ""}
+                </p>
+              </div>
+            )}
+
+            {documento.url ? (
+              <a
+                href={documento.url}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#6A0032] px-6 py-3 font-semibold text-white transition hover:opacity-90"
+              >
+                Abrir documento
+                <ExternalLink size={18} />
+              </a>
+            ) : (
+              <p className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed text-amber-700 dark:border-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+                Este documento ya tiene sus datos registrados. La descarga del archivo se conectará cuando exista almacenamiento en backend.
+              </p>
+            )}
+          </div>
+
+          <aside className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-700/60">
+            <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-slate-500 dark:text-slate-300">
+              Dirigido a
+            </h2>
+            <AudienceSummary item={documento} />
+          </aside>
+        </div>
       </article>
     </section>
   );

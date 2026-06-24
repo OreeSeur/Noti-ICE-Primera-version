@@ -41,6 +41,7 @@ import { AdminEditarDocumento } from "../pages/admin/documentos/AdminEditarDocum
 import { AdminUsuarios } from "../pages/admin/usuarios/AdminUsuarios";
 import { AdminNuevoUsuario } from "../pages/admin/usuarios/AdminNuevoUsuario";
 import { AdminEditarUsuario } from "../pages/admin/usuarios/AdminEditarUsuario";
+import { AdminAcademico } from "../pages/admin/academico/AdminAcademico";
 
 /* Rutas protegidas */
 import { PrivateRoute } from "./PrivateRoute";
@@ -298,6 +299,17 @@ return ( <Routes>
     <AdminRoute>
       <Layout>
         <AdminEditarUsuario />
+      </Layout>
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path={ROUTES.ADMIN_ACADEMICO}
+  element={
+    <AdminRoute>
+      <Layout>
+        <AdminAcademico />
       </Layout>
     </AdminRoute>
   }

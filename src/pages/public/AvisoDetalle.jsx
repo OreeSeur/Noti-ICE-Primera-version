@@ -1,104 +1,89 @@
+import { ArrowLeft, Megaphone } from "lucide-react";
 import { useParams, Link } from "react-router-dom";
 
 import { AudienceSummary } from "../../components/common/AudienceSummary";
+import { EmptyState } from "../../components/common/EmptyState";
+import { StatusBadge } from "../../components/common/StatusBadge";
 import { useAvisos } from "../../context/avisos/useAvisos";
+import {
+  getItemAudience,
+  getPriorityLabel,
+  getPriorityVariant,
+} from "../../utils/audience";
 import { mismoId } from "../../utils/id";
 
 export const AvisoDetalle = () => {
   const { id } = useParams();
   const { avisos } = useAvisos();
 
-  const aviso = avisos.find(
-    (item) => mismoId(item.id, id)
-  );
+  const aviso = avisos.find((item) => mismoId(item.id, id));
 
   if (!aviso) {
     return (
-      <section>
-        <h1
-          className="
-            text-3xl
-            font-bold
-            text-slate-800
-            dark:text-white
-          "
-        >
-          Aviso no encontrado
-        </h1>
+      <section className="space-y-6">
+        <EmptyState
+          icon={Megaphone}
+          title="Aviso no encontrado"
+          message="El aviso pudo haber sido eliminado o la dirección no es correcta."
+        />
 
         <Link
           to="/avisos"
-          className="
-            text-[#6A0032]
-            font-semibold
-            mt-4
-            inline-block
-          "
+          className="inline-flex items-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90"
         >
+          <ArrowLeft size={18} />
           Volver a Avisos
         </Link>
       </section>
     );
   }
 
+  const audiencia = getItemAudience(aviso);
+
   return (
-    <section>
+    <section className="space-y-6">
       <Link
         to="/avisos"
-        className="
-          text-[#6A0032]
-          font-semibold
-          mb-6
-          inline-block
-        "
+        className="inline-flex items-center gap-2 font-semibold text-[#6A0032] transition hover:gap-3 dark:text-pink-100"
       >
-        ← Volver a Avisos
+        <ArrowLeft size={18} />
+        Volver a Avisos
       </Link>
 
-      <article
-        className="
-          bg-white
-          dark:bg-slate-800
-          p-8
-          rounded-xl
-          shadow-md
-        "
-      >
-        <h1
-          className="
-            text-3xl
-            font-bold
-            text-slate-800
-            dark:text-white
-          "
-        >
-          {aviso.titulo}
-        </h1>
+      <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <div className="bg-gradient-to-br from-[#6A0032] via-[#7B1743] to-[#C9A227] p-6 text-white sm:p-8">
+          <div className="mb-5 flex flex-wrap items-center gap-3">
+            <StatusBadge label="Aviso" variant="primary" className="bg-white/15 text-white" />
+            <StatusBadge
+              label={getPriorityLabel(audiencia.prioridad)}
+              variant={getPriorityVariant(audiencia.prioridad)}
+              className="bg-white/15 text-white"
+            />
+          </div>
 
-        <p
-          className="
-            text-slate-500
-            dark:text-slate-400
-            mt-2
-          "
-        >
-          {aviso.fecha}
-        </p>
-
-        <div className="mt-5">
-          <AudienceSummary item={aviso} />
+          <h1 className="text-3xl font-bold sm:text-4xl">{aviso.titulo}</h1>
+          <p className="mt-3 text-sm text-white/80 sm:text-base">
+            {aviso.fecha || "Sin fecha"}
+          </p>
         </div>
 
-        <p
-          className="
-            mt-6
-            leading-relaxed
-            text-slate-700
-            dark:text-slate-300
-          "
-        >
-          {aviso.descripcion}
-        </p>
+        <div className="grid gap-6 p-6 lg:grid-cols-[1fr_320px] sm:p-8">
+          <div>
+            <h2 className="mb-3 text-lg font-bold text-slate-800 dark:text-white">
+              Descripción
+            </h2>
+            <p className="leading-relaxed text-slate-700 dark:text-slate-300">
+              {aviso.descripcion}
+            </p>
+          </div>
+
+          <aside className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-700/60">
+            <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-slate-500 dark:text-slate-300">
+              Dirigido a
+            </h2>
+            <AudienceSummary item={aviso} />
+          </aside>
+        </div>
       </article>
     </section>
   );

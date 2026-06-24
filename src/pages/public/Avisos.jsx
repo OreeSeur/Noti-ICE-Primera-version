@@ -1,51 +1,80 @@
+import { Megaphone } from "lucide-react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { InfoCard } from "../../components/cards/InfoCard";
-
+import { EmptyState } from "../../components/common/EmptyState";
+import { PageHeader } from "../../components/common/PageHeader";
+import { SearchInput } from "../../components/common/SearchInput";
+import { StatusBadge } from "../../components/common/StatusBadge";
 import { useAvisos } from "../../context/avisos/useAvisos";
+import {
+  getItemAudience,
+  getPriorityLabel,
+  getPriorityVariant,
+} from "../../utils/audience";
+import { matchesSearch } from "../../utils/search";
 
 export const Avisos = () => {
-  const { avisos } =
-    useAvisos();
+  const { avisos } = useAvisos();
+  const [busqueda, setBusqueda] = useState("");
+
+  const avisosFiltrados = useMemo(
+    () =>
+      avisos.filter((aviso) =>
+        matchesSearch(
+          aviso,
+          ["titulo", "descripcion", "fecha", (item) => getPriorityLabel(getItemAudience(item).prioridad)],
+          busqueda
+        )
+      ),
+    [avisos, busqueda]
+  );
 
   return (
-    <section>
-      <h1
-        className="
-          text-4xl
-          font-bold
-          text-slate-800
-          dark:text-white
-          mb-2
-        "
-      >
-        Avisos
-      </h1>
+    <section className="space-y-6">
+      <PageHeader
+        eyebrow="Comunicados"
+        title="Avisos"
+        description="Consulta avisos institucionales, trámites, fechas importantes y comunicados dirigidos a la comunidad de ESIME."
+      />
 
-      <p
-        className="
-          text-slate-500
-          dark:text-slate-400
-          mb-8
-        "
-      >
-        Avisos y comunicados recientes
-      </p>
+      <SearchInput
+        value={busqueda}
+        onChange={setBusqueda}
+        placeholder="Buscar avisos por título, fecha o prioridad..."
+      />
 
-      <div className="space-y-4">
-        {avisos.map((aviso) => (
-          <Link
-            key={aviso.id}
-            to={`/avisos/${aviso.id}`}
-            className="block"
-          >
-            <InfoCard
-              title={aviso.titulo}
-              subtitle={aviso.fecha}
-            />
-          </Link>
-        ))}
-      </div>
+      {avisosFiltrados.length === 0 ? (
+        <EmptyState
+          icon={Megaphone}
+          title="No se encontraron avisos"
+          message="Prueba con otra palabra clave o limpia la búsqueda para ver todos los comunicados disponibles."
+        />
+      ) : (
+        <div className="grid gap-4 lg:grid-cols-2">
+          {avisosFiltrados.map((aviso) => {
+            const audiencia = getItemAudience(aviso);
+
+            return (
+              <Link key={aviso.id} to={`/avisos/${aviso.id}`}>
+                <InfoCard
+                  icon="📢"
+                  title={aviso.titulo}
+                  subtitle={aviso.fecha || "Sin fecha"}
+                  description={aviso.descripcion}
+                  badge={
+                    <StatusBadge
+                      label={getPriorityLabel(audiencia.prioridad)}
+                      variant={getPriorityVariant(audiencia.prioridad)}
+                    />
+                  }
+                />
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 };

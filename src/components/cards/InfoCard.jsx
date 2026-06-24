@@ -2,54 +2,58 @@ export const InfoCard = ({
   title,
   subtitle,
   description,
+  badge,
+  icon,
+  actionLabel = "Ver detalle",
+  className = "",
 }) => {
   return (
     <article
-      className="
-        bg-white
-        dark:bg-slate-800
-        p-6
-        rounded-xl
-        shadow-md
-        transition
-        hover:shadow-lg
-        hover:-translate-y-1
-      "
+      className={`group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-[#6A0032]/30 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800 sm:p-6 ${className}`}
     >
-      <h2
-        className="
-          text-xl
-          font-semibold
-          text-slate-800
-          dark:text-white
-        "
-      >
-        {title}
-      </h2>
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#6A0032] via-[#9D2449] to-[#C9A227] opacity-80" />
 
-      {subtitle && (
-        <p
-          className="
-            text-slate-500
-            dark:text-slate-400
-            mt-2
-          "
-        >
-          {subtitle}
-        </p>
-      )}
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex min-w-0 items-start gap-3">
+          {icon && (
+            <span
+              className="mt-1 flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#6A0032]/10 text-2xl text-[#6A0032] dark:bg-[#6A0032]/30 dark:text-pink-100"
+              aria-hidden="true"
+            >
+              {icon}
+            </span>
+          )}
+
+          <div className="min-w-0">
+            <h2 className="line-clamp-2 text-lg font-bold text-slate-800 transition group-hover:text-[#6A0032] dark:text-white dark:group-hover:text-pink-100 sm:text-xl">
+              {title}
+            </h2>
+
+            {subtitle && (
+              <p className="mt-2 text-sm font-medium text-slate-500 dark:text-slate-400">
+                {subtitle}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {badge && <div className="shrink-0">{badge}</div>}
+      </div>
 
       {description && (
-        <p
-          className="
-            mt-4
-            text-slate-700
-            dark:text-slate-300
-          "
-        >
+        <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
           {description}
         </p>
       )}
+
+      <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4 text-sm dark:border-slate-700">
+        <span className="font-semibold text-[#6A0032] dark:text-pink-100">
+          {actionLabel}
+        </span>
+        <span className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-[#6A0032] dark:text-slate-500 dark:group-hover:text-pink-100">
+          →
+        </span>
+      </div>
     </article>
   );
 };

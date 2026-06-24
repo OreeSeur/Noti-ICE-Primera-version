@@ -13,6 +13,7 @@ import {
   Trophy,
   ShieldCheck,
   UserRound,
+  GraduationCap,
   Bell,
   Menu,
   X,
@@ -79,6 +80,11 @@ export const Sidebar = ({
             icon: ShieldCheck,
             label: "Administración",
             path: ROUTES.ADMIN,
+          },
+          {
+            icon: GraduationCap,
+            label: "Académico",
+            path: ROUTES.ADMIN_ACADEMICO,
           },
         ]
       : []),

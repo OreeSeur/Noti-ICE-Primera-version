@@ -1,91 +1,114 @@
-import { useState } from "react";
+import { CalendarDays } from "lucide-react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { InfoCard } from "../../components/cards/InfoCard";
+import { EmptyState } from "../../components/common/EmptyState";
+import { PageHeader } from "../../components/common/PageHeader";
+import { SearchInput } from "../../components/common/SearchInput";
+import { StatusBadge } from "../../components/common/StatusBadge";
 import { useEventos } from "../../context/eventos/useEventos";
+import {
+  getItemAudience,
+  getPriorityLabel,
+  getPriorityVariant,
+} from "../../utils/audience";
+import { matchesSearch } from "../../utils/search";
 
 export const Eventos = () => {
   const { eventos } = useEventos();
-  const [categoria, setCategoria] =
-    useState("Todos");
+  const [categoria, setCategoria] = useState("Todos");
+  const [busqueda, setBusqueda] = useState("");
 
-  const categorias = [
-    "Todos",
-    "Conferencias",
-    "Concursos",
-    "Ferias",
-  ];
+  const categorias = useMemo(
+    () => ["Todos", ...new Set(eventos.map((evento) => evento.categoria).filter(Boolean))],
+    [eventos]
+  );
 
-  const eventosFiltrados =
-    categoria === "Todos"
-      ? eventos
-      : eventos.filter(
-          (evento) =>
-            evento.categoria === categoria
-        );
+  const eventosFiltrados = useMemo(
+    () =>
+      eventos
+        .filter((evento) => categoria === "Todos" || evento.categoria === categoria)
+        .filter((evento) =>
+          matchesSearch(
+            evento,
+            [
+              "titulo",
+              "descripcion",
+              "fecha",
+              "lugar",
+              "categoria",
+              (item) => getPriorityLabel(getItemAudience(item).prioridad),
+            ],
+            busqueda
+          )
+        ),
+    [eventos, categoria, busqueda]
+  );
 
   return (
-    <section>
-      <h1
-        className="
-          text-4xl
-          font-bold
-          text-slate-800
-          dark:text-white
-          mb-2
-        "
-      >
-        Eventos
-      </h1>
+    <section className="space-y-6">
+      <PageHeader
+        eyebrow="Agenda"
+        title="Eventos"
+        description="Consulta próximas actividades académicas, conferencias, ferias, concursos y eventos institucionales."
+      />
 
-      <p
-        className="
-          text-slate-500
-          dark:text-slate-400
-          mb-8
-        "
-      >
-        Próximas actividades y eventos de ESIME.
-      </p>
+      <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+        <SearchInput
+          value={busqueda}
+          onChange={setBusqueda}
+          placeholder="Buscar eventos por título, lugar o categoría..."
+        />
 
-      <div className="flex flex-wrap gap-3 mb-8">
-        {categorias.map((cat) => (
-          <button
-            key={cat}
-            onClick={() =>
-              setCategoria(cat)
-            }
-            className={`
-              px-4
-              py-2
-              rounded-lg
-              transition
-              ${
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hidden lg:justify-end">
+          {categorias.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setCategoria(cat)}
+              className={`shrink-0 rounded-xl px-4 py-2 text-sm font-semibold transition ${
                 categoria === cat
-                  ? "bg-[#6A0032] text-white"
-                  : "bg-white dark:bg-slate-800 dark:text-white shadow"
-              }
-            `}
-          >
-            {cat}
-          </button>
-        ))}
+                  ? "bg-[#6A0032] text-white shadow-sm"
+                  : "border border-slate-200 bg-white text-slate-600 hover:border-[#6A0032]/40 hover:text-[#6A0032] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:text-pink-100"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        {eventosFiltrados.map((evento) => (
-          <Link
-            key={evento.id}
-            to={`/eventos/${evento.id}`}
-          >
-            <InfoCard
-              title={evento.titulo}
-              subtitle={`📅 ${evento.fecha}`}
-              description={`📍 ${evento.lugar}`}
-            />
-          </Link>
-        ))}
-      </div>
+      {eventosFiltrados.length === 0 ? (
+        <EmptyState
+          icon={CalendarDays}
+          title="No se encontraron eventos"
+          message="Cambia la categoría, prueba otra búsqueda o revisa el calendario para explorar otros meses."
+        />
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2">
+          {eventosFiltrados.map((evento) => {
+            const audiencia = getItemAudience(evento);
+
+            return (
+              <Link key={evento.id} to={`/eventos/${evento.id}`}>
+                <InfoCard
+                  icon="📅"
+                  title={evento.titulo}
+                  subtitle={`${evento.fecha || "Sin fecha"} • ${evento.lugar || "Lugar por confirmar"}`}
+                  description={evento.descripcion}
+                  badge={
+                    <StatusBadge
+                      label={evento.categoria || getPriorityLabel(audiencia.prioridad)}
+                      variant={getPriorityVariant(audiencia.prioridad)}
+                    />
+                  }
+                />
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 };

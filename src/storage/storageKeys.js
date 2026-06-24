@@ -5,4 +5,7 @@ export const STORAGE_KEYS = {
   DOCUMENTOS: "documentos",
   USER: "user",
   DARK_MODE: "darkMode",
+  MATERIAS: "materias",
+  GRUPOS: "grupos",
+  ASIGNACIONES_ACADEMICAS: "asignacionesAcademicas",
 };

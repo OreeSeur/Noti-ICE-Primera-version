@@ -7,6 +7,7 @@ import {
   PlusCircle,
   UserPlus,
   Users,
+  GraduationCap,
 } from "lucide-react";
 
 import { AdminListCard } from "../components/admin/AdminListCard";
@@ -14,6 +15,7 @@ import { AdminStatCard } from "../components/admin/AdminStatCard";
 import { QuickActionCard } from "../components/admin/QuickActionCard";
 import { getRoleLabel, normalizeRole } from "../constants/roles";
 import { ROUTES, buildRoute } from "../constants/routes";
+import { useAcademico } from "../context/academico/useAcademico";
 import { useAvisos } from "../context/avisos/useAvisos";
 import { useDocumentos } from "../context/documentos/useDocumentos";
 import { useEventos } from "../context/eventos/useEventos";
@@ -115,6 +117,7 @@ export const PanelAdmin = () => {
   const { eventos } = useEventos();
   const { documentos } = useDocumentos();
   const { usuarios } = useUsuarios();
+  const { materias, grupos, asignaciones } = useAcademico();
 
   const eventosProximos = obtenerEventosProximos(eventos);
   const documentosRecientes = ordenarPorFechaDesc(documentos).slice(0, 4);
@@ -185,6 +188,13 @@ export const PanelAdmin = () => {
       icon: Users,
       to: ROUTES.ADMIN_USUARIOS,
     },
+    {
+      title: "Académico",
+      value: asignaciones.length,
+      description: `${materias.length} materias · ${grupos.length} grupos`,
+      icon: GraduationCap,
+      to: ROUTES.ADMIN_ACADEMICO,
+    },
   ];
 
   const accionesRapidas = [
@@ -211,6 +221,12 @@ export const PanelAdmin = () => {
       description: "Agrega acceso para la comunidad",
       icon: UserPlus,
       to: ROUTES.ADMIN_USUARIOS_NUEVO,
+    },
+    {
+      title: "Estructura académica",
+      description: "Gestiona materias, grupos y docentes",
+      icon: GraduationCap,
+      to: ROUTES.ADMIN_ACADEMICO,
     },
   ];
 
@@ -243,7 +259,7 @@ export const PanelAdmin = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {estadisticas.map((estadistica) => (
           <AdminStatCard key={estadistica.title} {...estadistica} />
         ))}
@@ -260,7 +276,7 @@ export const PanelAdmin = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
           {accionesRapidas.map((accion) => (
             <QuickActionCard key={accion.title} {...accion} />
           ))}
