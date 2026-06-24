@@ -1,11 +1,15 @@
 import { useAvisos } from "../../context/avisos/useAvisos";
+import { useAuth } from "../../context/auth/useAuth";
 import { useEventos } from "../../context/eventos/useEventos";
 import { useDocumentos } from "../../context/documentos/useDocumentos";
 
 export const WelcomeCard = () => {
+  const { user } = useAuth();
   const { avisos } = useAvisos();
   const { eventos } = useEventos();
   const { documentos } = useDocumentos();
+
+  const nombreUsuario = user?.nombre?.trim() || "comunidad ESIME";
 
   return (
     <section
@@ -26,7 +30,7 @@ export const WelcomeCard = () => {
           dark:text-white
         "
       >
-        Hola Leonardo 👋
+        Hola {nombreUsuario} 👋
       </h2>
 
       <p
