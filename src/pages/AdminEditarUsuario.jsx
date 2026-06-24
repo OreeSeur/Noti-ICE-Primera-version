@@ -18,6 +18,9 @@ export const AdminEditarUsuario = () => {
     usuario || {
       nombre: "",
       correo: "",
+      boleta: "",
+      carrera: "",
+      semestre: "",
       rol: "",
       estado: "",
       password: "",

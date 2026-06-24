@@ -41,6 +41,53 @@ export const UsuarioForm = ({
 
       <div>
         <label className="block mb-2 font-medium">
+          Boleta
+        </label>
+
+        <input
+          type="text"
+          name="boleta"
+          value={formulario.boleta}
+          onChange={handleChange}
+          className="w-full border rounded-lg px-4 py-2"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block mb-2 font-medium">
+          Carrera
+        </label>
+
+        <input
+          type="text"
+          name="carrera"
+          value={formulario.carrera}
+          onChange={handleChange}
+          className="w-full border rounded-lg px-4 py-2"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block mb-2 font-medium">
+          Semestre
+        </label>
+
+        <input
+          type="number"
+          min="1"
+          max="12"
+          name="semestre"
+          value={formulario.semestre}
+          onChange={handleChange}
+          className="w-full border rounded-lg px-4 py-2"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block mb-2 font-medium">
           Rol
         </label>
 

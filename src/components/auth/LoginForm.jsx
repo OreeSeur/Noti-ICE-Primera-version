@@ -13,17 +13,28 @@ import { useAuth } from "../../context/AuthContext";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
-  const { login, register } = useAuth();
 
-  const [mode, setMode] = useState("login");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const { login, register } =
+    useAuth();
 
-  const [formData, setFormData] = useState({
-    nombre: "",
-    correo: "",
-    password: "",
-  });
+  const [mode, setMode] =
+    useState("login");
+
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  const [formData, setFormData] =
+    useState({
+      nombre: "",
+      correo: "",
+      password: "",
+      boleta: "",
+      carrera: "",
+      semestre: "",
+    });
 
   const handleChange = (e) => {
     setFormData({
@@ -34,6 +45,7 @@ export const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     setError("");
 
     if (mode === "login") {
@@ -42,91 +54,336 @@ export const LoginForm = () => {
         formData.password
       );
 
-      if (success) return navigate("/");
+      if (success) {
+        navigate("/");
+        return;
+      }
 
-      return setError("Credenciales incorrectas");
+      setError(
+        "Credenciales incorrectas"
+      );
+
+      return;
     }
 
     const success = register({
       nombre: formData.nombre,
       correo: formData.correo,
       password: formData.password,
+      boleta: formData.boleta,
+      carrera: formData.carrera,
+      semestre: formData.semestre,
       rol: "usuario",
       estado: "activo",
     });
 
     if (!success) {
-      return setError("El usuario ya existe");
+      setError(
+        "El usuario ya existe"
+      );
+
+      return;
     }
 
     navigate("/");
   };
 
   return (
-    <form className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-lg w-full" onSubmit={handleSubmit}>
-      <h2 className="text-3xl font-bold text-center mb-4">
-        {mode === "login" ? "Iniciar Sesión" : "Registro"}
+    <form
+      onSubmit={handleSubmit}
+      className="
+        bg-white
+        dark:bg-slate-800
+        p-8
+        rounded-2xl
+        shadow-lg
+        w-full
+      "
+    >
+      <h2
+        className="
+          text-3xl
+          font-bold
+          text-center
+          mb-4
+        "
+      >
+        {mode === "login"
+          ? "Iniciar Sesión"
+          : "Registro"}
       </h2>
 
       {error && (
-        <div className="mb-4 text-red-600 bg-red-100 p-2 rounded">
+        <div
+          className="
+            mb-4
+            text-red-600
+            bg-red-100
+            p-2
+            rounded
+          "
+        >
           {error}
         </div>
       )}
 
       {mode === "register" && (
-        <div className="mb-4">
-          <label>Nombre</label>
-          <div className="flex items-center gap-2 border p-2 rounded">
-            <User size={18} />
+        <>
+          <div className="mb-4">
+            <label>
+              Nombre
+            </label>
+
+            <div
+              className="
+                flex
+                items-center
+                gap-2
+                border
+                p-2
+                rounded
+              "
+            >
+              <User size={18} />
+
+              <input
+                type="text"
+                name="nombre"
+                value={
+                  formData.nombre
+                }
+                onChange={
+                  handleChange
+                }
+                className="
+                  w-full
+                  outline-none
+                "
+                required
+              />
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <label>
+              Boleta
+            </label>
+
             <input
-              name="nombre"
-              value={formData.nombre}
-              onChange={handleChange}
-              className="w-full outline-none"
+              type="text"
+              name="boleta"
+              value={
+                formData.boleta
+              }
+              onChange={
+                handleChange
+              }
+              className="
+                w-full
+                border
+                p-2
+                rounded
+              "
+              required
             />
           </div>
-        </div>
+
+          <div className="mb-4">
+            <label>
+              Carrera
+            </label>
+
+            <select
+              name="carrera"
+              value={
+                formData.carrera
+              }
+              onChange={
+                handleChange
+              }
+              className="
+                w-full
+                border
+                p-2
+                rounded
+              "
+              required
+            >
+              <option value="">
+                Selecciona una carrera
+              </option>
+
+              <option
+                value="Ingeniería en Comunicaciones y Electrónica"
+              >
+                Ingeniería en
+                Comunicaciones y
+                Electrónica
+              </option>
+            </select>
+          </div>
+
+          <div className="mb-4">
+            <label>
+              Semestre
+            </label>
+
+            <select
+              name="semestre"
+              value={
+                formData.semestre
+              }
+              onChange={
+                handleChange
+              }
+              className="
+                w-full
+                border
+                p-2
+                rounded
+              "
+              required
+            >
+              <option value="">
+                Selecciona semestre
+              </option>
+
+              {[1,2,3,4,5,6,7,8,9].map(
+                (semestre) => (
+                  <option
+                    key={
+                      semestre
+                    }
+                    value={
+                      semestre
+                    }
+                  >
+                    {semestre}°
+                    Semestre
+                  </option>
+                )
+              )}
+            </select>
+          </div>
+        </>
       )}
 
       <div className="mb-4">
-        <label>Correo</label>
-        <div className="flex items-center gap-2 border p-2 rounded">
+        <label>
+          Correo
+        </label>
+
+        <div
+          className="
+            flex
+            items-center
+            gap-2
+            border
+            p-2
+            rounded
+          "
+        >
           <Mail size={18} />
+
           <input
+            type="email"
             name="correo"
-            value={formData.correo}
-            onChange={handleChange}
-            className="w-full outline-none"
+            value={
+              formData.correo
+            }
+            onChange={
+              handleChange
+            }
+            className="
+              w-full
+              outline-none
+            "
+            required
           />
         </div>
       </div>
 
       <div className="mb-4">
-        <label>Contraseña</label>
-        <div className="flex items-center gap-2 border p-2 rounded">
+        <label>
+          Contraseña
+        </label>
+
+        <div
+          className="
+            flex
+            items-center
+            gap-2
+            border
+            p-2
+            rounded
+          "
+        >
           <Lock size={18} />
+
           <input
-            type={showPassword ? "text" : "password"}
+            type={
+              showPassword
+                ? "text"
+                : "password"
+            }
             name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full outline-none"
+            value={
+              formData.password
+            }
+            onChange={
+              handleChange
+            }
+            className="
+              w-full
+              outline-none
+            "
+            required
           />
-          <button type="button" onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? <EyeOff /> : <Eye />}
+
+          <button
+            type="button"
+            onClick={() =>
+              setShowPassword(
+                !showPassword
+              )
+            }
+          >
+            {showPassword ? (
+              <EyeOff />
+            ) : (
+              <Eye />
+            )}
           </button>
         </div>
       </div>
 
-      <button className="w-full bg-[#6A0032] text-white py-2 rounded">
-        {mode === "login" ? "Ingresar" : "Registrarse"}
+      <button
+        className="
+          w-full
+          bg-[#6A0032]
+          text-white
+          py-2
+          rounded
+        "
+      >
+        {mode === "login"
+          ? "Ingresar"
+          : "Registrarse"}
       </button>
 
       <p
-        className="text-center mt-4 text-sm cursor-pointer"
+        className="
+          text-center
+          mt-4
+          text-sm
+          cursor-pointer
+        "
         onClick={() =>
-          setMode(mode === "login" ? "register" : "login")
+          setMode(
+            mode === "login"
+              ? "register"
+              : "login"
+          )
         }
       >
         {mode === "login"
