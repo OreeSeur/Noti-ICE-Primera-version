@@ -12,7 +12,7 @@ export const Footer = () => {
       <h3
         className="
           font-bold
-          text-[#6A0032]
+          text-[#6F1D46]
           text-lg
         "
       >

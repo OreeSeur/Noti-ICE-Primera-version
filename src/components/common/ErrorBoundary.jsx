@@ -33,7 +33,7 @@ export class ErrorBoundary extends Component {
       <main className="min-h-screen bg-slate-50 px-4 py-16 text-slate-900 dark:bg-slate-950 dark:text-white">
         <section className="mx-auto flex min-h-[70vh] max-w-2xl items-center justify-center">
           <div className="w-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div className="bg-gradient-to-br from-[#6A0032] via-[#8A174C] to-[#B22A61] px-8 py-10 text-white">
+            <div className="bg-gradient-to-br from-[#6F1D46] via-[#750946] to-[#750946] px-8 py-10 text-white">
               <div className="flex items-center gap-4">
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15">
                   <AlertTriangle className="h-7 w-7" />
@@ -58,7 +58,7 @@ export class ErrorBoundary extends Component {
                 <button
                   type="button"
                   onClick={() => window.location.reload()}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6F1D46] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90"
                 >
                   <RefreshCw className="h-4 w-4" />
                   Recargar página

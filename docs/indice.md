@@ -13,6 +13,7 @@ Este directorio reúne la documentación técnica del frontend de Noti ICE.
 | `checklist-pruebas-frontend.md` | Lista de pruebas manuales antes de integrar backend. |
 | `frontend-api-ready.md` | Preparación para conectar el frontend con API REST. |
 | `frontend-error-handling.md` | Páginas de error, estados de carga y manejo de errores. |
+| `identidad-grafica-ipn.md` | Criterios visuales aplicados a partir del manual de identidad gráfica IPN. |
 
 ## Objetivo
 

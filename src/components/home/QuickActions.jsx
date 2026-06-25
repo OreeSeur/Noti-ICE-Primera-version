@@ -56,7 +56,7 @@ export const QuickActions = () => {
               <Icon
                 size={32}
                 className="
-                  text-[#6A0032]
+                  text-[#6F1D46]
                   transition-transform
                   duration-300
                   group-hover:scale-110

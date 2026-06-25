@@ -361,7 +361,7 @@ export const LoginForm = () => {
       <button
         className="
           w-full
-          bg-[#6A0032]
+          bg-[#6F1D46]
           text-white
           py-2
           rounded

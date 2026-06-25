@@ -66,7 +66,7 @@ const ReviewCard = ({ icon: Icon, title, value, description, status = "ok" }) =>
           className={`rounded-xl p-3 ${
             isWarning
               ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-200"
-              : "bg-[#6A0032]/10 text-[#6A0032] dark:bg-[#6A0032]/30 dark:text-pink-100"
+              : "bg-[#6F1D46]/10 text-[#6F1D46] dark:bg-[#6F1D46]/30 dark:text-pink-100"
           }`}
         >
           <Icon size={22} />
@@ -122,7 +122,7 @@ export const AcademicFlowReview = ({
     <section className="space-y-4 rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 sm:p-5">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6A0032] dark:text-pink-100">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6F1D46] dark:text-pink-100">
             Revisión de flujo académico
           </p>
           <h2 className="mt-2 text-xl font-bold text-slate-900 dark:text-white">

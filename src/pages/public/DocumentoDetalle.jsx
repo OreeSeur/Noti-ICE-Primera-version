@@ -31,7 +31,7 @@ export const DocumentoDetalle = () => {
 
         <Link
           to="/documentos"
-          className="inline-flex items-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90"
+          className="inline-flex items-center gap-2 rounded-xl bg-[#6F1D46] px-5 py-3 font-semibold text-white transition hover:opacity-90"
         >
           <ArrowLeft size={18} />
           Volver a Documentos
@@ -47,14 +47,14 @@ export const DocumentoDetalle = () => {
     <section className="space-y-6">
       <Link
         to="/documentos"
-        className="inline-flex items-center gap-2 font-semibold text-[#6A0032] transition hover:gap-3 dark:text-pink-100"
+        className="inline-flex items-center gap-2 font-semibold text-[#6F1D46] transition hover:gap-3 dark:text-pink-100"
       >
         <ArrowLeft size={18} />
         Volver a Documentos
       </Link>
 
       <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
-        <div className="bg-gradient-to-br from-[#6A0032] via-[#7B1743] to-[#C9A227] p-6 text-white sm:p-8">
+        <div className="bg-gradient-to-br from-[#6F1D46] via-[#750946] to-[#C9A227] p-6 text-white sm:p-8">
           <div className="mb-5 flex flex-wrap items-center gap-3">
             <span className="flex size-14 items-center justify-center rounded-2xl bg-white/15 text-4xl" aria-hidden="true">
               {icono}
@@ -96,7 +96,7 @@ export const DocumentoDetalle = () => {
                 href={documento.url}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#6A0032] px-6 py-3 font-semibold text-white transition hover:opacity-90"
+                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#6F1D46] px-6 py-3 font-semibold text-white transition hover:opacity-90"
               >
                 Abrir documento
                 <ExternalLink size={18} />

@@ -21,7 +21,7 @@ export const PersonalizedRecommendations = ({ items = [] }) => {
       ) : (
         <div className="space-y-3">
           {items.map((item) => (
-            <Link key={item.id} to={item.path} className="block rounded-xl border border-slate-200 p-4 transition hover:border-[#6A0032] hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-700/50">
+            <Link key={item.id} to={item.path} className="block rounded-xl border border-slate-200 p-4 transition hover:border-[#6F1D46] hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-700/50">
               <div className="mb-2 flex items-center justify-between gap-3">
                 <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-700 dark:text-slate-200">
                   {item.label}

@@ -35,7 +35,7 @@ export const HeroBanner = () => {
           inline-block
           mt-6
           bg-white
-          text-[#6A0032]
+          text-[#6F1D46]
           font-semibold
           px-6
           py-3

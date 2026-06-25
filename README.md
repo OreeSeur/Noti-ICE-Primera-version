@@ -89,6 +89,18 @@ La documentación técnica se encuentra en `docs/`:
 - `docs/checklist-pruebas-frontend.md`
 - `docs/frontend-api-ready.md`
 - `docs/frontend-error-handling.md`
+- `docs/identidad-grafica-ipn.md`
+
+## Identidad gráfica
+
+El frontend incluye una aplicación mínima y segura de criterios visuales del IPN:
+
+- Tipografía base: Noto Sans.
+- Guinda institucional como acento principal.
+- Variables CSS para colores institucionales.
+- Sin modificaciones estructurales al layout, sidebar o topbar.
+
+Consulta `docs/identidad-grafica-ipn.md` para más detalles.
 
 ## Estado actual
 

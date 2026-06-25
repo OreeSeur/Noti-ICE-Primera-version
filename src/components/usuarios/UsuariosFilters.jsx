@@ -20,7 +20,7 @@ export const UsuariosFilters = ({
         <select
           value={filtroRol}
           onChange={(event) => setFiltroRol(event.target.value)}
-          className="rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-800 outline-none transition focus:ring-2 focus:ring-[#6A0032] dark:border-slate-600 dark:bg-slate-700 dark:text-white"
+          className="rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-800 outline-none transition focus:ring-2 focus:ring-[#6F1D46] dark:border-slate-600 dark:bg-slate-700 dark:text-white"
         >
           <option value="todos">Todos los roles</option>
 
