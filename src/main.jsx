@@ -12,6 +12,7 @@ import { EventosProvider } from "./context/eventos/EventosProvider";
 import { DocumentosProvider } from "./context/documentos/DocumentosProvider";
 import { ToastProvider } from "./context/toast/ToastProvider";
 import { AcademicoProvider } from "./context/academico/AcademicoProvider";
+import { ErrorBoundary } from "./components/common/ErrorBoundary";
 
 ReactDOM.createRoot(
   document.getElementById("root")
@@ -25,7 +26,9 @@ ReactDOM.createRoot(
               <AcademicoProvider>
               <BrowserRouter>
                 <ToastProvider>
-                  <App />
+                  <ErrorBoundary>
+                    <App />
+                  </ErrorBoundary>
                 </ToastProvider>
               </BrowserRouter>
               </AcademicoProvider>

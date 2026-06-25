@@ -1,3 +1,5 @@
+import { getFriendlyErrorMessage } from "../utils/errorMessages";
+
 export class ApiError extends Error {
   constructor(message, status, details = null) {
     super(message);
@@ -7,8 +9,4 @@ export class ApiError extends Error {
   }
 }
 
-export const getApiErrorMessage = (error) => {
-  if (error instanceof ApiError) return error.message;
-  if (error?.message) return error.message;
-  return "Ocurrió un error inesperado al comunicarse con el servidor.";
-};
+export const getApiErrorMessage = (error) => getFriendlyErrorMessage(error);

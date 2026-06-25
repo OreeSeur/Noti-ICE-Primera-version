@@ -20,6 +20,7 @@ import { DocumentoDetalle } from "../pages/public/DocumentoDetalle";
 import { Perfil } from "../pages/public/Perfil";
 import { Notificaciones } from "../pages/public/Notificaciones";
 import { DocentePublicaciones } from "../pages/docente/DocentePublicaciones";
+import { NoAutorizado } from "../pages/NoAutorizado";
 
 /* Autenticación */
 import { Login } from "../pages/auth/Login";
@@ -47,7 +48,9 @@ import { AdminAcademico } from "../pages/admin/academico/AdminAcademico";
 /* Rutas protegidas */
 import { PrivateRoute } from "./PrivateRoute";
 import { AdminRoute } from "./AdminRoute";
+import { RoleRoute } from "./RoleRoute";
 import { ROUTES } from "../constants/routes";
+import { ROLES } from "../constants/roles";
 
 /* Error 404 */
 import { NotFound } from "../pages/NotFound";
@@ -59,6 +62,24 @@ return ( <Routes>
   <Route
     path={ROUTES.LOGIN}
     element={<Login />}
+  />
+
+  <Route
+    path={ROUTES.NO_AUTORIZADO}
+    element={
+      <Layout>
+        <NoAutorizado />
+      </Layout>
+    }
+  />
+
+  <Route
+    path={ROUTES.NOT_FOUND}
+    element={
+      <Layout>
+        <NotFound />
+      </Layout>
+    }
   />
 
   {/* Home */}
@@ -167,11 +188,11 @@ return ( <Routes>
   <Route
     path={ROUTES.DOCENTE_PUBLICACIONES}
     element={
-      <PrivateRoute>
+      <RoleRoute roles={[ROLES.DOCENTE, ROLES.ADMIN, ROLES.SUPERADMIN]}>
         <Layout>
           <DocentePublicaciones />
         </Layout>
-      </PrivateRoute>
+      </RoleRoute>
     }
   />
 

@@ -1,19 +1,21 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
-import { useAuth } from "../context/auth/useAuth";
 import { ROUTES } from "../constants/routes";
+import { useAuth } from "../context/auth/useAuth";
 import { canAccessAdmin } from "../utils/permissions";
 
 export const AdminRoute = ({
   children,
 }) => {
   const { user } = useAuth();
+  const location = useLocation();
 
   if (!user) {
     return (
       <Navigate
         to={ROUTES.LOGIN}
         replace
+        state={{ from: location.pathname }}
       />
     );
   }
@@ -21,7 +23,7 @@ export const AdminRoute = ({
   if (!canAccessAdmin(user)) {
     return (
       <Navigate
-        to={ROUTES.HOME}
+        to={ROUTES.NO_AUTORIZADO}
         replace
       />
     );

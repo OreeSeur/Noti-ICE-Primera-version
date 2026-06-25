@@ -1,6 +1,8 @@
 export const ROUTES = Object.freeze({
   HOME: "/",
   LOGIN: "/login",
+  NO_AUTORIZADO: "/no-autorizado",
+  NOT_FOUND: "/no-encontrado",
   PERFIL: "/perfil",
   NOTIFICACIONES: "/notificaciones",
   DOCENTE_PUBLICACIONES: "/docente/publicaciones",
