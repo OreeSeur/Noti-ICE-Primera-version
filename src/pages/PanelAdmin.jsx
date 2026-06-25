@@ -236,7 +236,7 @@ export const PanelAdmin = () => {
         className="
           rounded-2xl
           bg-gradient-to-r
-          from-[#6F1D46]
+          from-[#6A0032]
           to-[#9b1b54]
           p-5
           sm:p-6

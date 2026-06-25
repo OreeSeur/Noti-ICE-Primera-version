@@ -93,36 +93,24 @@ export const LoginForm = () => {
     <form
       onSubmit={handleSubmit}
       className="
-        overflow-hidden
         bg-white
         dark:bg-slate-800
+        p-8
         rounded-2xl
         shadow-lg
         w-full
-        border
-        border-slate-200
-        dark:border-slate-700
       "
     >
-      <div className="institutional-divider" />
-
-      <div className="p-8">
-      <p className="mb-2 text-center text-xs font-bold uppercase tracking-[0.25em] text-[#6F1D46] dark:text-pink-100">
-        Portal académico IPN
-      </p>
-
       <h2
         className="
           text-3xl
           font-bold
           text-center
           mb-4
-          text-slate-900
-          dark:text-white
         "
       >
         {mode === "login"
-          ? "Iniciar sesión"
+          ? "Iniciar Sesión"
           : "Registro"}
       </h2>
 
@@ -373,7 +361,7 @@ export const LoginForm = () => {
       <button
         className="
           w-full
-          bg-[#6F1D46]
+          bg-[#6A0032]
           text-white
           py-2
           rounded
@@ -390,9 +378,6 @@ export const LoginForm = () => {
           mt-4
           text-sm
           cursor-pointer
-          text-[#6F1D46]
-          dark:text-pink-100
-          font-semibold
         "
         onClick={() =>
           setMode(
@@ -406,7 +391,6 @@ export const LoginForm = () => {
           ? "¿No tienes cuenta? Regístrate"
           : "¿Ya tienes cuenta? Inicia sesión"}
       </p>
-      </div>
     </form>
   );
 };

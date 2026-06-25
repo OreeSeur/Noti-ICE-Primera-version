@@ -11,7 +11,7 @@ export const RoleOverviewPanel = () => {
   return (
     <section className="mb-8 rounded-2xl bg-white p-6 shadow-md dark:bg-slate-800">
       <div className="mb-5 flex items-start gap-3">
-        <span className="rounded-xl bg-[#6F1D46]/10 p-3 text-[#6F1D46] dark:bg-pink-300/10 dark:text-pink-300">
+        <span className="rounded-xl bg-[#6A0032]/10 p-3 text-[#6A0032] dark:bg-pink-300/10 dark:text-pink-300">
           <Sparkles size={22} />
         </span>
         <div>
@@ -29,7 +29,7 @@ export const RoleOverviewPanel = () => {
           <Link
             key={card.title}
             to={card.path}
-            className="group rounded-xl border border-slate-200 p-5 transition hover:border-[#6F1D46] hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-700/50"
+            className="group rounded-xl border border-slate-200 p-5 transition hover:border-[#6A0032] hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-700/50"
           >
             <h3 className="font-semibold text-slate-800 dark:text-white">
               {card.title}
@@ -37,7 +37,7 @@ export const RoleOverviewPanel = () => {
             <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
               {card.description}
             </p>
-            <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#6F1D46] dark:text-pink-300">
+            <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#6A0032] dark:text-pink-300">
               {card.label}
               <ArrowRight size={16} className="transition group-hover:translate-x-1" />
             </span>

@@ -30,7 +30,7 @@ export const QuickActionCard = ({
         <div
           className="
             rounded-xl
-            bg-[#6F1D46]
+            bg-[#6A0032]
             p-3
             text-white
             transition

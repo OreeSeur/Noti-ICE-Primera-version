@@ -44,7 +44,7 @@ const cardClass =
   "rounded-2xl border border-slate-200 bg-white p-5 shadow-md dark:border-slate-700 dark:bg-slate-800 sm:p-6";
 
 const inputClass =
-  "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:ring-2 focus:ring-[#6F1D46] dark:border-slate-600 dark:bg-slate-700 dark:text-white";
+  "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:ring-2 focus:ring-[#6A0032] dark:border-slate-600 dark:bg-slate-700 dark:text-white";
 
 const labelClass = "text-sm font-semibold text-slate-700 dark:text-slate-200";
 
@@ -100,14 +100,14 @@ const TypeButton = ({ type, active, onClick, disabled = false }) => {
       disabled={disabled}
       className={`rounded-2xl border p-4 text-left transition disabled:cursor-not-allowed disabled:opacity-60 ${
         active
-          ? "border-[#6F1D46] bg-[#6F1D46] text-white shadow-md"
-          : "border-slate-200 bg-white text-slate-700 hover:border-[#6F1D46]/50 hover:bg-[#6F1D46]/5 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+          ? "border-[#6A0032] bg-[#6A0032] text-white shadow-md"
+          : "border-slate-200 bg-white text-slate-700 hover:border-[#6A0032]/50 hover:bg-[#6A0032]/5 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
       }`}
     >
       <div className="flex items-center gap-3">
         <span
           className={`rounded-xl p-2 ${
-            active ? "bg-white/15 text-white" : "bg-[#6F1D46]/10 text-[#6F1D46]"
+            active ? "bg-white/15 text-white" : "bg-[#6A0032]/10 text-[#6A0032]"
           }`}
         >
           <Icon size={20} />
@@ -435,7 +435,7 @@ export const DocentePublicaciones = () => {
       <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
         <form onSubmit={handleSubmit} noValidate className={`${cardClass} space-y-6`}>
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#6F1D46] dark:text-pink-200">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#6A0032] dark:text-pink-200">
               {editingPublication ? "Editando publicación" : "Nueva publicación"}
             </p>
             <h2 className="mt-1 text-xl font-bold text-slate-800 dark:text-white">
@@ -614,7 +614,7 @@ export const DocentePublicaciones = () => {
               <div className="flex flex-col gap-3 sm:flex-row">
                 <button
                   type="submit"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6F1D46] px-5 py-3 font-semibold text-white transition hover:opacity-90 sm:w-auto"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90 sm:w-auto"
                 >
                   <Send size={18} />
                   {editingPublication ? "Guardar cambios" : "Publicar para el grupo"}
@@ -637,7 +637,7 @@ export const DocentePublicaciones = () => {
 
         <section className={`${cardClass} space-y-4`}>
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#6F1D46] dark:text-pink-200">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#6A0032] dark:text-pink-200">
               Historial
             </p>
             <h2 className="mt-1 text-xl font-bold text-slate-800 dark:text-white">
@@ -665,7 +665,7 @@ export const DocentePublicaciones = () => {
                     className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/40"
                   >
                     <div className="flex items-start gap-3">
-                      <span className="rounded-xl bg-white p-2 text-[#6F1D46] shadow-sm dark:bg-slate-800 dark:text-pink-200">
+                      <span className="rounded-xl bg-white p-2 text-[#6A0032] shadow-sm dark:bg-slate-800 dark:text-pink-200">
                         <Icon size={18} />
                       </span>
                       <div className="min-w-0 flex-1">
@@ -693,7 +693,7 @@ export const DocentePublicaciones = () => {
                         <div className="mt-3 flex flex-wrap gap-2">
                           <Link
                             to={getPublicationRoute(item, tipo)}
-                            className="inline-flex items-center justify-center rounded-lg bg-[#6F1D46] px-3 py-2 text-xs font-semibold text-white transition hover:opacity-90"
+                            className="inline-flex items-center justify-center rounded-lg bg-[#6A0032] px-3 py-2 text-xs font-semibold text-white transition hover:opacity-90"
                           >
                             Ver
                           </Link>
@@ -726,7 +726,7 @@ export const DocentePublicaciones = () => {
 
       <section className={`${cardClass} grid gap-4 md:grid-cols-3`}>
         <div className="flex items-start gap-3">
-          <BookOpen className="mt-1 text-[#6F1D46]" size={22} />
+          <BookOpen className="mt-1 text-[#6A0032]" size={22} />
           <div>
             <h3 className="font-bold text-slate-800 dark:text-white">Materia</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -735,7 +735,7 @@ export const DocentePublicaciones = () => {
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <Users className="mt-1 text-[#6F1D46]" size={22} />
+          <Users className="mt-1 text-[#6A0032]" size={22} />
           <div>
             <h3 className="font-bold text-slate-800 dark:text-white">Grupo</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -744,7 +744,7 @@ export const DocentePublicaciones = () => {
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <Send className="mt-1 text-[#6F1D46]" size={22} />
+          <Send className="mt-1 text-[#6A0032]" size={22} />
           <div>
             <h3 className="font-bold text-slate-800 dark:text-white">Notificaciones</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400">

@@ -64,7 +64,7 @@ const priorityFilters = [
 const filterButtonClass = (isActive) =>
   `rounded-full px-4 py-2 text-sm font-semibold transition ${
     isActive
-      ? "bg-[#6F1D46] text-white shadow-sm"
+      ? "bg-[#6A0032] text-white shadow-sm"
       : "bg-white text-slate-600 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
   }`;
 
@@ -138,7 +138,7 @@ export const Notificaciones = () => {
       <section className="rounded-2xl bg-white p-4 shadow-md dark:bg-slate-800 sm:p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[#6F1D46]/10 px-3 py-1 text-sm font-semibold text-[#6F1D46] dark:bg-pink-900/30 dark:text-pink-200">
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[#6A0032]/10 px-3 py-1 text-sm font-semibold text-[#6A0032] dark:bg-pink-900/30 dark:text-pink-200">
               <Bell size={16} />
               Centro de notificaciones
             </div>
@@ -157,7 +157,7 @@ export const Notificaciones = () => {
             type="button"
             onClick={handleMarkAllRead}
             disabled={stats.unread === 0}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6F1D46] px-4 py-3 font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-4 py-3 font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
           >
             <CheckCheck size={18} />
             Marcar todas como leídas
@@ -270,13 +270,13 @@ export const Notificaciones = () => {
                 key={getNotificationId(notification)}
                 className={`rounded-2xl border bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:bg-slate-800 sm:p-5 ${
                   unread
-                    ? "border-[#6F1D46]/40 ring-1 ring-[#6F1D46]/20"
+                    ? "border-[#6A0032]/40 ring-1 ring-[#6A0032]/20"
                     : "border-slate-200 dark:border-slate-700"
                 }`}
               >
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div className="flex min-w-0 gap-3 sm:gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#6F1D46]/10 text-[#6F1D46] dark:bg-pink-900/30 dark:text-pink-200 sm:h-12 sm:w-12">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#6A0032]/10 text-[#6A0032] dark:bg-pink-900/30 dark:text-pink-200 sm:h-12 sm:w-12">
                       <Icon size={22} />
                     </div>
 
@@ -328,7 +328,7 @@ export const Notificaciones = () => {
                     <Link
                       to={notification.ruta}
                       onClick={() => updateReadIds(markNotificationAsRead(readIds, notification))}
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#6F1D46] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 md:flex-none"
+                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 md:flex-none"
                     >
                       <Search size={16} />
                       Ver detalle

@@ -294,7 +294,7 @@ export const Topbar = ({
                 <Link
                   to={ROUTES.NOTIFICACIONES}
                   onClick={closeNotifications}
-                  className="text-xs font-semibold text-[#6F1D46] hover:underline dark:text-pink-300"
+                  className="text-xs font-semibold text-[#6A0032] hover:underline dark:text-pink-300"
                 >
                   Ver todas
                 </Link>
@@ -322,7 +322,7 @@ export const Topbar = ({
                   >
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-semibold text-[#6F1D46] dark:text-pink-300">
+                        <span className="text-xs font-semibold text-[#6A0032] dark:text-pink-300">
                           {item.etiqueta}
                         </span>
                         {item.prioridad && item.prioridad !== "normal" && (
@@ -347,7 +347,7 @@ export const Topbar = ({
                     )}
 
                     {item.academicSummary ? (
-                      <p className="mt-1 text-[11px] font-medium text-[#6F1D46] line-clamp-1 dark:text-pink-200">
+                      <p className="mt-1 text-[11px] font-medium text-[#6A0032] line-clamp-1 dark:text-pink-200">
                         {item.academicSummary.materia} · {item.academicSummary.grupo} · {item.academicSummary.profesor}
                       </p>
                     ) : item.audiencia?.categorias ? (
@@ -373,7 +373,7 @@ export const Topbar = ({
               flex
               items-center
               gap-2
-              bg-[#6F1D46]
+              bg-[#6A0032]
               text-white
               px-3
               py-2

@@ -38,7 +38,7 @@ const CheckboxGroup = ({ title, description, values, field, items, onChange }) =
             type="checkbox"
             checked={values.includes(item.value)}
             onChange={() => onChange(field, toggleValue(values, item.value))}
-            className="h-4 w-4 accent-[#6F1D46]"
+            className="h-4 w-4 accent-[#6A0032]"
           />
           <span>{item.label}</span>
         </label>
@@ -51,9 +51,9 @@ export const AudienceFields = ({ audiencia, onChange }) => {
   const normalizedAudience = normalizeAudience(audiencia);
 
   return (
-    <section className="rounded-2xl border border-[#6F1D46]/20 bg-[#6F1D46]/5 p-4 dark:border-pink-300/20 dark:bg-pink-300/5 sm:p-5">
+    <section className="rounded-2xl border border-[#6A0032]/20 bg-[#6A0032]/5 p-4 dark:border-pink-300/20 dark:bg-pink-300/5 sm:p-5">
       <div className="mb-5 flex items-start gap-3">
-        <span className="rounded-xl bg-white p-2 text-[#6F1D46] shadow-sm dark:bg-slate-800 dark:text-pink-300">
+        <span className="rounded-xl bg-white p-2 text-[#6A0032] shadow-sm dark:bg-slate-800 dark:text-pink-300">
           <Target size={22} />
         </span>
         <div>

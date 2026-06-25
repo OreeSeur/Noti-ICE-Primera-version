@@ -3,7 +3,7 @@ import { Inbox } from "lucide-react";
 const EmptyStateContent = ({ title, message, icon: Icon = Inbox }) => {
   return (
     <div className="flex flex-col items-center justify-center text-center">
-      <div className="mb-4 rounded-2xl bg-[#6F1D46]/10 p-4 text-[#6F1D46] dark:bg-[#6F1D46]/30 dark:text-pink-100">
+      <div className="mb-4 rounded-2xl bg-[#6A0032]/10 p-4 text-[#6A0032] dark:bg-[#6A0032]/30 dark:text-pink-100">
         <Icon size={30} />
       </div>
 

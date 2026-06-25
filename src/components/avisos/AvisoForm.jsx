@@ -95,7 +95,7 @@ export const AvisoForm = ({
       <button
         type="submit"
         className="
-          bg-[#6F1D46]
+          bg-[#6A0032]
           text-white
           w-full
           px-6

@@ -1,4 +1,4 @@
-# Páginas de error, carga y permisos
+# Fase 2.19 — Páginas de error, loading y permisos
 
 Esta fase prepara el frontend para convivir con respuestas reales del backend cuando se conecte ASP.NET Core.
 

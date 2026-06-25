@@ -49,7 +49,7 @@ export const ProfileInfoForm = ({ formData, errors = {}, onChange, onSubmit }) =
         </div>
       </div>
 
-      <button type="submit" className="rounded-lg bg-[#6F1D46] px-6 py-3 font-semibold text-white transition hover:opacity-90">
+      <button type="submit" className="rounded-lg bg-[#6A0032] px-6 py-3 font-semibold text-white transition hover:opacity-90">
         Guardar perfil
       </button>
     </form>

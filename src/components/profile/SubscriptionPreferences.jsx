@@ -34,7 +34,7 @@ export const SubscriptionPreferences = ({ subscriptions, onToggleTopic, onToggle
                 onClick={() => onToggleChannel(channel.name)}
                 className={`rounded-xl border p-4 text-left transition ${
                   active
-                    ? "border-[#6F1D46] bg-pink-50 text-[#6F1D46] dark:bg-[#6F1D46]/20 dark:text-pink-200"
+                    ? "border-[#6A0032] bg-pink-50 text-[#6A0032] dark:bg-[#6A0032]/20 dark:text-pink-200"
                     : "border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400"
                 }`}
               >
@@ -66,12 +66,12 @@ export const SubscriptionPreferences = ({ subscriptions, onToggleTopic, onToggle
                 onClick={() => onToggleTopic(topic.value)}
                 className={`rounded-xl border p-4 text-left transition ${
                   active
-                    ? "border-[#6F1D46] bg-pink-50 dark:bg-[#6F1D46]/20"
+                    ? "border-[#6A0032] bg-pink-50 dark:bg-[#6A0032]/20"
                     : "border-slate-200 dark:border-slate-700"
                 }`}
               >
                 <div className="mb-1 flex items-center gap-2 font-semibold text-slate-800 dark:text-white">
-                  {active && <CheckCircle2 size={18} className="text-[#6F1D46] dark:text-pink-300" />}
+                  {active && <CheckCircle2 size={18} className="text-[#6A0032] dark:text-pink-300" />}
                   {topic.label}
                 </div>
                 <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -83,7 +83,7 @@ export const SubscriptionPreferences = ({ subscriptions, onToggleTopic, onToggle
         </div>
       </div>
 
-      <button type="submit" className="rounded-lg bg-[#6F1D46] px-6 py-3 font-semibold text-white transition hover:opacity-90">
+      <button type="submit" className="rounded-lg bg-[#6A0032] px-6 py-3 font-semibold text-white transition hover:opacity-90">
         Guardar preferencias
       </button>
     </form>
