@@ -1,16 +1,95 @@
-# React + Vite
+# Noti ICE | Portal de Comunicación Académica
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend desarrollado con React, Vite y Tailwind CSS para centralizar la comunicación académica entre alumnos, docentes, personal administrativo y administradores.
 
-Currently, two official plugins are available:
+El proyecto permite gestionar avisos, eventos, documentos, notificaciones, perfiles académicos, planes de estudio, grupos, asignaciones docentes y publicaciones dirigidas por materia/grupo/periodo.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tecnologías
 
-## React Compiler
+- React
+- Vite
+- Tailwind CSS
+- React Router
+- Context API
+- LocalStorage en modo mock
+- Preparación para API REST ASP.NET Core + MySQL
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Instalación
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Para validar antes de subir cambios:
+
+```bash
+npm run lint
+npm run build
+```
+
+## Variables de entorno
+
+Copia `.env.example` como `.env` si quieres modificar la configuración local.
+
+```env
+VITE_DATA_SOURCE=mock
+VITE_API_URL=http://localhost:5000/api
+VITE_AUTH_TOKEN_KEY=noti_ice_auth_token
+```
+
+Por ahora debe mantenerse:
+
+```env
+VITE_DATA_SOURCE=mock
+```
+
+Cuando exista backend, se podrá cambiar gradualmente a:
+
+```env
+VITE_DATA_SOURCE=api
+```
+
+## Usuarios demo
+
+| Rol | Correo | Contraseña |
+|---|---|---|
+| Administrador | admin@esime.mx | admin |
+| Alumno | usuario@esime.mx | 123456 |
+| Docente | docente@esime.mx | 123456 |
+| Personal administrativo | personal@esime.mx | 123456 |
+
+Si los datos demo no aparecen, limpia el `localStorage` del navegador o crea los usuarios desde el panel administrador.
+
+## Rutas principales
+
+| Ruta | Descripción |
+|---|---|
+| `/` | Inicio personalizado por rol |
+| `/login` | Inicio de sesión |
+| `/perfil` | Perfil personal y académico |
+| `/avisos` | Avisos públicos y dirigidos |
+| `/eventos` | Eventos |
+| `/calendario` | Calendario de eventos |
+| `/documentos` | Documentos |
+| `/notificaciones` | Centro de notificaciones |
+| `/docente/publicaciones` | Publicaciones docentes |
+| `/admin` | Dashboard administrativo |
+| `/admin/academico` | Gestión académica |
+
+## Documentación
+
+La documentación técnica se encuentra en `docs/`:
+
+- `docs/indice.md`
+- `docs/frontend-arquitectura.md`
+- `docs/roles-y-permisos.md`
+- `docs/flujos-frontend.md`
+- `docs/flujo-academico.md`
+- `docs/checklist-pruebas-frontend.md`
+- `docs/frontend-api-ready.md`
+- `docs/frontend-error-handling.md`
+
+## Estado actual
+
+El frontend está listo para continuar con la etapa de backend. La persistencia sigue siendo local mediante `localStorage`, pero ya existe una capa de servicios, storage, configuración y API futura para facilitar la migración a ASP.NET Core + MySQL.
