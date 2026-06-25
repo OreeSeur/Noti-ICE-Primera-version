@@ -17,7 +17,7 @@ export const LoadingSpinner = ({
           inline-block
           rounded-full
           border-slate-200
-          border-t-[#6A0032]
+          border-t-[#6F1D46]
           animate-spin
           dark:border-slate-700
           dark:border-t-[#D6A2B8]

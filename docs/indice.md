@@ -17,3 +17,5 @@ Este directorio reúne la documentación técnica del frontend de Noti ICE.
 ## Objetivo
 
 Dejar claro cómo está organizado el frontend antes de iniciar el backend, para que la API de ASP.NET Core + MySQL se diseñe alineada con las pantallas y flujos ya implementados.
+
+- [Identidad gráfica IPN aplicada](./identidad-grafica-ipn.md)

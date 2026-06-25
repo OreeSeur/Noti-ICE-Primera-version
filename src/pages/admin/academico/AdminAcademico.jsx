@@ -52,7 +52,7 @@ const crearAsignacionVacia = (plan = "2024") => ({
 });
 
 const inputClass =
-  "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:ring-2 focus:ring-[#6A0032] dark:border-slate-600 dark:bg-slate-700 dark:text-white";
+  "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:ring-2 focus:ring-[#6F1D46] dark:border-slate-600 dark:bg-slate-700 dark:text-white";
 
 const labelClass = "text-sm font-semibold text-slate-700 dark:text-slate-200";
 
@@ -70,7 +70,7 @@ const TabButton = ({ active, children, onClick }) => (
     onClick={onClick}
     className={`rounded-xl px-4 py-3 text-sm font-semibold transition ${
       active
-        ? "bg-[#6A0032] text-white shadow-sm"
+        ? "bg-[#6F1D46] text-white shadow-sm"
         : "bg-white text-slate-600 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
     }`}
   >
@@ -84,8 +84,8 @@ const PlanButton = ({ active, plan, count, onClick }) => (
     onClick={onClick}
     className={`rounded-2xl border px-5 py-4 text-left transition ${
       active
-        ? "border-[#6A0032] bg-[#6A0032] text-white shadow-md"
-        : "border-slate-200 bg-white text-slate-700 hover:border-[#6A0032]/50 hover:bg-[#6A0032]/5 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+        ? "border-[#6F1D46] bg-[#6F1D46] text-white shadow-md"
+        : "border-slate-200 bg-white text-slate-700 hover:border-[#6F1D46]/50 hover:bg-[#6F1D46]/5 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
     }`}
   >
     <span className="block text-xs font-bold uppercase tracking-[0.18em] opacity-80">
@@ -648,7 +648,7 @@ export const AdminAcademico = () => {
 
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90 sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6F1D46] px-5 py-3 font-semibold text-white transition hover:opacity-90 sm:w-auto"
               >
                 <Layers3 size={18} />
                 Guardar asignación
@@ -912,7 +912,7 @@ export const AdminAcademico = () => {
 
             <button
               type="submit"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90 sm:w-auto"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6F1D46] px-5 py-3 font-semibold text-white transition hover:opacity-90 sm:w-auto"
             >
               <Plus size={18} />
               Guardar grupo
@@ -933,7 +933,7 @@ export const AdminAcademico = () => {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6A0032] dark:text-pink-100">
+                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6F1D46] dark:text-pink-100">
                         Grupo
                       </p>
                       <h3 className="mt-1 text-2xl font-bold text-slate-800 dark:text-white">

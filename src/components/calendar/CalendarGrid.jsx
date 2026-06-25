@@ -202,7 +202,7 @@ export const CalendarGrid = () => {
                 transition
                 ${
                   hasEvents
-                    ? "border-[#6A0032] bg-[#6A0032]/10 text-[#6A0032] dark:border-pink-300 dark:bg-pink-300/10 dark:text-pink-200"
+                    ? "border-[#6F1D46] bg-[#6F1D46]/10 text-[#6F1D46] dark:border-pink-300 dark:bg-pink-300/10 dark:text-pink-200"
                     : "border-slate-200 text-slate-700 dark:border-slate-700 dark:text-slate-300"
                 }
               `}
@@ -210,7 +210,7 @@ export const CalendarGrid = () => {
               <div className="flex items-center justify-between gap-2">
                 <span className="font-semibold">{cell.day}</span>
                 {hasEvents && (
-                  <span className="rounded-full bg-[#6A0032] px-1.5 py-0.5 text-[10px] font-semibold text-white dark:bg-pink-300 dark:text-slate-900 sm:px-2">
+                  <span className="rounded-full bg-[#6F1D46] px-1.5 py-0.5 text-[10px] font-semibold text-white dark:bg-pink-300 dark:text-slate-900 sm:px-2">
                     {eventosDelDia.length}
                   </span>
                 )}
@@ -255,7 +255,7 @@ export const CalendarGrid = () => {
             >
               <span
                 className="
-                  text-[#6A0032]
+                  text-[#6F1D46]
                   font-bold
                   dark:text-pink-300
                 "

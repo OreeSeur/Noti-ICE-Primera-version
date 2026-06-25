@@ -79,6 +79,9 @@ Si los datos demo no aparecen, limpia el `localStorage` del navegador o crea los
 
 ## Documentación
 
+La carpeta `docs/` incluye una guía de identidad visual aplicada al portal: `docs/identidad-grafica-ipn.md`.
+
+
 La documentación técnica se encuentra en `docs/`:
 
 - `docs/indice.md`

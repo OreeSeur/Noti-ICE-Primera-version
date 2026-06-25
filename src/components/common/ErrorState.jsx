@@ -17,7 +17,7 @@ export const ErrorState = ({
   return (
     <section className="min-h-[60vh] flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-2xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="bg-gradient-to-br from-[#6A0032] via-[#8A174C] to-[#B22A61] px-8 py-10 text-white">
+        <div className="bg-gradient-to-br from-[#6F1D46] via-[#8A174C] to-[#B22A61] px-8 py-10 text-white">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15">
               <AlertTriangle className="h-7 w-7" />
@@ -41,7 +41,7 @@ export const ErrorState = ({
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Link
               to={primaryTo}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6F1D46] px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90"
             >
               <Home className="h-4 w-4" />
               {primaryLabel}

@@ -30,7 +30,7 @@ export const EventoDetalle = () => {
 
         <Link
           to="/eventos"
-          className="inline-flex items-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90"
+          className="inline-flex items-center gap-2 rounded-xl bg-[#6F1D46] px-5 py-3 font-semibold text-white transition hover:opacity-90"
         >
           <ArrowLeft size={18} />
           Volver a Eventos
@@ -45,14 +45,14 @@ export const EventoDetalle = () => {
     <section className="space-y-6">
       <Link
         to="/eventos"
-        className="inline-flex items-center gap-2 font-semibold text-[#6A0032] transition hover:gap-3 dark:text-pink-100"
+        className="inline-flex items-center gap-2 font-semibold text-[#6F1D46] transition hover:gap-3 dark:text-pink-100"
       >
         <ArrowLeft size={18} />
         Volver a Eventos
       </Link>
 
       <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
-        <div className="bg-gradient-to-br from-[#6A0032] via-[#7B1743] to-[#C9A227] p-6 text-white sm:p-8">
+        <div className="bg-gradient-to-br from-[#6F1D46] via-[#7B1743] to-[#636569] p-6 text-white sm:p-8">
           <div className="mb-5 flex flex-wrap items-center gap-3">
             <StatusBadge label={evento.categoria || "Evento"} variant="primary" className="bg-white/15 text-white" />
             <StatusBadge

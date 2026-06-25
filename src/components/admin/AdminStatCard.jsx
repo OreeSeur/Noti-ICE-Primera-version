@@ -41,7 +41,7 @@ export const AdminStatCard = ({
           </p>
         </div>
 
-        <div className="rounded-xl bg-[#6A0032]/10 p-3 text-[#6A0032]">
+        <div className="rounded-xl bg-[#6F1D46]/10 p-3 text-[#6F1D46]">
           <Icon size={28} />
         </div>
       </div>
@@ -59,7 +59,7 @@ export const AdminStatCard = ({
             justify-between
             text-sm
             font-medium
-            text-[#6A0032]
+            text-[#6F1D46]
           "
         >
           <span>Ver módulo</span>

@@ -8,44 +8,27 @@ export const HeroBanner = () => {
   const copy = getRoleHomeCopy(user);
 
   return (
-    <section
-      className="
-        bg-[#6f1d46]
-        text-white
-        rounded-2xl
-        p-10
-        mb-8
-      "
-    >
-      <span className="mb-3 inline-flex rounded-full bg-white/15 px-3 py-1 text-sm font-semibold text-white/90">
-        {copy.eyebrow}
-      </span>
+    <section className="institutional-surface rounded-2xl bg-gradient-to-br from-[#6F1D46] via-[#750946] to-[#636569] p-8 text-white shadow-lg sm:p-10">
+      <div className="relative z-10">
+        <span className="mb-3 inline-flex rounded-full bg-white/15 px-3 py-1 text-sm font-semibold text-white/90 ring-1 ring-white/20">
+          {copy.eyebrow}
+        </span>
 
-      <h2 className="text-4xl font-bold mb-4">
-        {copy.title}
-      </h2>
+        <h2 className="mb-4 max-w-3xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
+          {copy.title}
+        </h2>
 
-      <p className="text-lg opacity-90 max-w-2xl">
-        {copy.description}
-      </p>
+        <p className="max-w-2xl text-base leading-7 text-white/90 sm:text-lg">
+          {copy.description}
+        </p>
 
-      <Link
-        to={copy.ctaPath}
-        className="
-          inline-block
-          mt-6
-          bg-white
-          text-[#6A0032]
-          font-semibold
-          px-6
-          py-3
-          rounded-xl
-          hover:scale-105
-          transition
-        "
-      >
-        {copy.ctaLabel}
-      </Link>
+        <Link
+          to={copy.ctaPath}
+          className="mt-6 inline-flex rounded-xl bg-white px-6 py-3 font-semibold text-[#6F1D46] shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-100"
+        >
+          {copy.ctaLabel}
+        </Link>
+      </div>
     </section>
   );
 };

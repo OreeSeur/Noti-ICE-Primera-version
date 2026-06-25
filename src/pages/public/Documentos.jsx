@@ -69,17 +69,17 @@ export const Documentos = () => {
 
             return (
               <Link key={documento.id} to={`/documentos/${documento.id}`}>
-                <article className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-[#6A0032]/30 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800 sm:p-6">
-                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#6A0032] via-[#9D2449] to-[#C9A227] opacity-80" />
+                <article className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-[#6F1D46]/30 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800 sm:p-6">
+                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#6F1D46] via-[#750946] to-[#636569] opacity-80" />
 
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex min-w-0 items-start gap-4">
-                      <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[#6A0032]/10 text-3xl dark:bg-[#6A0032]/30" aria-hidden="true">
+                      <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[#6F1D46]/10 text-3xl dark:bg-[#6F1D46]/30" aria-hidden="true">
                         {icono}
                       </span>
 
                       <div className="min-w-0">
-                        <h2 className="line-clamp-2 text-lg font-bold text-slate-800 transition group-hover:text-[#6A0032] dark:text-white dark:group-hover:text-pink-100">
+                        <h2 className="line-clamp-2 text-lg font-bold text-slate-800 transition group-hover:text-[#6F1D46] dark:text-white dark:group-hover:text-pink-100">
                           {titulo}
                         </h2>
 
@@ -110,10 +110,10 @@ export const Documentos = () => {
                   <AcademicTargetSummary item={documento} compact />
 
                   <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4 text-sm dark:border-slate-700">
-                    <span className="font-semibold text-[#6A0032] dark:text-pink-100">
+                    <span className="font-semibold text-[#6F1D46] dark:text-pink-100">
                       Ver documento
                     </span>
-                    <span className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-[#6A0032] dark:text-slate-500 dark:group-hover:text-pink-100">
+                    <span className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-[#6F1D46] dark:text-slate-500 dark:group-hover:text-pink-100">
                       →
                     </span>
                   </div>

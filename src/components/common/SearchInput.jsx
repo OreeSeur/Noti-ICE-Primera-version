@@ -20,7 +20,7 @@ export const SearchInput = ({
         placeholder={placeholder}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-lg border border-slate-300 bg-white py-3 pl-11 pr-11 text-slate-800 outline-none transition focus:ring-2 focus:ring-[#6A0032] dark:border-slate-600 dark:bg-slate-700 dark:text-white"
+        className="w-full rounded-lg border border-slate-300 bg-white py-3 pl-11 pr-11 text-slate-800 outline-none transition focus:ring-2 focus:ring-[#6F1D46] dark:border-slate-600 dark:bg-slate-700 dark:text-white"
       />
 
       {value && (

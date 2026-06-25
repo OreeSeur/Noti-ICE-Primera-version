@@ -47,7 +47,7 @@ export const AdminListCard = ({
               gap-1
               text-sm
               font-medium
-              text-[#6A0032]
+              text-[#6F1D46]
               hover:underline
             "
           >
@@ -109,12 +109,12 @@ export const AdminListCard = ({
                       className="
                         shrink-0
                         rounded-full
-                        bg-[#6A0032]/10
+                        bg-[#6F1D46]/10
                         px-3
                         py-1
                         text-xs
                         font-semibold
-                        text-[#6A0032]
+                        text-[#6F1D46]
                       "
                     >
                       {item.badge}

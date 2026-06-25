@@ -74,8 +74,8 @@ export const Eventos = () => {
               onClick={() => setCategoria(cat)}
               className={`shrink-0 rounded-xl px-4 py-2 text-sm font-semibold transition ${
                 categoria === cat
-                  ? "bg-[#6A0032] text-white shadow-sm"
-                  : "border border-slate-200 bg-white text-slate-600 hover:border-[#6A0032]/40 hover:text-[#6A0032] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:text-pink-100"
+                  ? "bg-[#6F1D46] text-white shadow-sm"
+                  : "border border-slate-200 bg-white text-slate-600 hover:border-[#6F1D46]/40 hover:text-[#6F1D46] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:text-pink-100"
               }`}
             >
               {cat}

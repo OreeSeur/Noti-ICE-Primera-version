@@ -29,7 +29,7 @@ export const RoleBasedContent = () => {
   return (
     <section className="mb-8 rounded-2xl bg-white p-6 shadow-md dark:bg-slate-800">
       <div className="mb-5 flex items-start gap-3">
-        <span className="rounded-xl bg-[#6A0032]/10 p-3 text-[#6A0032] dark:bg-pink-300/10 dark:text-pink-300">
+        <span className="rounded-xl bg-[#6F1D46]/10 p-3 text-[#6F1D46] dark:bg-pink-300/10 dark:text-pink-300">
           <Target size={22} />
         </span>
         <div>
@@ -47,7 +47,7 @@ export const RoleBasedContent = () => {
           <Link
             key={item.id}
             to={item.path}
-            className="rounded-xl border border-slate-200 p-4 transition hover:border-[#6A0032] hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-700/50"
+            className="rounded-xl border border-slate-200 p-4 transition hover:border-[#6F1D46] hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-700/50"
           >
             <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-700 dark:text-slate-200">
               {item.label}

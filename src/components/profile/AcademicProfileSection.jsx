@@ -36,7 +36,7 @@ const cardClass =
   "rounded-2xl border border-slate-200 bg-white p-6 shadow-md dark:border-slate-700 dark:bg-slate-800";
 
 const inputClass =
-  "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:ring-2 focus:ring-[#6A0032] dark:border-slate-600 dark:bg-slate-700 dark:text-white";
+  "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:ring-2 focus:ring-[#6F1D46] dark:border-slate-600 dark:bg-slate-700 dark:text-white";
 
 const labelClass = "text-sm font-semibold text-slate-700 dark:text-slate-200";
 
@@ -85,7 +85,7 @@ const InscripcionCard = ({ inscripcion, onRemove }) => (
   <article className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/40">
     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6A0032] dark:text-pink-200">
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6F1D46] dark:text-pink-200">
           {getPlanLabel(inscripcion.plan)} · {inscripcion.periodo}
         </p>
         <h3 className="mt-1 font-bold text-slate-800 dark:text-white">
@@ -118,7 +118,7 @@ const AsignacionCard = ({ asignacion, onRemove }) => (
   <article className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/40">
     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
       <div>
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6A0032] dark:text-pink-200">
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6F1D46] dark:text-pink-200">
           {getPlanLabel(asignacion.plan)} · {asignacion.periodo}
         </p>
         <h3 className="mt-1 font-bold text-slate-800 dark:text-white">
@@ -309,7 +309,7 @@ const AlumnoAcademicProfile = ({ user, onSave }) => {
   return (
     <form onSubmit={handleSubmit} className={`${cardClass} space-y-6`}>
       <div>
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#6A0032] dark:text-pink-200">
+        <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#6F1D46] dark:text-pink-200">
           Alumno
         </p>
         <h2 className="mt-1 text-xl font-bold text-slate-800 dark:text-white">
@@ -390,7 +390,7 @@ const AlumnoAcademicProfile = ({ user, onSave }) => {
         <button
           type="button"
           onClick={handleAddEnrollment}
-          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#6A0032] px-5 py-3 font-semibold text-[#6A0032] transition hover:bg-[#6A0032] hover:text-white dark:border-pink-300 dark:text-pink-200 sm:w-auto"
+          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#6F1D46] px-5 py-3 font-semibold text-[#6F1D46] transition hover:bg-[#6F1D46] hover:text-white dark:border-pink-300 dark:text-pink-200 sm:w-auto"
         >
           <Plus size={18} />
           Agregar materia
@@ -425,7 +425,7 @@ const AlumnoAcademicProfile = ({ user, onSave }) => {
 
       <button
         type="submit"
-        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90 sm:w-auto"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6F1D46] px-5 py-3 font-semibold text-white transition hover:opacity-90 sm:w-auto"
       >
         <School size={18} />
         Guardar perfil académico
@@ -553,7 +553,7 @@ const DocenteAcademicProfile = ({ user }) => {
     <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
       <form onSubmit={handleSubmit} className={`${cardClass} space-y-5`}>
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#6A0032] dark:text-pink-200">
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#6F1D46] dark:text-pink-200">
             Docente
           </p>
           <h2 className="mt-1 text-xl font-bold text-slate-800 dark:text-white">
@@ -630,7 +630,7 @@ const DocenteAcademicProfile = ({ user }) => {
 
         <button
           type="submit"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90 sm:w-auto"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6F1D46] px-5 py-3 font-semibold text-white transition hover:opacity-90 sm:w-auto"
         >
           <Layers3 size={18} />
           Registrar en mi perfil docente
@@ -647,7 +647,7 @@ const DocenteAcademicProfile = ({ user }) => {
           </div>
           <Link
             to={ROUTES.DOCENTE_PUBLICACIONES}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6F1D46] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
           >
             <ClipboardList size={16} />
             Publicar
@@ -679,7 +679,7 @@ const AdminAcademicHint = () => (
   <section className={cardClass}>
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#6A0032] dark:text-pink-200">
+        <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#6F1D46] dark:text-pink-200">
           Administración académica
         </p>
         <h2 className="mt-1 text-xl font-bold text-slate-800 dark:text-white">
@@ -691,7 +691,7 @@ const AdminAcademicHint = () => (
       </div>
       <Link
         to={ROUTES.ADMIN_ACADEMICO}
-        className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6A0032] px-5 py-3 font-semibold text-white transition hover:opacity-90"
+        className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6F1D46] px-5 py-3 font-semibold text-white transition hover:opacity-90"
       >
         <ClipboardList size={18} />
         Ir a Académico

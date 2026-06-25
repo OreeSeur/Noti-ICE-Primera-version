@@ -15,12 +15,12 @@ export const ProfileSummaryCard = ({ usuario }) => {
   return (
     <article className="rounded-2xl bg-white p-8 shadow-md dark:bg-slate-800">
       <div className="flex flex-col gap-8 md:flex-row md:items-center">
-        <div className="flex h-32 w-32 items-center justify-center rounded-full bg-[#6A0032] text-5xl font-bold text-white">
+        <div className="flex h-32 w-32 items-center justify-center rounded-full bg-[#6F1D46] text-5xl font-bold text-white">
           {inicial || <User size={60} />}
         </div>
 
         <div className="flex-1">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#6A0032] dark:text-pink-300">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#6F1D46] dark:text-pink-300">
             {getRoleLabel(usuario.rol)}
           </p>
           <h2 className="mt-1 text-2xl font-bold text-slate-800 dark:text-white">
