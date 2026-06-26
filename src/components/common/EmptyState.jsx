@@ -3,11 +3,11 @@ import { Inbox } from "lucide-react";
 const EmptyStateContent = ({ title, message, icon: Icon = Inbox }) => {
   return (
     <div className="flex flex-col items-center justify-center text-center">
-      <div className="mb-4 rounded-2xl bg-[#6F1D46]/10 p-4 text-[#6F1D46] dark:bg-[#6F1D46]/30 dark:text-pink-100">
+      <div className="mb-4 rounded-3xl border border-[#6F1D46]/10 bg-[#6F1D46]/10 p-4 text-[#6F1D46] shadow-sm dark:border-pink-100/10 dark:bg-pink-100/10 dark:text-pink-100">
         <Icon size={30} />
       </div>
 
-      <p className="text-lg font-bold text-slate-800 dark:text-white">
+      <p className="text-lg font-black text-slate-800 dark:text-white">
         {title}
       </p>
 
@@ -39,8 +39,9 @@ export const EmptyState = ({
 
   return (
     <div
-      className={`rounded-2xl border border-dashed border-slate-300 bg-white/80 p-8 shadow-sm dark:border-slate-600 dark:bg-slate-800/80 ${className}`}
+      className={`relative overflow-hidden rounded-3xl border border-dashed border-slate-300 bg-white/90 p-8 shadow-sm dark:border-slate-600 dark:bg-slate-800/90 ${className}`}
     >
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#6F1D46] via-[#750946] to-[#636569] opacity-70" />
       <EmptyStateContent title={title} message={message} icon={icon} />
     </div>
   );

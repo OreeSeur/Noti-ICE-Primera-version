@@ -144,12 +144,15 @@ export const Sidebar = ({
           }
 
           bg-[#6f1d46]
+          bg-[linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0)_46%),repeating-linear-gradient(135deg,rgba(255,255,255,0.08)_0_1px,transparent_1px_12px)]
           text-white
           h-[100dvh]
           lg:h-screen
           overflow-y-auto
           overflow-x-hidden
           scrollbar-hidden
+          shadow-2xl
+          shadow-black/20
 
           transition-all
           duration-300
@@ -187,7 +190,7 @@ export const Sidebar = ({
           <img
             src={ipnLogo}
             alt="IPN"
-            className="mb-4 w-16 sm:w-20"
+            className="mb-4 h-auto w-16 sm:w-20"
           />
 
           {!collapsed && (
@@ -200,7 +203,7 @@ export const Sidebar = ({
                   text-center
                 "
               >
-                Portal NOTI ICE
+                NOTI ICE
               </h1>
 
               <p
@@ -210,7 +213,7 @@ export const Sidebar = ({
                   text-slate-200
                 "
               >
-                Unidad Zacatenco
+                Portal académico ESIME Zacatenco
               </p>
             </>
           )}
@@ -241,8 +244,8 @@ export const Sidebar = ({
 
                   ${
                     isActive
-                      ? "bg-white text-[#6A0032] font-semibold"
-                      : "hover:bg-white/10"
+                      ? "bg-white text-[#6f1d46] font-semibold shadow-sm"
+                      : "text-white/90 hover:bg-white/10 hover:text-white"
                   }
                   `
                 }
