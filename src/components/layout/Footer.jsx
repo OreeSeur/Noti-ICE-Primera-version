@@ -12,7 +12,7 @@ export const Footer = () => {
       <h3
         className="
           font-bold
-          text-[#6A0032]
+          text-[#6F1D46]
           text-lg
         "
       >
@@ -33,7 +33,7 @@ export const Footer = () => {
         © 2026 Portal ESIME Zacatenco
       </p>
 
-      <p
+{/*      <p
         className="
           text-xs
           text-slate-400
@@ -41,7 +41,7 @@ export const Footer = () => {
         "
       >
         Desarrollado con React y Tailwind CSS
-      </p>
+      </p>*/}
     </footer>
   );
 };

@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-
-import { eventos } from "../../data/eventos";
+import { useEventos } from "../../context/eventos/useEventos";
 
 export const UpcomingEvents = () => {
+  const { eventos } = useEventos();
   const proximos = eventos.slice(0, 3);
 
   return (

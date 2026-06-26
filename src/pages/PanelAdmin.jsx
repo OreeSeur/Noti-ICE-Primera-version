@@ -1,335 +1,342 @@
-import { Link } from "react-router-dom";
-
 import {
   Bell,
   CalendarDays,
+  FilePlus2,
   FileText,
+  Megaphone,
+  PlusCircle,
+  UserPlus,
   Users,
-  Plus,
+  GraduationCap,
 } from "lucide-react";
 
-import { useAvisos } from "../context/AvisosContext";
-import { useEventos } from "../context/EventosContext";
+import { AdminListCard } from "../components/admin/AdminListCard";
+import { AdminStatCard } from "../components/admin/AdminStatCard";
+import { QuickActionCard } from "../components/admin/QuickActionCard";
+import { getRoleLabel, normalizeRole } from "../constants/roles";
+import { ROUTES, buildRoute } from "../constants/routes";
+import { useAcademico } from "../context/academico/useAcademico";
+import { useAvisos } from "../context/avisos/useAvisos";
+import { useDocumentos } from "../context/documentos/useDocumentos";
+import { useEventos } from "../context/eventos/useEventos";
+import { useUsuarios } from "../context/usuarios/useUsuarios";
 
-import { documentos } from "../data/documentos";
+const meses = {
+  enero: 0,
+  febrero: 1,
+  marzo: 2,
+  abril: 3,
+  mayo: 4,
+  junio: 5,
+  julio: 6,
+  agosto: 7,
+  septiembre: 8,
+  setiembre: 8,
+  octubre: 9,
+  noviembre: 10,
+  diciembre: 11,
+};
+
+const obtenerTituloDocumento = (documento) =>
+  documento.titulo || documento.nombre || "Documento sin título";
+
+const obtenerTitulo = (item, fallback) => item.titulo || item.nombre || fallback;
+
+const convertirFecha = (fecha) => {
+  if (!fecha) return null;
+
+  const fechaNativa = new Date(fecha);
+
+  if (!Number.isNaN(fechaNativa.getTime())) {
+    return fechaNativa;
+  }
+
+  const partes = fecha
+    .trim()
+    .toLowerCase()
+    .match(/^(\d{1,2})\s+([a-záéíóúñ]+)\s+(\d{4})$/u);
+
+  if (!partes) return null;
+
+  const [, dia, mes, anio] = partes;
+  const indiceMes = meses[mes];
+
+  if (indiceMes === undefined) return null;
+
+  return new Date(Number(anio), indiceMes, Number(dia));
+};
+
+const ordenarPorFechaDesc = (items) =>
+  [...items].sort((a, b) => {
+    const fechaA = convertirFecha(a.fecha)?.getTime() || 0;
+    const fechaB = convertirFecha(b.fecha)?.getTime() || 0;
+
+    return fechaB - fechaA;
+  });
+
+const obtenerEventosProximos = (eventos) => {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+
+  return eventos
+    .map((evento) => ({
+      ...evento,
+      fechaOrden: convertirFecha(evento.fecha),
+    }))
+    .filter((evento) => !evento.fechaOrden || evento.fechaOrden >= hoy)
+    .sort((a, b) => {
+      const fechaA = a.fechaOrden?.getTime() || Number.MAX_SAFE_INTEGER;
+      const fechaB = b.fechaOrden?.getTime() || Number.MAX_SAFE_INTEGER;
+
+      return fechaA - fechaB;
+    });
+};
+
+const contarPorRol = (usuarios) => {
+  const conteo = usuarios.reduce((acumulado, usuario) => {
+    const rol = normalizeRole(usuario.rol) || "sin-rol";
+
+    return {
+      ...acumulado,
+      [rol]: (acumulado[rol] || 0) + 1,
+    };
+  }, {});
+
+  return Object.entries(conteo)
+    .map(([rol, total]) => ({
+      id: rol,
+      title: getRoleLabel(rol),
+      subtitle: `${total} usuario${total === 1 ? "" : "s"}`,
+      badge: total,
+    }))
+    .sort((a, b) => b.badge - a.badge);
+};
 
 export const PanelAdmin = () => {
   const { avisos } = useAvisos();
-
   const { eventos } = useEventos();
+  const { documentos } = useDocumentos();
+  const { usuarios } = useUsuarios();
+  const { materias, grupos, asignaciones } = useAcademico();
+
+  const eventosProximos = obtenerEventosProximos(eventos);
+  const documentosRecientes = ordenarPorFechaDesc(documentos).slice(0, 4);
+  const avisosRecientes = ordenarPorFechaDesc(avisos).slice(0, 4);
+
+  const usuariosActivos = usuarios.filter(
+    (usuario) => usuario.estado !== "inactivo"
+  ).length;
+
+  const actividadReciente = [
+    ...avisosRecientes.map((aviso) => ({
+      id: `aviso-${aviso.id}`,
+      title: obtenerTitulo(aviso, "Aviso sin título"),
+      subtitle: aviso.fecha || "Sin fecha registrada",
+      badge: "Aviso",
+      to: buildRoute(ROUTES.ADMIN_AVISOS_EDITAR, { id: aviso.id }),
+    })),
+    ...eventosProximos.slice(0, 4).map((evento) => ({
+      id: `evento-${evento.id}`,
+      title: obtenerTitulo(evento, "Evento sin título"),
+      subtitle: `${evento.fecha || "Sin fecha"}${
+        evento.lugar ? ` · ${evento.lugar}` : ""
+      }`,
+      badge: "Evento",
+      to: buildRoute(ROUTES.ADMIN_EVENTOS_EDITAR, { id: evento.id }),
+    })),
+    ...documentosRecientes.map((documento) => ({
+      id: `documento-${documento.id}`,
+      title: obtenerTituloDocumento(documento),
+      subtitle: `${documento.fecha || "Sin fecha"}${
+        documento.tipo ? ` · ${documento.tipo}` : ""
+      }`,
+      badge: "Documento",
+      to: buildRoute(ROUTES.ADMIN_DOCUMENTOS_EDITAR, { id: documento.id }),
+    })),
+  ].slice(0, 8);
+
+  const resumenRoles = contarPorRol(usuarios);
+
+  const estadisticas = [
+    {
+      title: "Avisos",
+      value: avisos.length,
+      description: "Comunicados publicados en el portal",
+      icon: Bell,
+      to: ROUTES.ADMIN_AVISOS,
+    },
+    {
+      title: "Eventos",
+      value: eventos.length,
+      description: `${eventosProximos.length} próximo${
+        eventosProximos.length === 1 ? "" : "s"
+      } en calendario`,
+      icon: CalendarDays,
+      to: ROUTES.ADMIN_EVENTOS,
+    },
+    {
+      title: "Documentos",
+      value: documentos.length,
+      description: "Archivos y formatos disponibles",
+      icon: FileText,
+      to: ROUTES.ADMIN_DOCUMENTOS,
+    },
+    {
+      title: "Usuarios",
+      value: usuarios.length,
+      description: `${usuariosActivos} activo${usuariosActivos === 1 ? "" : "s"}`,
+      icon: Users,
+      to: ROUTES.ADMIN_USUARIOS,
+    },
+    {
+      title: "Académico",
+      value: asignaciones.length,
+      description: `${materias.length} materias · ${grupos.length} grupos`,
+      icon: GraduationCap,
+      to: ROUTES.ADMIN_ACADEMICO,
+    },
+  ];
+
+  const accionesRapidas = [
+    {
+      title: "Nuevo aviso",
+      description: "Publica un comunicado académico",
+      icon: Megaphone,
+      to: ROUTES.ADMIN_AVISOS_NUEVO,
+    },
+    {
+      title: "Nuevo evento",
+      description: "Agenda una actividad institucional",
+      icon: PlusCircle,
+      to: ROUTES.ADMIN_EVENTOS_NUEVO,
+    },
+    {
+      title: "Nuevo documento",
+      description: "Registra un archivo o formato",
+      icon: FilePlus2,
+      to: ROUTES.ADMIN_DOCUMENTOS_NUEVO,
+    },
+    {
+      title: "Nuevo usuario",
+      description: "Agrega acceso para la comunidad",
+      icon: UserPlus,
+      to: ROUTES.ADMIN_USUARIOS_NUEVO,
+    },
+    {
+      title: "Estructura académica",
+      description: "Gestiona materias, grupos y docentes",
+      icon: GraduationCap,
+      to: ROUTES.ADMIN_ACADEMICO,
+    },
+  ];
 
   return (
-    <section>
-      {/* Encabezado */}
-      <div className="mb-8">
-        <h1
-          className="
-            text-3xl
-            font-bold
-            text-slate-800
-            dark:text-white
-          "
-        >
+    <section className="space-y-8">
+      <div
+        className="
+          rounded-2xl
+          bg-gradient-to-r
+          from-[#6F1D46]
+          to-[#9b1b54]
+          p-5
+          sm:p-6
+          md:p-8
+          text-white
+          shadow-md
+        "
+      >
+        <p className="text-sm font-semibold uppercase tracking-wide opacity-80">
+          Administración general
+        </p>
+
+        <h1 className="mt-2 text-2xl font-bold sm:text-3xl md:text-4xl">
           Panel de Administración
         </h1>
 
-        <p
-          className="
-            text-slate-500
-            dark:text-slate-400
-            mt-2
-          "
-        >
-          Gestión general del portal académico
+        <p className="mt-3 max-w-3xl text-white/80">
+          Consulta el estado general del portal, accede rápidamente a los módulos
+          principales y revisa la actividad más reciente.
         </p>
       </div>
 
-      {/* Estadísticas */}
-      <div
-        className="
-          grid
-          grid-cols-1
-          md:grid-cols-2
-          xl:grid-cols-4
-          gap-6
-          mb-8
-        "
-      >
-        <article
-          className="
-            bg-white
-            dark:bg-slate-800
-            p-6
-            rounded-xl
-            shadow-md
-          "
-        >
-          <div className="flex justify-between items-center">
-            <div>
-              <h3 className="text-slate-500">
-                Avisos
-              </h3>
-
-              <p
-                className="
-                  text-3xl
-                  font-bold
-                  mt-2
-                "
-              >
-                {avisos.length}
-              </p>
-            </div>
-
-            <Bell size={36} />
-          </div>
-        </article>
-
-        <article
-          className="
-            bg-white
-            dark:bg-slate-800
-            p-6
-            rounded-xl
-            shadow-md
-          "
-        >
-          <div className="flex justify-between items-center">
-            <div>
-              <h3 className="text-slate-500">
-                Eventos
-              </h3>
-
-              <p
-                className="
-                  text-3xl
-                  font-bold
-                  mt-2
-                "
-              >
-                {eventos.length}
-              </p>
-            </div>
-
-            <CalendarDays size={36} />
-          </div>
-        </article>
-
-        <article
-          className="
-            bg-white
-            dark:bg-slate-800
-            p-6
-            rounded-xl
-            shadow-md
-          "
-        >
-          <div className="flex justify-between items-center">
-            <div>
-              <h3 className="text-slate-500">
-                Documentos
-              </h3>
-
-              <p
-                className="
-                  text-3xl
-                  font-bold
-                  mt-2
-                "
-              >
-                {documentos.length}
-              </p>
-            </div>
-
-            <FileText size={36} />
-          </div>
-        </article>
-
-        <article
-          className="
-            bg-white
-            dark:bg-slate-800
-            p-6
-            rounded-xl
-            shadow-md
-          "
-        >
-          <div className="flex justify-between items-center">
-            <div>
-              <h3 className="text-slate-500">
-                Usuarios
-              </h3>
-
-              <p
-                className="
-                  text-3xl
-                  font-bold
-                  mt-2
-                "
-              >
-                245
-              </p>
-            </div>
-
-            <Users size={36} />
-          </div>
-        </article>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        {estadisticas.map((estadistica) => (
+          <AdminStatCard key={estadistica.title} {...estadistica} />
+        ))}
       </div>
 
-      {/* Acciones rápidas */}
-      <div
-        className="
-          bg-white
-          dark:bg-slate-800
-          rounded-xl
-          shadow-md
-          p-6
-          mb-8
-        "
-      >
-        <h2
-          className="
-            text-xl
-            font-bold
-            mb-6
-          "
-        >
-          Acciones rápidas
-        </h2>
+      <div>
+        <div className="mb-4">
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
+            Acciones rápidas
+          </h2>
 
-        <div
-          className="
-            flex
-            flex-wrap
-            gap-4
-          "
-        >
-          <Link
-            to="/admin/avisos"
-            className="
-              flex
-              items-center
-              gap-2
-              bg-[#6A0032]
-              text-white
-              px-5
-              py-3
-              rounded-lg
-              hover:opacity-90
-              transition
-            "
-          >
-            <Plus size={18} />
-            Gestionar Avisos
-          </Link>
-
-          <Link
-            to="/admin/eventos"
-            className="
-              flex
-              items-center
-              gap-2
-              bg-[#6A0032]
-              text-white
-              px-5
-              py-3
-              rounded-lg
-              hover:opacity-90
-              transition
-            "
-          >
-            <Plus size={18} />
-            Gestionar Eventos
-          </Link>
-
-          <Link
-            to="/admin/eventos/nuevo"
-            className="
-              flex
-              items-center
-              gap-2
-              bg-[#6A0032]
-              text-white
-              px-5
-              py-3
-              rounded-lg
-              hover:opacity-90
-              transition
-            "
-          >
-            <Plus size={18} />
-            Nuevo Evento
-          </Link>
-          
-            <Link
-              to="/admin/documentos"
-              className="
-                flex
-                items-center
-                gap-2
-                bg-[#6A0032]
-                text-white
-                px-5
-                py-3
-                rounded-lg
-                hover:opacity-90
-                transition
-              "
-            >
-              <Plus size={18} />
-              Gestionar Documentos
-            </Link>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            Crea contenido nuevo sin entrar primero al listado de cada módulo.
+          </p>
         </div>
-      </div>
 
-
-      {/* Actividad reciente */}
-      <div
-        className="
-          bg-white
-          dark:bg-slate-800
-          rounded-xl
-          shadow-md
-          p-6
-        "
-      >
-        <h2
-          className="
-            text-xl
-            font-bold
-            mb-6
-          "
-        >
-          Actividad reciente
-        </h2>
-
-        <div className="space-y-4">
-          {avisos.slice(0, 5).map((aviso) => (
-            <div
-              key={aviso.id}
-              className="
-                border-b
-                border-slate-200
-                dark:border-slate-700
-                pb-4
-              "
-            >
-              <h3 className="font-semibold">
-                {aviso.titulo}
-              </h3>
-
-              <p
-                className="
-                  text-sm
-                  text-slate-500
-                  dark:text-slate-400
-                "
-              >
-                Aviso publicado recientemente
-              </p>
-            </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+          {accionesRapidas.map((accion) => (
+            <QuickActionCard key={accion.title} {...accion} />
           ))}
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-3">
+        <div className="xl:col-span-2">
+          <AdminListCard
+            title="Actividad reciente"
+            description="Últimos avisos, eventos y documentos registrados."
+            items={actividadReciente}
+            emptyMessage="Aún no hay actividad para mostrar."
+            actionLabel="Ver avisos"
+            actionTo={ROUTES.ADMIN_AVISOS}
+          />
+        </div>
+
+        <AdminListCard
+          title="Usuarios por rol"
+          description="Distribución actual de cuentas registradas."
+          items={resumenRoles}
+          emptyMessage="Aún no hay usuarios registrados."
+          actionLabel="Gestionar"
+          actionTo={ROUTES.ADMIN_USUARIOS}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+        <AdminListCard
+          title="Próximos eventos"
+          description="Eventos próximos ordenados por fecha."
+          items={eventosProximos.slice(0, 4).map((evento) => ({
+            id: evento.id,
+            title: obtenerTitulo(evento, "Evento sin título"),
+            subtitle: `${evento.fecha || "Sin fecha"}${
+              evento.lugar ? ` · ${evento.lugar}` : ""
+            }`,
+            badge: evento.categoria || "Evento",
+            to: buildRoute(ROUTES.ADMIN_EVENTOS_EDITAR, { id: evento.id }),
+          }))}
+          emptyMessage="No hay eventos próximos registrados."
+          actionLabel="Ver eventos"
+          actionTo={ROUTES.ADMIN_EVENTOS}
+        />
+
+        <AdminListCard
+          title="Documentos recientes"
+          description="Últimos documentos disponibles para la comunidad."
+          items={documentosRecientes.map((documento) => ({
+            id: documento.id,
+            title: obtenerTituloDocumento(documento),
+            subtitle: documento.fecha || "Sin fecha registrada",
+            badge: documento.tipo || "Documento",
+            to: buildRoute(ROUTES.ADMIN_DOCUMENTOS_EDITAR, { id: documento.id }),
+          }))}
+          emptyMessage="No hay documentos registrados."
+          actionLabel="Ver documentos"
+          actionTo={ROUTES.ADMIN_DOCUMENTOS}
+        />
       </div>
     </section>
   );

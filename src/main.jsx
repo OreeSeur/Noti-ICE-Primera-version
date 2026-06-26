@@ -5,25 +5,37 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 
-import { AuthProvider } from "./context/AuthContext";
-import { AvisosProvider } from "./context/AvisosContext";
-import { EventosProvider } from "./context/EventosContext";
-import { DocumentosProvider } from "./context/DocumentosContext";
+import { AuthProvider } from "./context/auth/AuthProvider";
+import { UsuariosProvider } from "./context/usuarios/UsuariosProvider";
+import { AvisosProvider } from "./context/avisos/AvisosProvider";
+import { EventosProvider } from "./context/eventos/EventosProvider";
+import { DocumentosProvider } from "./context/documentos/DocumentosProvider";
+import { ToastProvider } from "./context/toast/ToastProvider";
+import { AcademicoProvider } from "./context/academico/AcademicoProvider";
+import { ErrorBoundary } from "./components/common/ErrorBoundary";
 
 ReactDOM.createRoot(
   document.getElementById("root")
 ).render(
   <React.StrictMode>
-    <AuthProvider>
-      <AvisosProvider>
-        <EventosProvider>
-          <DocumentosProvider>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </DocumentosProvider>
-        </EventosProvider>
-      </AvisosProvider>
-    </AuthProvider>
+    <UsuariosProvider>
+      <AuthProvider>
+        <AvisosProvider>
+          <EventosProvider>
+            <DocumentosProvider>
+              <AcademicoProvider>
+              <BrowserRouter>
+                <ToastProvider>
+                  <ErrorBoundary>
+                    <App />
+                  </ErrorBoundary>
+                </ToastProvider>
+              </BrowserRouter>
+              </AcademicoProvider>
+            </DocumentosProvider>
+          </EventosProvider>
+        </AvisosProvider>
+      </AuthProvider>
+    </UsuariosProvider>
   </React.StrictMode>
 );

@@ -4,39 +4,53 @@ import { Routes, Route } from "react-router-dom";
 import { Layout } from "../components/layout/Layout";
 
 /* Páginas públicas */
-import { Home } from "../pages/Home";
+import { Home } from "../pages/public/Home";
 
-import { Avisos } from "../pages/Avisos";
-import { AvisoDetalle } from "../pages/AvisoDetalle";
+import { Avisos } from "../pages/public/Avisos";
+import { AvisoDetalle } from "../pages/public/AvisoDetalle";
 
-import { Eventos } from "../pages/Eventos";
-import { EventoDetalle } from "../pages/EventoDetalle";
+import { Eventos } from "../pages/public/Eventos";
+import { EventoDetalle } from "../pages/public/EventoDetalle";
 
-import { Calendario } from "../pages/Calendario";
+import { Calendario } from "../pages/public/Calendario";
 
-import { Documentos } from "../pages/Documentos";
-import { DocumentoDetalle } from "../pages/DocumentoDetalle";
+import { Documentos } from "../pages/public/Documentos";
+import { DocumentoDetalle } from "../pages/public/DocumentoDetalle";
+
+import { Perfil } from "../pages/public/Perfil";
+import { Notificaciones } from "../pages/public/Notificaciones";
+import { DocentePublicaciones } from "../pages/docente/DocentePublicaciones";
+import { NoAutorizado } from "../pages/NoAutorizado";
 
 /* Autenticación */
-import { Login } from "../pages/Login";
-import { Perfil } from "../pages/Perfil";
-import { PrivateRoute } from "./PrivateRoute";
-import { AdminRoute } from "./AdminRoute";
+import { Login } from "../pages/auth/Login";
 
 /* Administración */
 import { PanelAdmin } from "../pages/PanelAdmin";
 
-import { AdminAvisos } from "../pages/AdminAvisos";
-import { AdminNuevoAviso } from "../pages/AdminNuevoAviso";
-import { AdminEditarAviso } from "../pages/AdminEditarAviso";
+import { AdminAvisos } from "../pages/admin/avisos/AdminAvisos";
+import { AdminNuevoAviso } from "../pages/admin/avisos/AdminNuevoAviso";
+import { AdminEditarAviso } from "../pages/admin/avisos/AdminEditarAviso";
 
-import { AdminEventos } from "../pages/AdminEventos";
-import { AdminNuevoEvento } from "../pages/AdminNuevoEvento";
-import { AdminEditarEvento } from "../pages/AdminEditarEvento";
+import { AdminEventos } from "../pages/admin/eventos/AdminEventos";
+import { AdminNuevoEvento } from "../pages/admin/eventos/AdminNuevoEvento";
+import { AdminEditarEvento } from "../pages/admin/eventos/AdminEditarEvento";
 
-import { AdminDocumentos } from "../pages/AdminDocumentos";
-import { AdminNuevoDocumento } from "../pages/AdminNuevoDocumento";
-import { AdminEditarDocumento } from "../pages/AdminEditarDocumento";
+import { AdminDocumentos } from "../pages/admin/documentos/AdminDocumentos";
+import { AdminNuevoDocumento } from "../pages/admin/documentos/AdminNuevoDocumento";
+import { AdminEditarDocumento } from "../pages/admin/documentos/AdminEditarDocumento";
+
+import { AdminUsuarios } from "../pages/admin/usuarios/AdminUsuarios";
+import { AdminNuevoUsuario } from "../pages/admin/usuarios/AdminNuevoUsuario";
+import { AdminEditarUsuario } from "../pages/admin/usuarios/AdminEditarUsuario";
+import { AdminAcademico } from "../pages/admin/academico/AdminAcademico";
+
+/* Rutas protegidas */
+import { PrivateRoute } from "./PrivateRoute";
+import { AdminRoute } from "./AdminRoute";
+import { RoleRoute } from "./RoleRoute";
+import { ROUTES } from "../constants/routes";
+import { ROLES } from "../constants/roles";
 
 /* Error 404 */
 import { NotFound } from "../pages/NotFound";
@@ -44,16 +58,33 @@ import { NotFound } from "../pages/NotFound";
 export const AppRouter = () => {
 return ( <Routes>
 
-```
   {/* Login */}
   <Route
-    path="/login"
+    path={ROUTES.LOGIN}
     element={<Login />}
+  />
+
+  <Route
+    path={ROUTES.NO_AUTORIZADO}
+    element={
+      <Layout>
+        <NoAutorizado />
+      </Layout>
+    }
+  />
+
+  <Route
+    path={ROUTES.NOT_FOUND}
+    element={
+      <Layout>
+        <NotFound />
+      </Layout>
+    }
   />
 
   {/* Home */}
   <Route
-    path="/"
+    path={ROUTES.HOME}
     element={
       <Layout>
         <Home />
@@ -63,7 +94,7 @@ return ( <Routes>
 
   {/* Avisos */}
   <Route
-    path="/avisos"
+    path={ROUTES.AVISOS}
     element={
       <Layout>
         <Avisos />
@@ -72,7 +103,7 @@ return ( <Routes>
   />
 
   <Route
-    path="/avisos/:id"
+    path={ROUTES.AVISO_DETALLE}
     element={
       <Layout>
         <AvisoDetalle />
@@ -82,7 +113,7 @@ return ( <Routes>
 
   {/* Eventos */}
   <Route
-    path="/eventos"
+    path={ROUTES.EVENTOS}
     element={
       <Layout>
         <Eventos />
@@ -91,7 +122,7 @@ return ( <Routes>
   />
 
   <Route
-    path="/eventos/:id"
+    path={ROUTES.EVENTO_DETALLE}
     element={
       <Layout>
         <EventoDetalle />
@@ -101,7 +132,7 @@ return ( <Routes>
 
   {/* Calendario */}
   <Route
-    path="/calendario"
+    path={ROUTES.CALENDARIO}
     element={
       <Layout>
         <Calendario />
@@ -111,7 +142,7 @@ return ( <Routes>
 
   {/* Documentos */}
   <Route
-    path="/documentos"
+    path={ROUTES.DOCUMENTOS}
     element={
       <Layout>
         <Documentos />
@@ -120,7 +151,7 @@ return ( <Routes>
   />
 
   <Route
-    path="/documentos/:id"
+    path={ROUTES.DOCUMENTO_DETALLE}
     element={
       <Layout>
         <DocumentoDetalle />
@@ -130,17 +161,44 @@ return ( <Routes>
 
   {/* Perfil */}
   <Route
-    path="/perfil"
+    path={ROUTES.PERFIL}
     element={
-      <Layout>
-        <Perfil />
-      </Layout>
+      <PrivateRoute>
+        <Layout>
+          <Perfil />
+        </Layout>
+      </PrivateRoute>
+    }
+  />
+
+  {/* Notificaciones */}
+  <Route
+    path={ROUTES.NOTIFICACIONES}
+    element={
+      <PrivateRoute>
+        <Layout>
+          <Notificaciones />
+        </Layout>
+      </PrivateRoute>
+    }
+  />
+
+
+  {/* Publicaciones docentes */}
+  <Route
+    path={ROUTES.DOCENTE_PUBLICACIONES}
+    element={
+      <RoleRoute roles={[ROLES.DOCENTE, ROLES.ADMIN, ROLES.SUPERADMIN]}>
+        <Layout>
+          <DocentePublicaciones />
+        </Layout>
+      </RoleRoute>
     }
   />
 
 {/* Administración */}
 <Route
-  path="/admin"
+  path={ROUTES.ADMIN}
   element={
     <AdminRoute>
       <Layout>
@@ -151,7 +209,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/avisos"
+  path={ROUTES.ADMIN_AVISOS}
   element={
     <AdminRoute>
       <Layout>
@@ -162,7 +220,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/avisos/nuevo"
+  path={ROUTES.ADMIN_AVISOS_NUEVO}
   element={
     <AdminRoute>
       <Layout>
@@ -173,7 +231,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/avisos/editar/:id"
+  path={ROUTES.ADMIN_AVISOS_EDITAR}
   element={
     <AdminRoute>
       <Layout>
@@ -184,7 +242,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/eventos"
+  path={ROUTES.ADMIN_EVENTOS}
   element={
     <AdminRoute>
       <Layout>
@@ -195,7 +253,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/eventos/nuevo"
+  path={ROUTES.ADMIN_EVENTOS_NUEVO}
   element={
     <AdminRoute>
       <Layout>
@@ -206,7 +264,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/eventos/editar/:id"
+  path={ROUTES.ADMIN_EVENTOS_EDITAR}
   element={
     <AdminRoute>
       <Layout>
@@ -217,7 +275,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/documentos"
+  path={ROUTES.ADMIN_DOCUMENTOS}
   element={
     <AdminRoute>
       <Layout>
@@ -228,7 +286,7 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/documentos/nuevo"
+  path={ROUTES.ADMIN_DOCUMENTOS_NUEVO}
   element={
     <AdminRoute>
       <Layout>
@@ -239,13 +297,64 @@ return ( <Routes>
 />
 
 <Route
-  path="/admin/documentos/editar/:id"
+  path={ROUTES.ADMIN_DOCUMENTOS_EDITAR}
   element={
     <AdminRoute>
       <Layout>
         <AdminEditarDocumento />
       </Layout>
     </AdminRoute>
+  }
+/>
+<Route
+  path={ROUTES.ADMIN_USUARIOS}
+  element={
+    <AdminRoute>
+      <Layout>
+        <AdminUsuarios />
+      </Layout>
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path={ROUTES.ADMIN_USUARIOS_NUEVO}
+  element={
+    <AdminRoute>
+      <Layout>
+        <AdminNuevoUsuario />
+      </Layout>
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path={ROUTES.ADMIN_USUARIOS_EDITAR}
+  element={
+    <AdminRoute>
+      <Layout>
+        <AdminEditarUsuario />
+      </Layout>
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path={ROUTES.ADMIN_ACADEMICO}
+  element={
+    <AdminRoute>
+      <Layout>
+        <AdminAcademico />
+      </Layout>
+    </AdminRoute>
+  }
+/>
+<Route
+  path="*"
+  element={
+    <Layout>
+      <NotFound />
+    </Layout>
   }
 />
 </Routes>

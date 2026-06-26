@@ -60,12 +60,12 @@ export const StatCard = ({
             className="
               p-3
               rounded-xl
-              bg-[#6A0032]/10
+              bg-[#6F1D46]/10
             "
           >
             <Icon
               size={28}
-              className="text-[#6A0032]"
+              className="text-[#6F1D46]"
             />
           </div>
         </div>
@@ -95,7 +95,7 @@ export const StatCard = ({
           <ArrowRight
             size={18}
             className="
-              text-[#6A0032]
+              text-[#6F1D46]
             "
           />
         </div>
